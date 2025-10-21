@@ -5,6 +5,7 @@ import LastEvents from "@/components/LastEvents";
 import Contacts from "@/components/Contacts";
 import Map from "@/components/Map";
 import { Metadata } from "next";
+import { buttonVariants } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: 'Главная | ТК "Кинематография"',

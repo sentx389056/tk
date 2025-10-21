@@ -1,6 +1,6 @@
 "use client"
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import {
    NavigationMenu, NavigationMenuContent,
@@ -85,12 +85,12 @@ export default function Header() {
             <NavigationMenu viewport={false}>
                <NavigationMenuList>
                   <NavigationMenuItem>
-                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                     <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
                         <Link href="/">Главная</Link>
                      </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                     <NavigationMenuTrigger>О комитете</NavigationMenuTrigger>
+                     <NavigationMenuTrigger className={buttonVariants({variant: "link"})}>О комитете</NavigationMenuTrigger>
                      <NavigationMenuContent>
                         <ul className="grid w-[300px] gap-4">
                            {info.about.map((component) => (
@@ -106,7 +106,7 @@ export default function Header() {
                      </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                     <NavigationMenuTrigger>Деятельность ТК 023</NavigationMenuTrigger>
+                     <NavigationMenuTrigger className={buttonVariants({variant: "link"})}>Деятельность ТК 023</NavigationMenuTrigger>
                      <NavigationMenuContent>
                         <ul className="grid w-[300px] gap-4">
                            {info.activity.map((component) => (
@@ -122,7 +122,7 @@ export default function Header() {
                      </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                     <NavigationMenuTrigger>Документы</NavigationMenuTrigger>
+                     <NavigationMenuTrigger className={buttonVariants({variant: "link"})}>Документы</NavigationMenuTrigger>
                      <NavigationMenuContent>
                         <ul className="grid w-[300px] gap-4">
                            {info.documents.map((component) => (
@@ -138,12 +138,14 @@ export default function Header() {
                      </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                     <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
                         <Link href="/contacts">Контакты</Link>
                      </NavigationMenuLink>
                   </NavigationMenuItem>
                </NavigationMenuList>
             </NavigationMenu>
+               {/* Desktop login link (visible on xl and up) */}
+               <Link href="/login" className={`${buttonVariants({variant: "ghost"})} text-white`}>Вход для членов ТК</Link>
          </div>
          <div className="grid grid-cols-1 xl:hidden items-center justify-between gap-6">
             <Sheet>
@@ -158,7 +160,7 @@ export default function Header() {
 
                   </SheetHeader>
                   <div className="grid flex-1 auto-rows-min px-4">
-                     <Link href="/" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
+                     <Link href="/" className={`${buttonVariants({variant: "link"})} border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] `}>
                         Главная
                      </Link>
                      <Accordion type="single" collapsible>
@@ -213,6 +215,9 @@ export default function Header() {
                      </Accordion>
                      <Link href="/contacts" className="border-t-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
                         Контакты
+                     </Link>
+                     <Link href="/login" className="border-t-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
+                        Вход для членов ТК
                      </Link>
                   </div>
                   <SheetFooter></SheetFooter>
