@@ -6,20 +6,20 @@ import Image from "next/image"
 
 interface TeamCardProps {
     name: string;
-    jobTitle: string;
+    position: string;
     organization: string;
     email: string;
     phone: string;
     address: string
 }
 
-export default function MemberCard({ name, jobTitle, organization, email, phone, address }: TeamCardProps) {
+export default function MemberCard({ name, position, organization, email, phone, address }: TeamCardProps) {
     return (
         <Card className="w-full">
             <CardHeader>
                 <CardTitle>{name}</CardTitle>
                 <CardDescription className="flex gap-2 flex-col text-black">
-                    <p className="text-black font-medium mt-2">{jobTitle}</p>
+                    <p className="text-black font-medium mt-2">{position}</p>
                     <div>
                         Организация: {organization}
                     </div>

@@ -1,0 +1,140 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ========== ЧЕЛОВЕК (общая информация) ==========
+model Person {
+  id           Int      @id @default(autoincrement())
+  name         String
+  position     String
+  organization String
+  experience   String?
+  email        String   @unique
+  phone        String?
+  address      String?
+
+  // Связи — без fields/references здесь!
+  user        User?
+  executive   Executive?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ========== ПОЛЬЗОВАТЕЛЬ (для входа) ==========
+model User {
+  id        Int    @id @default(autoincrement())
+  login     String @unique
+  password  String // хэш
+
+  // Связь с Person — внешний ключ здесь
+  person    Person @relation(fields: [personId], references: [id])
+  personId  Int    @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ========== РУКОВОДСТВО ==========
+model Executive {
+  id           Int    @id @default(autoincrement())
+  biography    String?
+  education    String?
+  achievements String? // JSON: ["Достижение 1", "Достижение 2"]
+  awards       String? // JSON: ["Награда A", "Премия B"]
+
+  // Связь с Person — внешний ключ здесь
+  person       Person @relation(fields: [personId], references: [id])
+  personId     Int    @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ========== ФОНД СТАНДАРТОВ ==========
+model StandardFund {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String?
+  approved      Boolean  @default(false)
+  approvedAt    DateTime? // дата принятия (если approved = true)
+  organization  String
+  fileUrl       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ========== ПРОТОКОЛЫ ==========
+model Protocol {
+  id            Int      @id @default(autoincrement())
+  title         String
+  publishedAt   DateTime @default(now())
+  attachments   String   // JSON: [{ "fileName": "file1.pdf", "fileUrl": "/files/1.pdf" }, ...]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ========== ГОДОВЫЕ ОТЧЁТЫ ==========
+model AnnualReport {
+  id               Int      @id @default(autoincrement())
+  title            String
+  publishedAt      DateTime @default(now())
+  keyAchievements  String   // JSON: ["Запущен стандарт X", "Проведено 12 заседаний"]
+  fileUrl          String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ========== ПОЛОЖЕНИЯ О ТЕХНИЧЕСКИХ КОМИТЕТАХ ==========
+model TechnicalCommitteeRegulation {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String?
+  approvedAt   DateTime // дата утверждения
+  organization String
+  fileUrl      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ========== ПРОЕКТЫ СТАНДАРТОВ ==========
+model StandardProject {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime?
+  fileUrl     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ========== ЗАСЕДАНИЯ ==========
+model Meeting {
+  id            Int      @id @default(autoincrement())
+  title         String   // Название заседания
+  publishedAt   DateTime @default(now()) // Дата публикации
+  format        String   // Например: "Очное", "Заочное", "Гибридное"
+  location      String   // Место проведения
+  attachments   String   // JSON: [{ "fileName": "...", "fileUrl": "..." }]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

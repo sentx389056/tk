@@ -4,14 +4,22 @@ import MainTask from "@/components/MainTask";
 import LastEvents from "@/components/LastEvents";
 import Contacts from "@/components/Contacts";
 import Map from "@/components/Map";
-import { Metadata } from "next";
-import { buttonVariants } from "@/components/ui/button";
+import { prisma } from "@/lib/prisma";
 
-export const metadata: Metadata = {
-  title: 'Главная | ТК "Кинематография"',
-};
+export default async function Home() {
 
-export default function Home() {
+  const standardProjects = await prisma.standardProject.findMany({
+    orderBy: { createdAt: 'asc' }
+  });
+
+  const protocol = await prisma.protocol.findMany({
+    orderBy: { createdAt: 'asc' }
+  });
+
+  const report = await prisma.annualReport.findMany({
+    orderBy: { createdAt: 'asc' }
+  });
+
   return (
     <main className="flex flex-col w-full px-5 xl:px-40 py-10">
       <div className="py-10">
@@ -23,13 +31,13 @@ export default function Home() {
         <section className="mt-15">
           <ul className="grid xl:grid-cols-4 gap-8 sm:grid-cols-2">
             <li>
-              <Advantage count={24} text="Стандартов" Icon={FileText} />
+              <Advantage count={standardProjects.length} text="Стандартов" Icon={FileText} />
             </li>
             <li>
-              <Advantage count={45} text="Протоколов" Icon={FileText} />
+              <Advantage count={protocol.length} text="Протоколов" Icon={FileText} />
             </li>
             <li>
-              <Advantage count={12} text="Заседаний в год" Icon={Calendar} />
+              <Advantage count={report.length} text="Заседаний в год" Icon={Calendar} />
             </li>
             <li>
               <Advantage count={15} text="Лет работы" Icon={Award} />

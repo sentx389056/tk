@@ -5,17 +5,18 @@ import { Download, FileText } from "lucide-react";
 interface ProvisionCardProps {
    title: string;
    description: string;
-   accept_in: string;
+   approvedAt: Date;
    organization: string;
 }
 
-export default function ProvisionCard({ title, description, accept_in, organization }: ProvisionCardProps) {
+export default function ProvisionCard({ title, description, approvedAt, organization }: ProvisionCardProps) {
+   const approvedAtFormatted = approvedAt.toLocaleDateString('ru-RU');
    return (
       <Card className="w-full px-6">
          <CardHeader className="p-0">
             <div className="flex gap-3 items-center">
                <div className="hidden sm:flex">
-                  <FileText size={32} color="#CC4E3A"/>
+                  <FileText size={32} color="#CC4E3A" />
                </div>
                <div>
                   <CardTitle className="mb-1">{title}</CardTitle>
@@ -31,7 +32,7 @@ export default function ProvisionCard({ title, description, accept_in, organizat
          <CardContent className="p-0">
             <CardDescription className="text-gray-500">
                <p className="mb-1"><strong>Утвержден:</strong></p>
-               <p>{accept_in}</p>
+               <p>{approvedAtFormatted}</p>
             </CardDescription>
             <CardDescription className="text-gray-500 mt-4">
                <p className="mb-1"><strong>Организация:</strong></p>

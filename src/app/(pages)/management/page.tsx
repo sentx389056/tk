@@ -1,69 +1,72 @@
+'use client';
 import ManagementCard from "@/components/ManagementCard";
-import { Metadata } from "next";
+import { useEffect, useState } from "react";
 
-export const metadata: Metadata = {
-   title: 'Руководство | ТК "Кинематография"',
+type Executive = {
+  person: {
+    name: string;
+    position: string;
+    organization: string;
+    email: string;
+    phone: string;
+    experience: string;
+  };
+  id: number;
+  biography: string;
+  education: string;
+  achievements: string;
+  awards: string;
 };
 
 export default function ManagementPage() {
-   return (
-      <main className="flex flex-col w-full px-5 xl:px-40 py-10">
-         <div className="py-10">
-            <div className="flex flex-col items-center">
-               <h1 className="text-4xl font-bold text-center mb-2">Руководство</h1>
-               <p className="text-center text-base font-light text-gray-700 max-w-180">Команда профессионалов, возглавляющая ТК &quot;Кинематография&quot;</p>
-            </div>
-            <section className="mt-16 flex gap-12 flex-col">
-               <ManagementCard
-                  name="Иванов Сергей Петрович"
-                  jobTitle="Генеральный директор"
-                  place="Госфильмофонд России"
-                  mail="ivanov@gosfilmofond.ru"
-                  phone="+7 (495) 123-45-67"
-                  experience="15 лет"
-                  biography="Выпускник ВГИКа, работал режиссером документального кино, с 2010 года возглавляет Госфильмофонд России. Под его руководством была проведена масштабная модернизация архива и внедрены современные технологии цифровизации."
-                  education="ВГИК, режиссерский факультет"
-                  achievements={["Заслуженный деятель искусств РФ", 'Лауреат премии "Золотой орел"', "Член Союза кинематографистов России"]}
-                  reverse={false}
-               />
-               <ManagementCard
-                  name="Петрова Мария Александровна"
-                  jobTitle="Заместитель генерального директора"
-                  place="Научно-методическое управление"
-                  mail="petrova@gosfilmofond.ru"
-                  phone="+7 (495) 123-45-68"
-                  experience="12 лет"
-                  biography="Специалист в области архивного дела и сохранения культурного наследия. Руководит научно-методической работой фонда, курирует международные проекты по сохранению кинонаследия."
-                  education="МГУ, исторический факультет"
-                  achievements={["Кандидат исторических наук", 'Автор 50+ научных публикаций', "Эксперт ЮНЕСКО по сохранению культурного наследия"]}
-                  reverse
-               />
-               <ManagementCard
-                  name="Сидоров Алексей Викторович"
-                  jobTitle="Директор по техническим вопросам"
-                  place="Техническое управление"
-                  mail="sidorov@gosfilmofond.ru"
-                  phone="+7 (495) 123-45-69"
-                  experience="18 лет"
-                  biography="Ведущий специалист в области цифровых технологий для кинематографии. Руководил проектом создания современного цифрового архива Госфильмофонда, внедрил инновационные решения для реставрации фильмов."
-                  education="МТУСИ, факультет радиотехники"
-                  achievements={["Кандидат технических наук", 'Разработчик системы цифрового архива', "Лауреат премии Правительства РФ"]}
-                  reverse={false}
-               />
-               <ManagementCard
-                  name="Козлова Елена Дмитриевна"
-                  jobTitle="Главный бухгалтер"
-                  place="Финансово-экономическое управление"
-                  mail="kozlova@gosfilmofond.ru"
-                  phone="+7 (495) 123-45-70"
-                  experience="20 лет"
-                  biography="Опытный финансист с многолетним стажем работы в государственных учреждениях культуры. Обеспечивает эффективное финансовое планирование и контроль за использованием бюджетных средств."
-                  education="Финансовый университет при Правительстве РФ"
-                  achievements={["Аттестованный профессиональный бухгалтер", 'Эксперт по бюджетному учету', "Почетный работник культуры РФ"]}
-                  reverse
-               />
-            </section>
-         </div>
-      </main>
-   )
+  const [executive, setExecutive] = useState<Executive[]>([]);
+
+  useEffect(() => {
+    const fetchExecutives = async () => {
+      const res = await fetch('/api/executive');
+      if (!res.ok) {
+        throw new Error('Failed to fetch executives');
+      }
+      const data = await res.json();
+      setExecutive(data);
+    };
+    fetchExecutives();
+  }, []);
+
+  return (
+    <main className="flex flex-col w-full px-5 xl:px-40 py-10">
+      <div className="py-10">
+        <div className="flex flex-col items-center">
+          <h1 className="text-4xl font-bold text-center mb-2">Руководство</h1>
+          <p className="text-center text-base font-light text-gray-700 max-w-180">
+            Команда профессионалов, возглавляющая ТК &quot;Кинематография&quot;
+          </p>
+        </div>
+        <section className="mt-16 flex gap-12 flex-col">
+          {executive.map((exec, index) => {
+            const achievements = exec.achievements ? JSON.parse(exec.achievements) : [];
+            const awards = exec.awards ? JSON.parse(exec.awards) : [];
+            const reverse = index % 2 === 1;
+
+            return (
+              <ManagementCard
+                key={exec.id}
+                name={exec.person.name}
+                position={exec.person.position}
+                organization={exec.person.organization}
+                email={exec.person.email}
+                phone={exec.person.phone}
+                experience={exec.person.experience}
+                biography={exec.biography}
+                education={exec.education}
+                achievements={achievements}
+                awards={awards}
+                reverse={reverse}
+              />
+            );
+          })}
+        </section>
+      </div>
+    </main>
+  );
 }

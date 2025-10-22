@@ -1,10 +1,5 @@
 import Contacts from "@/components/Contacts";
 import Map from "@/components/Map";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-   title: 'Контакты | ТК "Кинематография"',
-};
 
 export default function ContactsPage() {
    return (

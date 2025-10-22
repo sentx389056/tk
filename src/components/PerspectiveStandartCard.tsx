@@ -5,10 +5,11 @@ import { Calendar, Download, FileText } from "lucide-react";
 interface PerspectiveStandartCardProps {
    title: string;
    description: string;
-   data: string;
+   approvedAt: Date;
 }
 
-export default function PerspectiveStandartCard({ title, description, data }: PerspectiveStandartCardProps) {
+export default function PerspectiveStandartCard({ title, description, approvedAt }: PerspectiveStandartCardProps) {
+   const approvedAtFormatted = approvedAt.toLocaleDateString('ru-RU');
    return (
       <Card className="w-full px-6">
          <CardHeader className="p-0">
@@ -28,7 +29,7 @@ export default function PerspectiveStandartCard({ title, description, data }: Pe
          <CardContent className="p-0">
             <CardDescription className="text-gray-500 flex gap-2 items-center">
                <Calendar size={16} />
-               <p>{data}</p>
+               <p>{approvedAtFormatted}</p>
             </CardDescription>
          </CardContent>
       </Card>

@@ -5,11 +5,15 @@ import { Download, FileText } from "lucide-react";
 interface StandardCardProps {
    title: string;
    description: string;
-   accept_in: string;
+   approvedAt: Date;
    organization: string;
+   fileUrl?: string;
 }
 
-export default function StandardCard({ title, description, accept_in, organization }: StandardCardProps) {
+export default function StandardCard({ title, description, approvedAt, organization, fileUrl }: StandardCardProps) {
+
+   const approvedAtFormatted = approvedAt.toLocaleDateString('ru-RU');
+
    return (
       <Card className="w-full px-6">
          <CardHeader className="p-0">
@@ -29,7 +33,7 @@ export default function StandardCard({ title, description, accept_in, organizati
          <CardContent className="p-0">
             <CardDescription className="text-gray-500">
                <p className="mb-1"><strong>Принят:</strong></p>
-               <p>{accept_in}</p>
+               <p>{approvedAtFormatted}</p>
             </CardDescription>
             <CardDescription className="text-gray-500 mt-4">
                <p className="mb-1"><strong>Организация:</strong></p>

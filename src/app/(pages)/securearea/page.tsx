@@ -18,9 +18,9 @@ import {
 
 import { ChevronsUpDown, Check } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { use, useEffect } from "react";
 import MemberCard from "@/components/MemberCard";
-import StandardCard from "@/components/StandardCard";
+import StandardProjectCard from "@/components/StandardProjectCard";
 
 const frameworks = [
     {
@@ -33,9 +33,54 @@ const frameworks = [
     }
 ]
 
+type Member = {
+    id: number;
+    name: string;
+    position: string;
+    organization: string;
+    email: string;
+    phone: string;
+    address: string;
+}
+
+type StandardProject = {
+    id: number;
+    title: string;
+    description: string;
+    startDate: Date;
+    endDate: Date; 
+    fileUrl?: string;
+}
+
 export default function SecureAreaPage() {
+    const [members, setMembers] = React.useState<Member[]>([]);
+    const [standards, setStandards] = React.useState<StandardProject[]>([]);
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("Информация о членах")
+
+    useEffect(() => {
+        const fetchMembers = async () => {
+            const res = await fetch('/api/users');
+            if (!res.ok) {
+                throw new Error('Failed to fetch members');
+            }
+            const data = await res.json();
+            setMembers(data);
+        };
+        fetchMembers();
+    }, []);
+
+    useEffect(() => {
+        const fetchStandards = async () => {
+            const res = await fetch('/api/standards-project');
+            if (!res.ok) {
+                throw new Error('Failed to fetch standards');
+            }
+            const data = await res.json();
+            setStandards(data);
+        };
+        fetchStandards();
+    }, []);
 
     function handleLogout() {
         // logout
@@ -116,11 +161,17 @@ export default function SecureAreaPage() {
                         <CardHeader className="p-4">
                             <div className="flex gap-3 justify-start text-left flex-col">
                                 <h2 className="font-semibold">Информация о членах ТК и их представителях</h2>
-                                <MemberCard name="Иванов Сергей Петрович" jobTitle="Председатель ТК" organization="Госфильмофонд России" email="ivanov@gosfilmofond.ru" phone="+7 (495) 123-45-67" address="г. Москва, ул.Всеволожский пер., д.3" />
-                                <MemberCard name="Иванов Сергей Петрович" jobTitle="Председатель ТК" organization="Госфильмофонд России" email="ivanov@gosfilmofond.ru" phone="+7 (495) 123-45-67" address="г. Москва, ул.Всеволожский пер., д.3" />
-                                <MemberCard name="Иванов Сергей Петрович" jobTitle="Председатель ТК" organization="Госфильмофонд России" email="ivanov@gosfilmofond.ru" phone="+7 (495) 123-45-67" address="г. Москва, ул.Всеволожский пер., д.3" />
-                                <MemberCard name="Иванов Сергей Петрович" jobTitle="Председатель ТК" organization="Госфильмофонд России" email="ivanov@gosfilmofond.ru" phone="+7 (495) 123-45-67" address="г. Москва, ул.Всеволожский пер., д.3" />
-                                <MemberCard name="Иванов Сергей Петрович" jobTitle="Председатель ТК" organization="Госфильмофонд России" email="ivanov@gosfilmofond.ru" phone="+7 (495) 123-45-67" address="г. Москва, ул.Всеволожский пер., д.3" />
+                                {members.map((member) => {
+                                    return <MemberCard
+                                        key={member.id}
+                                        name={member.name}
+                                        position={member.position}
+                                        organization={member.organization}
+                                        email={member.email}
+                                        phone={member.phone}
+                                        address={member.address}
+                                    />
+                                })}
                             </div>
                         </CardHeader>
                     </Card>
@@ -131,11 +182,15 @@ export default function SecureAreaPage() {
                         <CardHeader className="p-4">
                             <div className="flex gap-3 justify-start text-left flex-col">
                                 <h2 className="font-semibold">Проекты стандартов</h2>
-                                <StandardCard title="ГОСТ Р 7.0.8-2013" description="Стандарт устанавливает термины и определения понятий в области делопроизводства и архивного дела." accept_in="01.11.2013" organization="Росстандарт" />
-                                <StandardCard title="ГОСТ Р 7.0.8-2013" description="Стандарт устанавливает термины и определения понятий в области делопроизводства и архивного дела." accept_in="01.11.2013" organization="Росстандарт" />
-                                <StandardCard title="ГОСТ Р 7.0.8-2013" description="Стандарт устанавливает термины и определения понятий в области делопроизводства и архивного дела." accept_in="01.11.2013" organization="Росстандарт" />
-                                <StandardCard title="ГОСТ Р 7.0.8-2013" description="Стандарт устанавливает термины и определения понятий в области делопроизводства и архивного дела." accept_in="01.11.2013" organization="Росстандарт" />
-                                <StandardCard title="ГОСТ Р 7.0.8-2013" description="Стандарт устанавливает термины и определения понятий в области делопроизводства и архивного дела." accept_in="01.11.2013" organization="Росстандарт" />
+                                {standards.map((standard) => {
+                                    return <StandardProjectCard
+                                        key={standard.id}
+                                        title={standard.title}
+                                        description={standard.description}
+                                        startDate={new Date(standard.startDate)}
+                                        endDate={new Date(standard.endDate)}
+                                    />
+                                })}
                             </div>
                         </CardHeader>
                     </Card>
