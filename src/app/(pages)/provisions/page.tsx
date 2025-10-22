@@ -1,6 +1,7 @@
 "use client";
 import ProvisionCard from "@/components/ProvisionCard";
 import SearchInput from "@/components/SearchInput";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
 
 type Provision = {
@@ -13,6 +14,7 @@ type Provision = {
 
 export default function ProvisionsPage() {
    const [provisions, setProvisions] = useState<Provision[]>([]);
+   const [isLoading, setLoading] = useState<boolean>(true);
 
    useEffect(() => {
       const fetchProvisions = async () => {
@@ -22,6 +24,7 @@ export default function ProvisionsPage() {
          }
          const data = await res.json();
          setProvisions(data);
+         setLoading(false);
       }
       fetchProvisions();
    }, []);
@@ -35,15 +38,47 @@ export default function ProvisionsPage() {
             </div>
             <SearchInput />
             <section className="mt-8 flex flex-col gap-10">
-               {provisions.map((provision) => {
-                  return <ProvisionCard
-                     key={provision.id}
-                     title={provision.title}
-                     description={provision.description}
-                     approvedAt={new Date(provision.approvedAt)}
-                     organization={provision.organization}
-                  />
-               })}
+               {isLoading ? (
+                  <div className="flex flex-col gap-10">
+                     <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                        <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                        <div className="space-y-2">
+                           <Skeleton className="h-4 w-[250px]" />
+                           <Skeleton className="h-4 w-[200px]" />
+                        </div>
+                     </div>
+                     <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                        <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                        <div className="space-y-2">
+                           <Skeleton className="h-4 w-[250px]" />
+                           <Skeleton className="h-4 w-[200px]" />
+                        </div>
+                     </div>
+                     <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                        <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                        <div className="space-y-2">
+                           <Skeleton className="h-4 w-[250px]" />
+                           <Skeleton className="h-4 w-[200px]" />
+                        </div>
+                     </div>
+                     <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                        <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                        <div className="space-y-2">
+                           <Skeleton className="h-4 w-[250px]" />
+                           <Skeleton className="h-4 w-[200px]" />
+                        </div>
+                     </div>
+                  </div>
+               ) : (
+                  provisions.map((provision) => {
+                     return <ProvisionCard
+                        key={provision.id}
+                        title={provision.title}
+                        description={provision.description}
+                        approvedAt={new Date(provision.approvedAt)}
+                        organization={provision.organization}
+                     />
+                  }))}
             </section>
          </div>
       </main>

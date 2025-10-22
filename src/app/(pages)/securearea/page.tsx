@@ -18,9 +18,10 @@ import {
 
 import { ChevronsUpDown, Check } from "lucide-react";
 import Link from "next/link";
-import React, { use, useEffect } from "react";
+import React, { use, useEffect, useState } from "react";
 import MemberCard from "@/components/MemberCard";
 import StandardProjectCard from "@/components/StandardProjectCard";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const frameworks = [
     {
@@ -48,7 +49,7 @@ type StandardProject = {
     title: string;
     description: string;
     startDate: Date;
-    endDate: Date; 
+    endDate: Date;
     fileUrl?: string;
 }
 
@@ -57,6 +58,7 @@ export default function SecureAreaPage() {
     const [standards, setStandards] = React.useState<StandardProject[]>([]);
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("Информация о членах")
+    const [isLoading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchMembers = async () => {
@@ -66,6 +68,7 @@ export default function SecureAreaPage() {
             }
             const data = await res.json();
             setMembers(data);
+            setLoading(false);
         };
         fetchMembers();
     }, []);
@@ -78,6 +81,7 @@ export default function SecureAreaPage() {
             }
             const data = await res.json();
             setStandards(data);
+            setLoading(false);
         };
         fetchStandards();
     }, []);
@@ -102,9 +106,10 @@ export default function SecureAreaPage() {
             <div className="flex flex-col w-full px-5 xl:px-40">
                 <div>
                     <div className="flex flex-row">
-                        <Card className="w-full rounded-none py-0">
+                        <Card className="w-full py-0 mt-5">
                             <CardHeader className="p-4">
                                 <div className="flex gap-3 items-center justify-start text-left">
+                                    <p>Выберите категорию:</p>
                                     <Popover open={open} onOpenChange={setOpen}>
                                         <PopoverTrigger asChild>
                                             <Button
@@ -161,17 +166,62 @@ export default function SecureAreaPage() {
                         <CardHeader className="p-4">
                             <div className="flex gap-3 justify-start text-left flex-col">
                                 <h2 className="font-semibold">Информация о членах ТК и их представителях</h2>
-                                {members.map((member) => {
-                                    return <MemberCard
-                                        key={member.id}
-                                        name={member.name}
-                                        position={member.position}
-                                        organization={member.organization}
-                                        email={member.email}
-                                        phone={member.phone}
-                                        address={member.address}
-                                    />
-                                })}
+                                {isLoading ? (
+                                    <div className="flex flex-col gap-10">
+                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                                            <Skeleton className="h-5 rounded-xl max-sm: w-[200]" />
+                                            <div className="space-y-2">
+                                                <Skeleton className="h-4 w-[250px]" />
+                                                <Skeleton className="h-4 w-[200px]" />
+                                                <Skeleton className="h-4 w-[250px]" />
+                                                <Skeleton className="h-4 w-[200px]" />
+                                                <Skeleton className="h-4 w-[250px]" />
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                                            <Skeleton className="h-5 rounded-xl max-sm: w-[200]" />
+                                            <div className="space-y-2">
+                                                <Skeleton className="h-4 w-[250px]" />
+                                                <Skeleton className="h-4 w-[200px]" />
+                                                <Skeleton className="h-4 w-[250px]" />
+                                                <Skeleton className="h-4 w-[200px]" />
+                                                <Skeleton className="h-4 w-[250px]" />
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                                            <Skeleton className="h-5 rounded-xl max-sm: w-[200]" />
+                                            <div className="space-y-2">
+                                                <Skeleton className="h-4 w-[250px]" />
+                                                <Skeleton className="h-4 w-[200px]" />
+                                                <Skeleton className="h-4 w-[250px]" />
+                                                <Skeleton className="h-4 w-[200px]" />
+                                                <Skeleton className="h-4 w-[250px]" />
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                                            <Skeleton className="h-5 rounded-xl max-sm: w-[200]" />
+                                            <div className="space-y-2">
+                                                <Skeleton className="h-4 w-[250px]" />
+                                                <Skeleton className="h-4 w-[200px]" />
+                                                <Skeleton className="h-4 w-[250px]" />
+                                                <Skeleton className="h-4 w-[200px]" />
+                                                <Skeleton className="h-4 w-[250px]" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    members.map((member) => {
+                                        return <MemberCard
+                                            key={member.id}
+                                            name={member.name}
+                                            position={member.position}
+                                            organization={member.organization}
+                                            email={member.email}
+                                            phone={member.phone}
+                                            address={member.address}
+                                        />
+                                    })
+                                )}
                             </div>
                         </CardHeader>
                     </Card>
@@ -182,21 +232,52 @@ export default function SecureAreaPage() {
                         <CardHeader className="p-4">
                             <div className="flex gap-3 justify-start text-left flex-col">
                                 <h2 className="font-semibold">Проекты стандартов</h2>
-                                {standards.map((standard) => {
-                                    return <StandardProjectCard
-                                        key={standard.id}
-                                        title={standard.title}
-                                        description={standard.description}
-                                        startDate={new Date(standard.startDate)}
-                                        endDate={new Date(standard.endDate)}
-                                    />
-                                })}
+                                {isLoading ? (
+                                    <div className="flex flex-col gap-10">
+                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                                            <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                                            <div className="space-y-2">
+                                                <Skeleton className="h-4 w-[250px]" />
+                                                <Skeleton className="h-4 w-[200px]" />
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                                            <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                                            <div className="space-y-2">
+                                                <Skeleton className="h-4 w-[250px]" />
+                                                <Skeleton className="h-4 w-[200px]" />
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                                            <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                                            <div className="space-y-2">
+                                                <Skeleton className="h-4 w-[250px]" />
+                                                <Skeleton className="h-4 w-[200px]" />
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                                            <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                                            <div className="space-y-2">
+                                                <Skeleton className="h-4 w-[250px]" />
+                                                <Skeleton className="h-4 w-[200px]" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    standards.map((standard) => {
+                                        return <StandardProjectCard
+                                            key={standard.id}
+                                            title={standard.title}
+                                            description={standard.description}
+                                            startDate={new Date(standard.startDate)}
+                                            endDate={new Date(standard.endDate)}
+                                        />
+                                    }))}
                             </div>
                         </CardHeader>
                     </Card>
                 </div>
             ) : null}
-
         </main>
     );
 }

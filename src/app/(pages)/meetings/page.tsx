@@ -2,6 +2,7 @@
 import MaterialMeetingCard from "@/components/MaterialMeetingCard";
 import SearchInput from "@/components/SearchInput";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar, FlagTriangleRight, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -15,7 +16,8 @@ type Meeting = {
 }
 
 export default function MeetingsPage() {
-   const [meetings, setMeetings] = useState<Meeting[]>([])
+   const [meetings, setMeetings] = useState<Meeting[]>([]);
+   const [isloading, setLoading] = useState<boolean>(true);
 
    useEffect(() => {
       const fetchMeetings = async () => {
@@ -25,6 +27,7 @@ export default function MeetingsPage() {
          }
          const data = await res.json();
          setMeetings(data);
+         setLoading(false);
       }
       fetchMeetings();
    }, []);
@@ -38,40 +41,75 @@ export default function MeetingsPage() {
             </div>
             <SearchInput />
             <section className="mt-8 gap-10 flex flex-col">
-               {meetings.map((meeting) => {
-                  const publishedAtFormatted = new Date(meeting.publishedAt).toLocaleDateString('ru-RU');
-                  return <Card className="w-full px-6" key={meeting.id}>
-                     <CardHeader className="p-0">
-                        <div className="flex gap-3 items-center">
-                           <div className="bg-red-pink p-3 rounded-md">
-                              <Calendar size={24} color="white" />
-                           </div>
-                           <div>
-                              <CardTitle className="mb-1">{meeting.title}</CardTitle>
-                              <CardDescription className="text-gray-500 flex gap-1 items-center">
-                                 <Calendar size={16} />{publishedAtFormatted}
-                              </CardDescription>
-                           </div>
+               {isloading ? (
+                  <div className="flex flex-col gap-10">
+                     <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                        <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                        <div className="space-y-2">
+                           <Skeleton className="h-4 w-[250px]" />
+                           <Skeleton className="h-4 w-[200px]" />
                         </div>
-                     </CardHeader>
-                     <CardContent className="p-0 flex gap-80 max-sm:gap-15">
-                        <CardDescription className="text-black font-semibold flex flex-col gap-2">
-                           <p className="mb-1 flex items-center gap-2"><FlagTriangleRight size={16} />Формат</p>
-                           <p className="text-gray-500 font-medium">{meeting.format}</p>
-                        </CardDescription>
-                        <CardDescription className="text-black font-semibold flex flex-col gap-2">
-                           <p className="mb-1 flex items-center gap-2"><MapPin size={16} />Место</p>
-                           <p className="text-gray-500 font-medium">{meeting.location}</p>
-                        </CardDescription>
-                     </CardContent>
-                     <div>
-                        <p className="font-semibold text-sm">Материалы заседания:</p>
-                        <MaterialMeetingCard name="Повестка дня" size="245 КБ" />
-                        <MaterialMeetingCard name="Презентация по цифровой кинематографии" size="2.1 МБ" />
-                        <MaterialMeetingCard name="Протокол заседания" size="890 КБ" />
                      </div>
-                  </Card>
-               })}
+                     <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                        <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                        <div className="space-y-2">
+                           <Skeleton className="h-4 w-[250px]" />
+                           <Skeleton className="h-4 w-[200px]" />
+                        </div>
+                     </div>
+                     <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                        <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                        <div className="space-y-2">
+                           <Skeleton className="h-4 w-[250px]" />
+                           <Skeleton className="h-4 w-[200px]" />
+                        </div>
+                     </div>
+                     <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                        <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                        <div className="space-y-2">
+                           <Skeleton className="h-4 w-[250px]" />
+                           <Skeleton className="h-4 w-[200px]" />
+                        </div>
+                     </div>
+                  </div>
+               ) : (
+                  meetings.map((meeting) => {
+                     const publishedAtFormatted = new Date(meeting.publishedAt).toLocaleDateString('ru-RU');
+                     return <Card className="w-full px-6" key={meeting.id}>
+                        <CardHeader className="p-0">
+                           <div className="flex gap-3 items-center">
+                              <div className="bg-red-pink p-3 rounded-md">
+                                 <Calendar size={24} color="white" />
+                              </div>
+                              <div>
+                                 <CardTitle className="mb-1">{meeting.title}</CardTitle>
+                                 <CardDescription className="text-gray-500 flex gap-1 items-center">
+                                    <Calendar size={16} />{publishedAtFormatted}
+                                 </CardDescription>
+                              </div>
+                           </div>
+                        </CardHeader>
+                        <CardContent className="p-0 flex gap-80 max-sm:gap-15">
+                           <CardDescription className="text-black font-semibold flex flex-col gap-2">
+                              <p className="mb-1 flex items-center gap-2"><FlagTriangleRight size={16} />Формат</p>
+                              <p className="text-gray-500 font-medium">{meeting.format}</p>
+                           </CardDescription>
+                           <CardDescription className="text-black font-semibold flex flex-col gap-2">
+                              <p className="mb-1 flex items-center gap-2"><MapPin size={16} />Место</p>
+                              <p className="text-gray-500 font-medium">{meeting.location}</p>
+                           </CardDescription>
+                        </CardContent>
+                        <div>
+                           <p className="font-semibold text-sm">Материалы заседания:</p>
+                           <MaterialMeetingCard name="Повестка дня" size="245 КБ" />
+                           <MaterialMeetingCard name="Презентация по цифровой кинематографии" size="2.1 МБ" />
+                           <MaterialMeetingCard name="Протокол заседания" size="890 КБ" />
+                        </div>
+                     </Card>
+                  })
+               )
+               }
+
 
 
             </section>

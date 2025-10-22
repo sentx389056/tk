@@ -2,6 +2,7 @@
 import MainTask from "@/components/MainTask";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardAction } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar, Download, FileText, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -15,6 +16,7 @@ type Report = {
 
 export default function ReportsPage() {
    const [reports, setReports] = useState<Report[]>([]);
+   const [isLoading, setLoading] = useState<boolean>(true);
 
    useEffect(() => {
       const fetchReports = async () => {
@@ -24,6 +26,7 @@ export default function ReportsPage() {
          }
          const data = await res.json();
          setReports(data);
+         setLoading(false);
       };
       fetchReports();
    }, [])
@@ -37,37 +40,68 @@ export default function ReportsPage() {
                   <p className="text-center text-base font-light text-gray-700 max-w-180">Ежегодные отчеты о деятельности Технического комитета по стандартизации</p>
                </div>
                <section className="mt-8 gap-10 flex flex-col">
-                  {reports.map((report) => {
-                     const publishedAtFormatted = new Date(report.publishedAt).toLocaleDateString('ru-RU');
-                     const achievements = report.keyAchievements ? JSON.parse(report.keyAchievements) : [];
-                     return <Card className="w-full px-6" key={report.id}>
-                        <CardHeader className="p-0">
-                           <div className="flex gap-3 items-center">
-                              <div className="bg-red-pink p-3 rounded-md">
-                                 <FileText size={24} color="white" />
-                              </div>
-                              <div>
-                                 <CardTitle className="mb-1">{report.title}</CardTitle>
-                                 <CardDescription className="text-gray-500 flex gap-1 items-center">
-                                    <Calendar size={16} />{publishedAtFormatted}
-                                 </CardDescription>
-                              </div>
+                  {isLoading ? (
+                     <div className="flex flex-col gap-10">
+                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                           <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                           <div className="space-y-2">
+                              <Skeleton className="h-4 w-[250px]" />
+                              <Skeleton className="h-4 w-[200px]" />
                            </div>
-                           <CardAction>
-                              <Button type="submit" className="w-full bg-red-pink font-medium cursor-pointer"><Download size={16} /><span className="hidden sm:flex">Скачать отчет</span></Button>
-                           </CardAction>
-
-                        </CardHeader>
-                        <div>
-                           <p className="font-semibold text-sm flex gap-2 mb-3"><TrendingUp size={20} color="#16A34A" />Основные достижения:</p>
-                           <MainTask tasks={
-                              achievements
-                           } />
                         </div>
-                     </Card>
-                  })}
+                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                           <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                           <div className="space-y-2">
+                              <Skeleton className="h-4 w-[250px]" />
+                              <Skeleton className="h-4 w-[200px]" />
+                           </div>
+                        </div>
+                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                           <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                           <div className="space-y-2">
+                              <Skeleton className="h-4 w-[250px]" />
+                              <Skeleton className="h-4 w-[200px]" />
+                           </div>
+                        </div>
+                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                           <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                           <div className="space-y-2">
+                              <Skeleton className="h-4 w-[250px]" />
+                              <Skeleton className="h-4 w-[200px]" />
+                           </div>
+                        </div>
+                     </div>
+                  ) : (
+                     reports.map((report) => {
+                        const publishedAtFormatted = new Date(report.publishedAt).toLocaleDateString('ru-RU');
+                        const achievements = report.keyAchievements ? JSON.parse(report.keyAchievements) : [];
+                        return <Card className="w-full px-6" key={report.id}>
+                           <CardHeader className="p-0">
+                              <div className="flex gap-3 items-center">
+                                 <div className="bg-red-pink p-3 rounded-md">
+                                    <FileText size={24} color="white" />
+                                 </div>
+                                 <div>
+                                    <CardTitle className="mb-1">{report.title}</CardTitle>
+                                    <CardDescription className="text-gray-500 flex gap-1 items-center">
+                                       <Calendar size={16} />{publishedAtFormatted}
+                                    </CardDescription>
+                                 </div>
+                              </div>
+                              <CardAction>
+                                 <Button type="submit" className="w-full bg-red-pink font-medium cursor-pointer"><Download size={16} /><span className="hidden sm:flex">Скачать отчет</span></Button>
+                              </CardAction>
 
-
+                           </CardHeader>
+                           <div>
+                              <p className="font-semibold text-sm flex gap-2 mb-3"><TrendingUp size={20} color="#16A34A" />Основные достижения:</p>
+                              <MainTask tasks={
+                                 achievements
+                              } />
+                           </div>
+                        </Card>
+                     })
+                  )}
                </section>
             </div>
          </div>

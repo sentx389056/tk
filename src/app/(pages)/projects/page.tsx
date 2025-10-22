@@ -1,6 +1,7 @@
 "use client";
 import ProjectCard from "@/components/ProjectCard";
 import SearchInput from "@/components/SearchInput";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
 
 type Project = {
@@ -13,6 +14,7 @@ type Project = {
 
 export default function ProjectsPage() {
    const [projects, setProjects] = useState<Project[]>([]);
+   const [isLoading, setLoading] = useState<boolean>(true);
 
    useEffect(() => {
       const fetchProjects = async () => {
@@ -22,6 +24,7 @@ export default function ProjectsPage() {
          }
          const data = await res.json();
          setProjects(data);
+         setLoading(false);
       }
       fetchProjects();
    }, []);
@@ -35,15 +38,34 @@ export default function ProjectsPage() {
             </div>
             <SearchInput />
             <section className="mt-8 flex flex-col gap-10">
-               {projects.map((project) => {
-                  return <ProjectCard
-                     key={project.id}
-                     title={project.title}
-                     description={project.description}
-                     startDate={new Date(project.startDate)}
-                     endDate={new Date(project.endDate)}
-                  />
-               })}
+               {isLoading ? (
+                  <div className="flex flex-col gap-10">
+                     <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                        <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                        <div className="space-y-2">
+                           <Skeleton className="h-4 w-[250px]" />
+                           <Skeleton className="h-4 w-[200px]" />
+                        </div>
+                     </div>
+                     <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                        <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                        <div className="space-y-2">
+                           <Skeleton className="h-4 w-[250px]" />
+                           <Skeleton className="h-4 w-[200px]" />
+                        </div>
+                     </div>
+                  </div>
+               ) : (
+                  projects.map((project) => {
+                     return <ProjectCard
+                        key={project.id}
+                        title={project.title}
+                        description={project.description}
+                        startDate={new Date(project.startDate)}
+                        endDate={new Date(project.endDate)}
+                     />
+                  })
+               )}
             </section>
          </div>
       </main>

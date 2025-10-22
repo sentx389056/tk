@@ -1,6 +1,7 @@
 "use client";
 import SearchInput from "@/components/SearchInput";
 import StandardCard from "@/components/StandardCard";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
 
 type Standard = {
@@ -14,6 +15,7 @@ type Standard = {
 
 export default function StandardsPage() {
    const [standards, setStandards] = useState<Standard[]>([]);
+   const [isloading, setLoading] = useState<boolean>(true);
 
    useEffect(() => {
       const fetchStandards = async () => {
@@ -23,6 +25,7 @@ export default function StandardsPage() {
          }
          const data = await res.json();
          setStandards(data);
+         setLoading(false);
       };
       fetchStandards();
    }, []);
@@ -36,16 +39,50 @@ export default function StandardsPage() {
             </div>
             <SearchInput />
             <section className="mt-8 flex flex-col gap-10">
-               {standards.map((standard) => {
-                  return <StandardCard
-                     key={standard.id}
-                     title={standard.title}
-                     description={standard.description}
-                     approvedAt={new Date(standard.approvedAt)}
-                     organization={standard.organization}
-                     fileUrl={standard.fileUrl}
-                  />
-               })}
+               {isloading ? (
+                  <div className="flex flex-col gap-10">
+                     <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                        <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                        <div className="space-y-2">
+                           <Skeleton className="h-4 w-[250px]" />
+                           <Skeleton className="h-4 w-[200px]" />
+                        </div>
+                     </div>
+                     <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                        <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                        <div className="space-y-2">
+                           <Skeleton className="h-4 w-[250px]" />
+                           <Skeleton className="h-4 w-[200px]" />
+                        </div>
+                     </div>
+                     <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                        <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                        <div className="space-y-2">
+                           <Skeleton className="h-4 w-[250px]" />
+                           <Skeleton className="h-4 w-[200px]" />
+                        </div>
+                     </div>
+                     <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                        <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                        <div className="space-y-2">
+                           <Skeleton className="h-4 w-[250px]" />
+                           <Skeleton className="h-4 w-[200px]" />
+                        </div>
+                     </div>
+                  </div>
+               ) : (
+                  standards.map((standard) => {
+                     return <StandardCard
+                        key={standard.id}
+                        title={standard.title}
+                        description={standard.description}
+                        approvedAt={new Date(standard.approvedAt)}
+                        organization={standard.organization}
+                        fileUrl={standard.fileUrl}
+                     />
+                  })
+               )
+               }
             </section>
          </div>
       </main>

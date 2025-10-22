@@ -1,6 +1,7 @@
 "use client";
 import PerspectiveStandartCard from "@/components/PerspectiveStandartCard";
 import PerspectiveTasks from "@/components/PerspectiveTask";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Disc2, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -14,6 +15,7 @@ type Standard = {
 
 export default function PerspectivePage() {
    const [standards, setStandards] = useState<Standard[]>([]);
+   const [isLoading, setLoading] = useState<boolean>(true);
 
    useEffect(() => {
       const fetchStandards = async () => {
@@ -23,6 +25,7 @@ export default function PerspectivePage() {
          }
          const data = await res.json();
          setStandards(data);
+         setLoading(false);
       };
       fetchStandards();
    }, []);
@@ -57,14 +60,32 @@ export default function PerspectivePage() {
                   <h2 className="text-lg font-semibold">Проекты стандартов</h2>
                </div>
                <div className="flex gap-10 max-sm:flex flex-col">
-                  {standards.slice(-2).map((standard) => {
-                     return <PerspectiveStandartCard
-                        key={standard.id}
-                        title={standard.title}
-                        description={standard.description}
-                        approvedAt={new Date(standard.approvedAt)}
-                     />
-                  })}
+                  {isLoading ? (
+                     <div className="flex flex-col gap-10">
+                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                           <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                           <div className="space-y-2">
+                              <Skeleton className="h-4 w-[250px]" />
+                              <Skeleton className="h-4 w-[200px]" />
+                           </div>
+                        </div>
+                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
+                           <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
+                           <div className="space-y-2">
+                              <Skeleton className="h-4 w-[250px]" />
+                              <Skeleton className="h-4 w-[200px]" />
+                           </div>
+                        </div>
+                     </div>
+                  ) : (
+                     standards.slice(-2).map((standard) => {
+                        return <PerspectiveStandartCard
+                           key={standard.id}
+                           title={standard.title}
+                           description={standard.description}
+                           approvedAt={new Date(standard.approvedAt)}
+                        />
+                     }))}
                </div>
             </section>
          </div>
