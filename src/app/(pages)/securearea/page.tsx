@@ -1,5 +1,5 @@
 'use client';
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -22,6 +22,18 @@ import React, { use, useEffect, useState } from "react";
 import MemberCard from "@/components/MemberCard";
 import StandardProjectCard from "@/components/StandardProjectCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider } from "@/components/ui/sidebar";
+import { SectionMembers } from "@/components/section-members";
+import { Separator } from "@/components/ui/separator";
+import SectionMain from "@/components/section-main";
+import { SectionFundStandards } from "@/components/section-fundstandards";
+import { SectionMeetings } from "@/components/section-meetings";
+import { SectionProtocol } from "@/components/section-protocols";
+import { SectionAnnualReports } from "@/components/section-annualreports";
+import { SectionProvisions } from "@/components/section-provisions";
+import { SectionProjects } from "@/components/section-projects";
+import { SectionManagements } from "@/components/section-management";
 
 const frameworks = [
     {
@@ -31,6 +43,45 @@ const frameworks = [
     {
         value: "Проекты стандартов",
         label: "Проекты стандартов",
+    }
+]
+
+const items = [
+    {
+        title: "Главная",
+        value: "Главная",
+    },
+    {
+        title: "Состав ТК",
+        value: "Состав ТК",
+    },
+    {
+        title: "Руководство",
+        value: "Руководство",
+    },
+    {
+        title: "Фонд стандартов",
+        value: "Фонд стандартов",
+    },
+    {
+        title: "Заседания",
+        value: "Заседания",
+    },
+    {
+        title: "Протоколы",
+        value: "Протоколы",
+    },
+    {
+        title: "Годовые отчеты",
+        value: "Годовые отчеты",
+    },
+    {
+        title: "Положения о ТК",
+        value: "Положения о ТК",
+    },
+    {
+        title: "Проекты стандартов",
+        value: "Проекты стандартов",
     }
 ]
 
@@ -53,12 +104,13 @@ type StandardProject = {
     fileUrl?: string;
 }
 
-export default function SecureAreaPage() {
+export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const [members, setMembers] = React.useState<Member[]>([]);
     const [standards, setStandards] = React.useState<StandardProject[]>([]);
-    const [open, setOpen] = React.useState(false)
-    const [value, setValue] = React.useState("Информация о членах")
+    const [open, setOpen] = React.useState(false);
+    const [value, setValue] = React.useState("Информация о членах");
     const [isLoading, setLoading] = useState<boolean>(true);
+    const [tab, setTab] = useState<string>("Главная");
 
     useEffect(() => {
         const fetchMembers = async () => {
@@ -153,6 +205,119 @@ export default function SecureAreaPage() {
                                             </Command>
                                         </PopoverContent>
                                     </Popover>
+                                    <div className="ml-auto">
+                                        <Dialog>
+                                            <form>
+                                                <DialogTrigger asChild>
+                                                    <Button variant="outline">Панель управления</Button>
+                                                </DialogTrigger>
+                                                <DialogContent>
+                                                    <SidebarProvider
+                                                        style={
+                                                            {
+                                                                "--sidebar-width": "calc(var(--spacing) * 72)",
+                                                                "--header-height": "calc(var(--spacing) * 12)",
+                                                            } as React.CSSProperties
+                                                        }
+                                                    >
+                                                        <Sidebar collapsible="offcanvas" {...props}>
+                                                            <SidebarHeader>
+                                                                <SidebarMenu>
+                                                                    <SidebarMenuItem>
+                                                                        <SidebarMenuButton
+                                                                            asChild
+                                                                            className="data-[slot=sidebar-menu-button]:!p-1.5"
+                                                                        >
+                                                                            <a href="/">
+                                                                                <span className="text-base font-semibold">ТК "Кинематография"</span>
+                                                                            </a>
+                                                                        </SidebarMenuButton>
+                                                                    </SidebarMenuItem>
+                                                                </SidebarMenu>
+                                                            </SidebarHeader>
+                                                            <SidebarContent>
+                                                                <SidebarGroup>
+                                                                    <SidebarGroupContent className="flex flex-col gap-2">
+                                                                        <SidebarMenu>
+                                                                            <SidebarMenuItem className="flex items-center gap-2">
+                                                                                <span className="text-sm font-medium">Разделы ТК</span>
+                                                                            </SidebarMenuItem>
+                                                                        </SidebarMenu>
+                                                                        <SidebarMenu>
+                                                                            {items.map((item) => (
+                                                                                <SidebarMenuItem key={item.title} onClick={() => setTab(item.value)}>
+                                                                                    <SidebarMenuButton tooltip={item.title}>
+                                                                                        <span>{item.title}</span>
+                                                                                    </SidebarMenuButton>
+                                                                                </SidebarMenuItem>
+                                                                            ))}
+                                                                        </SidebarMenu>
+                                                                    </SidebarGroupContent>
+                                                                </SidebarGroup>
+                                                            </SidebarContent>
+                                                            <SidebarFooter>
+                                                            </SidebarFooter>
+                                                        </Sidebar>
+                                                        <SidebarInset>
+                                                            <div className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
+                                                                <div>
+                                                                    <Separator
+                                                                        orientation="vertical"
+                                                                        className="mx-2 data-[orientation=vertical]:h-4"
+                                                                    />
+                                                                    <h2 className="text-base font-medium pl-5">{tab}</h2>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex flex-1 flex-col">
+                                                                <div className="@container/main flex flex-1 flex-col gap-2">
+                                                                    <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+
+                                                                        {tab === "Главная" && (
+                                                                            <SectionMain />
+                                                                        )}
+
+                                                                        {tab === "Состав ТК" && (
+                                                                            <SectionMembers />
+                                                                        )}
+
+                                                                        {tab === "Руководство" && (
+                                                                            <SectionManagements />
+                                                                        )}
+
+                                                                        {tab === "Фонд стандартов" && (
+                                                                            <SectionFundStandards />
+                                                                        )}
+
+                                                                        {tab === "Заседания" && (
+                                                                            <SectionMeetings />
+                                                                        )}
+
+                                                                        {tab === "Протоколы" && (
+                                                                            <SectionProtocol />
+                                                                        )}
+
+                                                                        {tab === "Годовые отчеты" && (
+                                                                            <SectionAnnualReports />
+                                                                        )}
+
+                                                                        {tab === "Положения о ТК" && (
+                                                                            <SectionProvisions />
+                                                                        )}
+
+                                                                        {tab === "Проекты стандартов" && (
+                                                                            <SectionProjects />
+                                                                        )}
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </SidebarInset>
+                                                    </SidebarProvider>
+                                                </DialogContent>
+                                            </form>
+                                        </Dialog>
+                                    </div>
                                 </div>
                             </CardHeader>
                         </Card>

@@ -5,7 +5,7 @@ export async function GET() {
     try {
         const meetings = await prisma.meeting.findMany({
             orderBy: {
-                publishedAt: 'desc',
+                publishedAt: 'asc',
             },
         });
         return NextResponse.json(meetings, { status: 200 });
