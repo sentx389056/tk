@@ -1,8 +1,10 @@
+import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Skeleton } from "./ui/skeleton";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell, TableFooter } from "./ui/table";
 import { useEffect, useState } from "react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
 
 type Standard = {
     id: number,
@@ -34,6 +36,11 @@ export function SectionFundStandards() {
 
     const approvedText = (approved: boolean) => {
         return approved ? "Да" : "Нет";
+    }
+
+    async function handleDelete(id: any) {
+        await fetch(`/api/standards/delete/${id}`, { method: 'DELETE' });
+        toast.success("Объект успешно удален!");
     }
 
     return (
@@ -113,15 +120,31 @@ export function SectionFundStandards() {
 
                                                 </div>
                                                 <div className="grid gap-2">
-                                                    <div className="grid grid-cols-3 items-center gap-4">
+                                                    {/* <div className="grid grid-cols-3 items-center gap-4">
                                                         Редактировать
-                                                    </div>
+                                                    </div> */}
                                                     <div className="grid grid-cols-3 items-center gap-4">
-                                                        Удалить
+                                                        <AlertDialog>
+                                                            <AlertDialogTrigger asChild>
+                                                                <Button variant="outline">Удалить</Button>
+                                                            </AlertDialogTrigger>
+                                                            <AlertDialogContent>
+                                                                <AlertDialogHeader>
+                                                                    <AlertDialogTitle>Вы уверены что хотите удалить этот объект?</AlertDialogTitle>
+                                                                    <AlertDialogDescription>
+                                                                        Это действие невозможно отменить. Это приведет к безвозвратному удалению записи.
+                                                                    </AlertDialogDescription>
+                                                                </AlertDialogHeader>
+                                                                <AlertDialogFooter>
+                                                                    <AlertDialogCancel>Отменить</AlertDialogCancel>
+                                                                    <AlertDialogAction onClick={() => handleDelete(standard.id)}>Удалить</AlertDialogAction>
+                                                                </AlertDialogFooter>
+                                                            </AlertDialogContent>
+                                                        </AlertDialog>
                                                     </div>
-                                                    <div className="grid grid-cols-3 items-center gap-4">
+                                                    {/* <div className="grid grid-cols-3 items-center gap-4">
                                                         Скачать
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             </div>
                                         </PopoverContent>
