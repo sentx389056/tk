@@ -1,158 +1,184 @@
-import { PrismaClient } from '@prisma/client';
-import * as bcrypt from 'bcryptjs';
+import { PrismaClient, LogType } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 async function main() {
-    const hashedPassword = await bcrypt.hash('password123', 12);
+  console.log('Clearing existing data (if any) — this is safe for local/dev only');
 
-    // ========= 3 РУКОВОДИТЕЛЯ + ПОЛЬЗОВАТЕЛИ =========
-    for (let i = 1; i <= 3; i++) {
-        const exec = await prisma.executive.create({
-            data: {
-                name: `Руководитель ${i}`,
-                position: `Директор направления ${i}`,
-                organization: `Фонд стандартизации ${i}`,
-                experience: `Опыт ${10 + i} лет`,
-                email: `exec${i}@example.com`,
-                phone: `+7 (495) 000-00-0${i}`,
-                address: `г. Москва, ул. Новая, д. ${i}`,
-                biography: `Биография руководителя ${i}`,
-                education: `Образование руководителя ${i}`,
-                achievements: JSON.stringify([
-                    `Достижение ${i}.1`,
-                    `Достижение ${i}.2`
-                ]),
-                awards: JSON.stringify([
-                    `Награда ${i}.1`,
-                    `Премия ${i}.2`
-                ]),
-            }
+  // Delete in reverse-order of relations
+  await prisma.log.deleteMany();
+  await prisma.user.deleteMany();
+  await prisma.technicalCommitteeMember.deleteMany();
+  await prisma.executive.deleteMany();
+  await prisma.standardFund.deleteMany();
+  await prisma.protocol.deleteMany();
+  await prisma.annualReport.deleteMany();
+  await prisma.technicalCommitteeRegulation.deleteMany();
+  await prisma.standardProject.deleteMany();
+  await prisma.meeting.deleteMany();
 
-        });
+  console.log('Creating technical committee members...');
+  const member1 = await prisma.technicalCommitteeMember.create({
+    data: {
+      name: 'Иван Иванов',
+      position: 'Председатель',
+      organization: 'Кинокомитет',
+      experience: '10 лет',
+      email: 'ivan.ivanov@example.test',
+      phone: '+7 900 000 0001',
+      address: 'Москва',
+    },
+  });
 
-        await prisma.user.create({
-            data: {
-                login: `exec${i}`,
-                password: hashedPassword,
-                executiveId: exec.id,
-            }
+  const member2 = await prisma.technicalCommitteeMember.create({
+    data: {
+      name: 'Мария Петрова',
+      position: 'Член комитета',
+      organization: 'Кинокомитет',
+      experience: '6 лет',
+      email: 'maria.petrova@example.test',
+      phone: '+7 900 000 0002',
+      address: 'Санкт-Петербург',
+    },
+  });
 
-        });
-    }
+  console.log('Creating users...');
+  const adminPassword = await bcrypt.hash('password', 10);
+  const admin = await prisma.user.create({
+    data: {
+      login: 'admin',
+      password: adminPassword,
+      member: { connect: { id: member1.id } },
+    },
+  });
 
-    // ========= 3 ЧЛЕНА ТЕХНИЧЕСКОГО КОМИТЕТА =========
-    for (let i = 1; i <= 3; i++) {
-        await prisma.technicalCommitteeMember.create({
-            data: {
-                name: `Член ТК ${i}`,
-                position: `Эксперт по стандартизации ${i}`,
-                organization: `Организация ТК ${i}`,
-                experience: `Опыт ${5 + i} лет`,
-                email: `member${i}@tk-cinema.ru`,
-                phone: `+7 (999) 111-22-0${i}`,
-                address: `г. Город ${i}, ул. Комитетская, д. ${i}`,
-            }
-        });
-    }
+  const user1 = await prisma.user.create({
+    data: {
+      login: 'member2',
+      password: await bcrypt.hash('secret', 10),
+      member: { connect: { id: member2.id } },
+    },
+  });
 
-    // ========= 3 ФОНДА СТАНДАРТОВ =========
-    const funds = [
-        { title: 'Национальный фонд', org: 'Минэкономразвития' },
-        { title: 'Региональный фонд Сибири', org: 'Правительство НСО' },
-        { title: 'Фонд цифровых стандартов', org: 'Ассоциация ИТ' },
-    ];
-    for (let i = 0; i < funds.length; i++) {
-        await prisma.standardFund.create({
-            data: {
-                title: funds[i].title,
-                description: `Описание фонда ${i + 1}`,
-                approved: true,
-                approvedAt: new Date(2023, 5 + i, 1),
-                organization: funds[i].org,
-                fileUrl: `/files/fund-${i + 1}.pdf`,
-            }
-        });
-    }
+  console.log('Creating executives...');
+  await prisma.executive.create({
+    data: {
+      name: 'Олег Смирнов',
+      position: 'Директор',
+      organization: 'КиноЦентр',
+      experience: '15 лет',
+      email: 'oleg.smirnov@example.test',
+      phone: '+7 900 000 0003',
+      address: 'Екатеринбург',
+      biography: 'Опытный руководитель в кинокультуре',
+    },
+  });
 
-    // ========= 3 ПРОТОКОЛА =========
-    for (let i = 1; i <= 3; i++) {
-        await prisma.protocol.create({
-            data: {
-                title: `Протокол ТК-${i}`,
-                publishedAt: new Date(2025, i - 1, 10),
-                attachments: JSON.stringify([
-                    { fileName: `Протокол-${i}.pdf`, fileUrl: `/files/protocol-${i}.pdf` }
-                ]),
-            }
-        });
-    }
+  console.log('Creating standard funds and related documents...');
+  const standard1 = await prisma.standardFund.create({
+    data: {
+      title: 'Стандарт 1',
+      description: 'Описание стандарта 1',
+      approved: true,
+      approvedAt: new Date(),
+      organization: 'Организация А',
+      fileUrl: '/files/standard-1.pdf',
+    },
+  });
 
-    // ========= 3 ГОДОВЫХ ОТЧЁТА =========
-    for (let i = 1; i <= 3; i++) {
-        await prisma.annualReport.create({
-            data: {
-                title: `Годовой отчёт за 202${i + 1}`,
-                publishedAt: new Date(2025, i - 1, 15),
-                keyAchievements: JSON.stringify([
-                    `Достижение отчёта ${i}.1`,
-                    `Достижение отчёта ${i}.2`
-                ]),
-                fileUrl: `/files/report-${i}.pdf`,
-            }
-        });
-    }
+  await prisma.standardFund.create({
+    data: {
+      title: 'Стандарт 2',
+      description: 'Описание стандарта 2',
+      approved: false,
+      organization: 'Организация Б',
+      fileUrl: '/files/standard-2.pdf',
+    },
+  });
 
-    // ========= 3 ПОЛОЖЕНИЯ О ТК =========
-    for (let i = 1; i <= 3; i++) {
-        await prisma.technicalCommitteeRegulation.create({
-            data: {
-                title: `Положение о ТК ${i}`,
-                description: `Описание положения ${i}`,
-                approvedAt: new Date(2024, 8 + i, 1),
-                organization: `Организация ${i}`,
-                fileUrl: `/files/regulation-${i}.pdf`,
-            }
+  await prisma.protocol.create({
+    data: {
+      title: 'Протокол заседания 2025-01',
+      publishedAt: new Date(),
+      attachments: '/files/protocol-2025-01.pdf',
+    },
+  });
 
-        });
-    }
+  await prisma.annualReport.create({
+    data: {
+      title: 'Ежегодный отчёт 2024',
+      publishedAt: new Date('2025-03-01'),
+      keyAchievements: 'Увеличение проектов и стандартов',
+      fileUrl: '/files/report-2024.pdf',
+    },
+  });
 
-    // ========= 3 ПРОЕКТА СТАНДАРТА =========
-    for (let i = 1; i <= 3; i++) {
-        await prisma.standardProject.create({
-            data: {
-                title: `Проект стандарта ${i}`,
-                description: `Описание проекта ${i}`,
-                startDate: new Date(2025, i - 1, 1),
-                endDate: new Date(2025, i + 5, 1),
-                fileUrl: `/files/project-${i}.pdf`,
-            }
-        });
-    }
+  await prisma.technicalCommitteeRegulation.create({
+    data: {
+      title: 'Регламент ТК',
+      description: 'Правила работы Технического комитета',
+      approvedAt: new Date(),
+      organization: 'Кинокомитет',
+      fileUrl: '/files/regulation.pdf',
+    },
+  });
 
-    // ========= 3 ЗАСЕДАНИЯ =========
-    for (let i = 1; i <= 3; i++) {
-        await prisma.meeting.create({
-            data: {
-                title: `Заседание ТК №${i}`,
-                publishedAt: new Date(2025, i - 1, 20),
-                format: i === 1 ? 'Очное' : i === 2 ? 'Гибридное' : 'Заочное',
-                location: `Место заседания ${i}`,
-                attachments: JSON.stringify([
-                    { fileName: `Повестка-${i}.pdf`, fileUrl: `/files/meeting-${i}-agenda.pdf` }
-                ]),
-            }
-        });
-    }
+  await prisma.standardProject.create({
+    data: {
+      title: 'Проект стандартизации 2025',
+      description: 'Проект по приведению стандартов в соответствие',
+      startDate: new Date('2025-01-01'),
+      endDate: new Date('2025-12-31'),
+      fileUrl: '/files/project-2025.pdf',
+    },
+  });
 
-    console.log('✅ Seed data created successfully');
+  const meeting1 = await prisma.meeting.create({
+    data: {
+      title: 'Заседание комитета — январь 2025',
+      publishedAt: new Date('2025-01-15'),
+      format: 'Offline',
+      location: 'Москва, зал 12',
+      attachments: '/files/meeting-2025-01.pdf',
+    },
+  });
+
+  console.log('Creating logs...');
+  await prisma.log.createMany({
+    data: [
+      {
+        type: LogType.AUTH,
+        action: 'User logged in',
+        userId: admin.id,
+        documentId: null,
+        metadata: JSON.stringify({ ip: '127.0.0.1' }),
+      },
+      {
+        type: LogType.ADD,
+        action: 'Created standard fund',
+        userId: admin.id,
+        documentId: standard1.id,
+        metadata: JSON.stringify({ source: 'seed' }),
+      },
+      {
+        type: LogType.UPDATE,
+        action: 'Updated meeting details',
+        userId: user1.id,
+        documentId: meeting1.id,
+        metadata: JSON.stringify({ note: 'seed data' }),
+      },
+    ],
+  });
+
+  console.log('Seeding finished.');
 }
 
 main()
-    .catch((e) => {
-        console.error('❌ Seed error:', e);
-        process.exit(1);
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

@@ -12,12 +12,15 @@ type Protocol = {
    description: string;
    publishedAt: Date;
    organization: string;
-   fileUrl?: string;
+   fileUrl?: any;
+   attachments?: any;
 }
 
 export default function ProtocolsPage() {
    const [protocols, setProtocols] = useState<Protocol[]>([]);
    const [isloading, setLoading] = useState<boolean>(true);
+   const [search, setSearch] = useState<string>('');
+   const [filtered, setFiltered] = useState<Protocol[]>([]);
 
    useEffect(() => {
       const fetchProtocols = async () => {
@@ -27,10 +30,26 @@ export default function ProtocolsPage() {
          }
          const data = await res.json();
          setProtocols(data);
+            setFiltered(data);
          setLoading(false);
       }
       fetchProtocols();
    }, []);
+
+   useEffect(() => {
+      const t = setTimeout(() => {
+         if (!search) {
+            setFiltered(protocols);
+            return;
+         }
+
+         const q = search.trim().toLowerCase();
+         const result = protocols.filter((p) => p.title.toLowerCase().includes(q) || (p.description || '').toLowerCase().includes(q));
+         setFiltered(result);
+      }, 200);
+
+      return () => clearTimeout(t);
+   }, [search, protocols]);
 
    return (
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">
@@ -39,7 +58,7 @@ export default function ProtocolsPage() {
                <h1 className="text-4xl font-bold text-center mb-2">Протоколы</h1>
                <p className="text-center text-base font-light text-gray-700 max-w-180">Официальные протоколы заседаний Технического комитета по стандартизации</p>
             </div>
-            <SearchInput />
+            <SearchInput value={search} onChange={setSearch} count={filtered.length} />
             <section className="mt-8 gap-10 flex flex-col">
                {isloading ? (
                   <div className="flex flex-col gap-10">
@@ -73,7 +92,7 @@ export default function ProtocolsPage() {
                      </div>
                   </div>
                ) : (
-                  protocols.map((protocol) => {
+                  filtered.map((protocol) => {
                      const publishedAtFormatted = new Date(protocol.publishedAt).toLocaleDateString('ru-RU');
                      return <Card className="w-full px-6" key={protocol.id}>
                         <CardHeader className="p-0">
@@ -91,9 +110,42 @@ export default function ProtocolsPage() {
                         </CardHeader>
                         <div>
                            <p className="font-semibold text-sm">Документы:</p>
-                           <MaterialMeetingCard name="Протокол заседания" size="245 КБ" />
-                           <MaterialMeetingCard name="Утвержденный план работы" size="2.1 МБ" />
-                           <MaterialMeetingCard name="Список участников" size="890 КБ" />
+                           {(() => {
+                              try {
+                                 const raw = protocol.attachments ?? protocol.fileUrl;
+                                 if (!raw) return <MaterialMeetingCard name="Без файлов" size="—" />;
+
+                                 // Try to parse if it's a JSON string
+                                 let parsed = raw;
+                                 if (typeof raw === 'string') {
+                                    const trimmed = raw.trim();
+                                    if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+                                       parsed = JSON.parse(trimmed);
+                                    }
+                                 }
+
+                                 // If parsed is an array of attachments
+                                 if (Array.isArray(parsed) && parsed.length > 0) {
+                                    return parsed.map((att: any, idx: number) => (
+                                       <MaterialMeetingCard key={idx} name={att.fileName || `Файл ${idx + 1}`} size={att.fileSize || '—'} fileUrl={att.fileUrl} />
+                                    ));
+                                 }
+
+                                 // If parsed is object with fileUrl
+                                 if (parsed && typeof parsed === 'object' && parsed.fileUrl) {
+                                    return <MaterialMeetingCard name={parsed.fileName || 'Файл'} size={parsed.fileSize || '—'} fileUrl={parsed.fileUrl} />;
+                                 }
+
+                                 // If parsed is a plain string URL
+                                 if (typeof parsed === 'string') {
+                                    return <MaterialMeetingCard name={parsed.split('/').pop() || 'Файл'} size={'—'} fileUrl={parsed} />;
+                                 }
+
+                                 return <MaterialMeetingCard name="Без файлов" size="—" />;
+                              } catch (e) {
+                                 return <MaterialMeetingCard name="Без файлов" size="—" />;
+                              }
+                           })()}
                         </div>
                      </Card>
                   })

@@ -18,6 +18,8 @@ type Meeting = {
 export default function MeetingsPage() {
    const [meetings, setMeetings] = useState<Meeting[]>([]);
    const [isloading, setLoading] = useState<boolean>(true);
+   const [search, setSearch] = useState<string>('');
+   const [filtered, setFiltered] = useState<Meeting[]>([]);
 
    useEffect(() => {
       const fetchMeetings = async () => {
@@ -27,10 +29,26 @@ export default function MeetingsPage() {
          }
          const data = await res.json();
          setMeetings(data);
+            setFiltered(data);
          setLoading(false);
       }
       fetchMeetings();
    }, []);
+
+   useEffect(() => {
+      const t = setTimeout(() => {
+         if (!search) {
+            setFiltered(meetings);
+            return;
+         }
+
+         const q = search.trim().toLowerCase();
+         const result = meetings.filter((m) => m.title.toLowerCase().includes(q) || m.location.toLowerCase().includes(q));
+         setFiltered(result);
+      }, 200);
+
+      return () => clearTimeout(t);
+   }, [search, meetings]);
 
    return (
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">
@@ -39,7 +57,7 @@ export default function MeetingsPage() {
                <h1 className="text-4xl font-bold text-center mb-2">Заседания</h1>
                <p className="text-center text-base font-light text-gray-700 max-w-180">Информация о проведенных и планируемых заседаниях Технического комитета</p>
             </div>
-            <SearchInput />
+            <SearchInput value={search} onChange={setSearch} count={filtered.length} />
             <section className="mt-8 gap-10 flex flex-col">
                {isloading ? (
                   <div className="flex flex-col gap-10">
@@ -73,7 +91,7 @@ export default function MeetingsPage() {
                      </div>
                   </div>
                ) : (
-                  meetings.map((meeting) => {
+                  filtered.map((meeting) => {
                      const publishedAtFormatted = new Date(meeting.publishedAt).toLocaleDateString('ru-RU');
                      return <Card className="w-full px-6" key={meeting.id}>
                         <CardHeader className="p-0">
@@ -101,9 +119,13 @@ export default function MeetingsPage() {
                         </CardContent>
                         <div>
                            <p className="font-semibold text-sm">Материалы заседания:</p>
-                           <MaterialMeetingCard name="Повестка дня" size="245 КБ" />
-                           <MaterialMeetingCard name="Презентация по цифровой кинематографии" size="2.1 МБ" />
-                           <MaterialMeetingCard name="Протокол заседания" size="890 КБ" />
+                           {Array.isArray(meeting.attachments) && meeting.attachments.length > 0 ? (
+                              meeting.attachments.map((att, idx) => (
+                                 <MaterialMeetingCard key={idx} name={att.fileName || `Файл ${idx + 1}`} size={'—'} fileUrl={att.fileUrl} />
+                              ))
+                           ) : (
+                              <MaterialMeetingCard name="Повестка дня" size="245 КБ" />
+                           )}
                         </div>
                      </Card>
                   })

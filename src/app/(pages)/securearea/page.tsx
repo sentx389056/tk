@@ -24,6 +24,7 @@ import StandardProjectCard from "@/components/StandardProjectCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider } from "@/components/ui/sidebar";
+import { UserHeader } from "@/components/UserHeader";
 import { SectionMembers } from "@/components/section-members";
 import { Separator } from "@/components/ui/separator";
 import SectionMain from "@/components/section-main";
@@ -34,6 +35,7 @@ import { SectionAnnualReports } from "@/components/section-annualreports";
 import { SectionProvisions } from "@/components/section-provisions";
 import { SectionProjects } from "@/components/section-projects";
 import { SectionManagements } from "@/components/section-management";
+import { SectionLogs } from "@/components/section-logs";
 
 const frameworks = [
     {
@@ -43,6 +45,10 @@ const frameworks = [
     {
         value: "Проекты стандартов",
         label: "Проекты стандартов",
+    },
+    {
+        value: "Журнал логов",
+        label: "Журнал логов",
     }
 ]
 
@@ -138,21 +144,14 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
         fetchStandards();
     }, []);
 
-    function handleLogout() {
-        // logout
-    }
-
     return (
         <main>
-            <div className="w-full bg-red-600 text-white py-2 flex justify-between items-center text-sm xl:px-40 flex-row">
-                <div>
-                    <h2>ЗАКРЫТЫЙ РАЗДЕЛ ТК 191 - КОНФИДЕНЦИАЛЬНАЯ ИНФОРМАЦИЯ</h2>
-                </div>
-                <div className="flex">
-                    <p>Пользователь: user</p>
-                    <Link onClick={handleLogout} href="/login" className="underline ml-4 opacity-80 hover:opacity-100">
-                        Выйти
-                    </Link>
+            <div className="w-full bg-red-600 text-white py-2 xl:px-40">
+                <div className="flex justify-between items-center text-sm">
+                    <div>
+                        <h2>ЗАКРЫТЫЙ РАЗДЕЛ ТК 191 - КОНФИДЕНЦИАЛЬНАЯ ИНФОРМАЦИЯ</h2>
+                    </div>
+                    <UserHeader />
                 </div>
             </div>
             <div className="flex flex-col w-full px-5 xl:px-40">
@@ -266,7 +265,7 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                                                                         className="mx-2 data-[orientation=vertical]:h-4"
                                                                     />
                                                                     <h2 className="text-base font-medium pl-5">{tab}</h2>
-                                                                    
+
                                                                 </div>
                                                             </div>
                                                             <div className="flex flex-1 flex-col">
@@ -325,7 +324,11 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                 </div>
             </div>
 
-            {value === "Информация о членах" ? (
+            {value === "Журнал логов" ? (
+                <div className="px-5 xl:px-40">
+                    <SectionLogs />
+                </div>
+            ) : value === "Информация о членах" ? (
                 <div className="px-5 xl:px-40">
                     <Card className="w-full rounded-none mb-5 py-0">
                         <CardHeader className="p-4">
@@ -438,6 +441,17 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                                             endDate={new Date(standard.endDate)}
                                         />
                                     }))}
+                            </div>
+                        </CardHeader>
+                    </Card>
+                </div>
+            ) : value === "Журнал логов" ? (
+                <div className="px-5 xl:px-40">
+                    <Card className="w-full rounded-none mb-5 py-0">
+                        <CardHeader className="p-4">
+                            <div className="flex gap-3 justify-start text-left flex-col">
+                                <h2 className="font-semibold">Журнал логов</h2>
+                                logs
                             </div>
                         </CardHeader>
                     </Card>

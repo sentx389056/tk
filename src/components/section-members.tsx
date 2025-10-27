@@ -70,12 +70,23 @@ export function SectionMembers() {
             }),
         });
 
-        if (res.ok) {
-            toast.success("Объект успешно добавлен!");
-            console.log({ name, position, organization, experience, email, phone, address });
-        } else {
+        if (!res.ok) {
             toast.error("Ошибка при добавлении объекта.");
+            return;
         }
+
+        const newMember = await res.json();
+        setMembers(prev => [newMember, ...prev]);
+        toast.success("Объект успешно добавлен!");
+        
+        // Clear form fields
+        setName('');
+        setPosition('');
+        setOrganization('');
+        setExperience('');
+        setEmail('');
+        setPhone('');
+        setAddress('');
     };
 
     return (

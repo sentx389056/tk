@@ -3,6 +3,22 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     try {
+        // Get user ID from the cookie first
+        const cookies = request.headers.get('cookie');
+        let userId = null;
+        
+        if (cookies) {
+            const tkUserCookie = cookies.split(';').find(c => c.trim().startsWith('tk_user='));
+            if (tkUserCookie) {
+                try {
+                    const userData = JSON.parse(decodeURIComponent(tkUserCookie.split('=')[1]));
+                    userId = userData.id;
+                } catch (e) {
+                    console.error('Error parsing user cookie:', e);
+                }
+            }
+        }
+
         const formData = await request.formData();
 
         const name = formData.get('name') as string;
@@ -32,13 +48,30 @@ export async function POST(request: NextRequest) {
                 experience,
                 biography,
                 education,
-                address,
                 achievements,
                 awards,
-            },
+                address
+            }
         });
 
-        return NextResponse.json({ success: true, id: executive.id }, { status: 201 });
+        // Log the action if we have a user ID
+        if (userId) {
+            await prisma.log.create({
+                data: {
+                    type: 'ADD',
+                    action: 'EXECUTIVE_ADD',
+                    userId,
+                    metadata: JSON.stringify({
+                        executiveId: executive.id,
+                        executiveName: executive.name,
+                        executivePosition: executive.position,
+                        timestamp: new Date().toISOString()
+                    })
+                }
+            });
+        }
+
+        return NextResponse.json(executive);
     } catch (error) {
         console.error('Ошибка при создании отчёта:', error);
         return NextResponse.json({ error: 'Ошибка сервера' }, { status: 500 });

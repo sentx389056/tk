@@ -60,13 +60,23 @@ export function SectionProjects() {
         const res = await fetch('/api/standards-project/add', {
             method: 'POST',
             body: formData,
-        })
+        });
 
-        if (res.ok) {
-            toast.success('Объект успешно добавлен!')
-        } else {
-            toast.error('Ошибка добавления!')
+        if (!res.ok) {
+            toast.error('Ошибка добавления!');
+            return;
         }
+
+        const newProject = await res.json();
+        setProjects(prev => [newProject, ...prev]);
+        toast.success('Объект успешно добавлен!');
+
+        // Clear form
+        setTitle('');
+        setDescription('');
+        setStartDate('');
+        setEndDate('');
+        setFile(null);
     }
 
     const getFileNameFromUrl = (url: string) => {

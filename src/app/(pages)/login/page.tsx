@@ -4,75 +4,73 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { OctagonAlert, Shield } from "lucide-react";
-import Link from "next/link";
+// import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
-interface MemberLoginSectionProps {
-    onLogin: (user: any) => void;
-}
-
-export default function LoginPage({ onLogin }: MemberLoginSectionProps) {
-    const [credentials, setCredentials] = useState({ username: '', password: '' });
+export default function LoginPage() {
+    const [credentials, setCredentials] = useState({ login: '', password: '' });
     const [error, setError] = useState('');
     const [showWarning, setShowWarning] = useState(false);
     const [pendingUser, setPendingUser] = useState<any>(null);
+    const router = useRouter();
+    const [currentUser, setCurrentUser] = useState<any>(null);
+    const [loadingUser, setLoadingUser] = useState(true);
 
-    const demoUsers = [
-        {
-            id: 1,
-            username: '1',
-            password: '1',
-            name: 'Иванов Сергей Петрович',
-            role: 'Председатель ТК',
-            organization: 'Госфильмофонд России',
-            email: 'ivanov@gosfilmofond.ru',
-            lastLogin: null
-        },
-        {
-            id: 2,
-            username: 'petrova_ma',
-            password: 'expert_2024',
-            name: 'Петрова Мария Александровна',
-            role: 'Заместитель председателя',
-            organization: 'Госфильмофонд России',
-            email: 'petrova@gosfilmofond.ru',
-            lastLogin: null
-        }
-    ];
-
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        try {
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(credentials)
+            });
 
-        const user = demoUsers.find(
-            u => u.username === credentials.username && u.password === credentials.password
-        );
+            const data = await res.json();
+            if (!res.ok) {
+                setError(data?.error || 'Неверный логин или пароль');
+                return;
+            }
 
-        if (user) {
-            setPendingUser(user);
+            setPendingUser(data.user);
             setShowWarning(true);
-        } else {
-            setError('Неверный логин или пароль');
+        } catch (err) {
+            console.error(err);
+            setError('Серверная ошибка');
         }
     };
 
     const handleAcceptWarning = () => {
         if (pendingUser) {
-            const loginLog = {
-                userId: pendingUser.id,
-                username: pendingUser.username,
-                timestamp: new Date().toISOString(),
-                action: 'login',
-                ip: 'demo_ip'
-            };
-            console.log('Login logged:', loginLog);
-
-            onLogin({
-                ...pendingUser,
-                lastLogin: new Date().toISOString()
-            });
+            // cookie is set by the login API; just navigate into secure area
+            router.push('/securearea');
         }
     };
+
+    useEffect(() => {
+        let mounted = true;
+        (async () => {
+            try {
+                const res = await fetch('/api/auth/me');
+                if (!mounted) return;
+                if (!res.ok) {
+                    setCurrentUser(null);
+                    setLoadingUser(false);
+                    return;
+                }
+                const data = await res.json();
+                setCurrentUser(data.user);
+            } catch (e) {
+                console.error('Error fetching auth status', e);
+                setCurrentUser(null);
+            } finally {
+                if (mounted) setLoadingUser(false);
+            }
+        })();
+        return () => { mounted = false };
+    }, []);
 
     if (showWarning) {
         return (
@@ -112,9 +110,7 @@ export default function LoginPage({ onLogin }: MemberLoginSectionProps) {
                                     className="bg-red-pink cursor-pointer"
                                     onClick={handleAcceptWarning}
                                 >
-                                    <Link href="/securearea">
-                                        Я понимаю и принимаю условия
-                                    </Link>
+                                    Я понимаю и принимаю условия
                                 </Button>
                             </div>
                         </CardContent>
@@ -128,6 +124,36 @@ export default function LoginPage({ onLogin }: MemberLoginSectionProps) {
             </div>
 
         );
+    }
+
+    // If we know the user is already authenticated, show alternate content
+    if (!loadingUser && currentUser) {
+        return (
+            <main className="flex flex-col w-full px-5 xl:px-40 py-10">
+                <div className="py-10">
+                    <section className="flex justify-center">
+                        <Card className="w-xl px-6">
+                            <CardHeader className="p-0">
+                                <div className="flex gap-3 items-center flex-col text-center">
+                                    <div className="bg-green-100 p-3 rounded-md mb-3">
+                                    </div>
+                                    <div>
+                                        <CardTitle className="mb-2">Вы уже авторизованы</CardTitle>
+                                        <CardDescription className="text-gray-500">Вы вошли как <strong>{currentUser.login}</strong></CardDescription>
+                                    </div>
+                                </div>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="flex gap-3">
+                                    <Button className="bg-red-pink" onClick={() => router.push('/securearea')}>Перейти в закрытый раздел</Button>
+                                    <Button className="" onClick={async () => { await fetch('/api/auth/logout', { method: 'POST' }); window.location.reload(); }}>Выйти</Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </section>
+                </div>
+            </main>
+        )
     }
 
     return (
@@ -152,14 +178,14 @@ export default function LoginPage({ onLogin }: MemberLoginSectionProps) {
                             <form onSubmit={handleLogin}>
                                 <div className="flex flex-col gap-6">
                                     <div className="grid gap-2">
-                                        <Label htmlFor="username">Логин</Label>
+                                        <Label htmlFor="login">Логин</Label>
                                         <Input
-                                            id="username"
+                                            id="login"
                                             type="text"
                                             placeholder="Введите логин"
-                                            value={credentials.username}
+                                            value={credentials.login}
                                             onChange={(e) =>
-                                                setCredentials({ ...credentials, username: e.target.value })
+                                                setCredentials({ ...credentials, login: e.target.value })
                                             }
                                             required
                                         />

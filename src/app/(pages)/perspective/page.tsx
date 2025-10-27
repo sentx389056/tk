@@ -84,6 +84,7 @@ export default function PerspectivePage() {
                            title={standard.title}
                            description={standard.description}
                            approvedAt={new Date(standard.approvedAt)}
+                           fileUrl={standard.fileUrl}
                         />
                      }))}
                </div>

@@ -63,13 +63,8 @@ export default async function Home() {
             <div className="p-8 bg-white shadow-md rounded-lg">
               <div className="flex items-center mb-6 gap-3">
                 <TrendingUp size={32} color="#16A34A" />
-                <h2 className="text-2xl font-bold">Последние события</h2>
               </div>
-              <ul className="flex flex-col gap-4">
-                <LastEvents title="Заседание ТК 191 №3/2024" description="Рассмотрение проектов стандартов по цифровой кинематографии" date="15.03.2024" />
-                <LastEvents title='ГОСТ Р "Цифровая кинематография. Форматы файлов"' description="Проект стандарта направлен на публичное обсуждение" date="10.03.2024" />
-                <LastEvents title="Годовой отчет ТК 191 за 2023 год" description="Опубликован отчет о деятельности комитета за прошедший год" date="28.02.2024" />
-              </ul>
+              <LastEvents />
             </div>
           </section>
         </div>

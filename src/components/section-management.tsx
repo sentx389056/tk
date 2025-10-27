@@ -114,19 +114,20 @@ export function SectionManagements() {
 
     return (
         <div>
-            <form onSubmit={handleSubmit} className="overflow-scroll">
+            <form onSubmit={handleSubmit}>
                 <Sheet>
                     <SheetTrigger asChild>
                         <Button variant="outline" className="m-1">Добавить объект</Button>
                     </SheetTrigger>
-                    <SheetContent className="max-h-[80vh] overflow-hidden">
-                        <SheetHeader>
+                    <SheetContent side="right" className="w-full sm:w-[540px] h-full flex flex-col">
+                        <SheetHeader className="flex-none">
                             <SheetTitle>Добавление объекта</SheetTitle>
                             <SheetDescription>
                                 Внесите данные в заданные ниже поля. Нажмите «Добавить», когда закончите.
                             </SheetDescription>
                         </SheetHeader>
-                        <div className="grid flex-1 auto-rows-min gap-6 px-4">
+                        <div className="flex-1 overflow-y-auto py-4">
+                            <div className="grid gap-6 px-4">
                             <div className="grid gap-3">
                                 <Label htmlFor="sheet-name">ФИО*</Label>
                                 <Input id="sheet-name" value={name} onChange={(e) => setName(e.target.value)} type="text" required />
@@ -201,8 +202,9 @@ export function SectionManagements() {
                                     </li>
                                 ))}
                             </ul>
+                            </div>
                         </div>
-                        <SheetFooter>
+                        <SheetFooter className="flex-none p-4 border-t bg-white">
                             <Button type="submit" onClick={handleSubmit}>Добавить</Button>
                             <SheetClose asChild>
                                 <Button variant="outline">Закрыть</Button>

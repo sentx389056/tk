@@ -10,11 +10,14 @@ type Project = {
    description: string;
    startDate: Date;
    endDate: Date;
+   fileUrl?: any;
 }
 
 export default function ProjectsPage() {
    const [projects, setProjects] = useState<Project[]>([]);
    const [isLoading, setLoading] = useState<boolean>(true);
+   const [search, setSearch] = useState<string>('');
+   const [filtered, setFiltered] = useState<Project[]>([]);
 
    useEffect(() => {
       const fetchProjects = async () => {
@@ -24,10 +27,26 @@ export default function ProjectsPage() {
          }
          const data = await res.json();
          setProjects(data);
+         setFiltered(data);
          setLoading(false);
       }
       fetchProjects();
    }, []);
+
+   useEffect(() => {
+      const t = setTimeout(() => {
+         if (!search) {
+            setFiltered(projects);
+            return;
+         }
+
+         const q = search.trim().toLowerCase();
+         const result = projects.filter((p) => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
+         setFiltered(result);
+      }, 200);
+
+      return () => clearTimeout(t);
+   }, [search, projects]);
 
    return (
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">
@@ -36,7 +55,7 @@ export default function ProjectsPage() {
                <h1 className="text-4xl font-bold text-center mb-2">Проекты стандартов</h1>
                <p className="text-center text-base font-light text-gray-700 max-w-180">Проекты национальных стандартов, разрабатываемые Техническим комитетом</p>
             </div>
-            <SearchInput />
+            <SearchInput value={search} onChange={setSearch} count={filtered.length} />
             <section className="mt-8 flex flex-col gap-10">
                {isLoading ? (
                   <div className="flex flex-col gap-10">
@@ -56,13 +75,14 @@ export default function ProjectsPage() {
                      </div>
                   </div>
                ) : (
-                  projects.map((project) => {
+                  filtered.map((project) => {
                      return <ProjectCard
                         key={project.id}
                         title={project.title}
                         description={project.description}
                         startDate={new Date(project.startDate)}
                         endDate={new Date(project.endDate)}
+                        fileUrl={project.fileUrl}
                      />
                   })
                )}

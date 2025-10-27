@@ -60,13 +60,23 @@ export function SectionProvisions() {
         const res = await fetch('/api/provisions/add', {
             method: 'POST',
             body: formData,
-        })
+        });
 
-        if (res.ok) {
-            toast.success('Объект успешно добавлен!')
-        } else {
-            toast.error('Ошибка добавления!')
+        if (!res.ok) {
+            toast.error('Ошибка добавления!');
+            return;
         }
+
+        const newProvision = await res.json();
+        setProvisions(prev => [newProvision, ...prev]);
+        toast.success('Объект успешно добавлен!');
+
+        // Clear form
+        setTitle('');
+        setDescription('');
+        setApprovedAt('');
+        setOrganization('');
+        setFile(null);
     }
 
     const getFileNameFromUrl = (url: string) => {
@@ -77,6 +87,45 @@ export function SectionProvisions() {
             return decodeURIComponent(last);
         } catch (e) {
             return 'Файл';
+        }
+    }
+
+    const handleDownload = async (fileUrl: any) => {
+        try {
+            let urls: { fileUrl: string, fileName?: string }[] = [];
+            
+            if (typeof fileUrl === 'string') {
+                const trimmed = fileUrl.trim();
+                if ((trimmed.startsWith('[') || trimmed.startsWith('{'))) {
+                    const parsed = JSON.parse(trimmed);
+                    urls = Array.isArray(parsed) ? parsed : [parsed];
+                } else if (trimmed) {
+                    urls = [{ fileUrl: trimmed }];
+                }
+            } else if (Array.isArray(fileUrl)) {
+                urls = fileUrl;
+            } else if (fileUrl && typeof fileUrl === 'object') {
+                urls = [fileUrl];
+            }
+
+            for (const url of urls) {
+                if (!url.fileUrl) continue;
+                
+                const response = await fetch(url.fileUrl);
+                const blob = await response.blob();
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                a.download = url.fileName || getFileNameFromUrl(url.fileUrl);
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(downloadUrl);
+                document.body.removeChild(a);
+            }
+            toast.success('Файл успешно скачан');
+        } catch (error) {
+            console.error('Ошибка при скачивании:', error);
+            toast.error('Ошибка при скачивании файла');
         }
     }
 
@@ -255,9 +304,14 @@ export function SectionProvisions() {
                                                             </AlertDialogContent>
                                                         </AlertDialog>
                                                     </div>
-                                                    {/* <div className="grid grid-cols-3 items-center gap-4">
-                                                        Скачать
-                                                    </div> */}
+                                                    <div className="grid grid-cols-3 items-center gap-4">
+                                                        <Button 
+                                                            variant="outline"
+                                                            onClick={() => handleDownload(provision.fileUrl)}
+                                                        >
+                                                            Скачать
+                                                        </Button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </PopoverContent>

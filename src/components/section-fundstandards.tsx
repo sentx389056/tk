@@ -23,6 +23,7 @@ export function SectionFundStandards() {
 
     const [standards, setStandards] = useState<Standard[]>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
+    const [isOpen, setIsOpen] = useState(false);
 
     const [file, setFile] = useState<File | null>(null);
     const [title, setTitle] = useState('');
@@ -53,6 +54,15 @@ export function SectionFundStandards() {
         toast.success("Объект успешно удален!");
     }
 
+    const resetForm = () => {
+        setTitle('');
+        setDescription('');
+        setApproved(false);
+        setApprovedAt('');
+        setOrganization('');
+        setFile(null);
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -64,15 +74,28 @@ export function SectionFundStandards() {
         if (approvedAt) formData.append('approvedAt', approvedAt);
         formData.append('organization', organization);
 
-        const res = await fetch('/api/standards/add', {
-            method: 'POST',
-            body: formData,
-        });
+        try {
+            const res = await fetch('/api/standards/add', {
+                method: 'POST',
+                body: formData,
+            });
 
-        if (res.ok) {
-            toast.success('Объект успешно добавлен!')
-        } else {
-            toast.error('Ошибка добавления!')
+            if (!res.ok) {
+                const error = await res.json();
+                toast.error(error.error || 'Ошибка добавления!');
+                return;
+            }
+
+            const newStandard = await res.json();
+            setStandards(prev => [newStandard, ...prev]);
+            toast.success('Объект успешно добавлен!');
+            
+            // Reset form and close sheet
+            resetForm();
+            setIsOpen(false);
+        } catch (error) {
+            console.error('Error adding standard:', error);
+            toast.error('Произошла ошибка при добавлении объекта');
         }
     }
 
@@ -90,7 +113,7 @@ export function SectionFundStandards() {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <Sheet>
+                <Sheet open={isOpen} onOpenChange={setIsOpen}>
                     <SheetTrigger asChild>
                         <Button variant="outline" className="m-1">Добавить объект</Button>
                     </SheetTrigger>
@@ -130,12 +153,12 @@ export function SectionFundStandards() {
                             </div>
 
                         </div>
-                        <SheetFooter>
-                            <Button type="submit" onClick={handleSubmit}>Добавить</Button>
-                            <SheetClose asChild>
-                                <Button variant="outline">Закрыть</Button>
-                            </SheetClose>
-                        </SheetFooter>
+                            <SheetFooter>
+                                <Button type="submit" onClick={handleSubmit}>Добавить</Button>
+                                <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
+                                    Закрыть
+                                </Button>
+                            </SheetFooter>
                     </SheetContent>
                 </Sheet>
             </form>

@@ -31,6 +31,62 @@ export default function ReportsPage() {
       fetchReports();
    }, [])
 
+      const getFileNameFromUrl = (url: string) => {
+         try {
+            const withoutQuery = url.split('?')[0];
+            const parts = withoutQuery.split('/').filter(Boolean);
+            const last = parts.length ? parts[parts.length - 1] : withoutQuery;
+            return decodeURIComponent(last);
+         } catch (e) {
+            return 'file';
+         }
+      }
+
+      const resolveAttachments = (raw: any) => {
+         if (!raw) return [] as { fileUrl: string; fileName?: string }[];
+         try {
+            if (typeof raw === 'string') {
+               const trimmed = raw.trim();
+               if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+                  const parsed = JSON.parse(trimmed);
+                  if (Array.isArray(parsed)) return parsed;
+                  if (parsed && parsed.fileUrl) return [parsed];
+               }
+               // plain url
+               return [{ fileUrl: trimmed, fileName: getFileNameFromUrl(trimmed) }];
+            }
+
+            if (Array.isArray(raw)) return raw;
+
+            if (raw && typeof raw === 'object' && raw.fileUrl) return [raw];
+         } catch (e) {
+            return [];
+         }
+         return [] as { fileUrl: string; fileName?: string }[];
+      }
+
+      const handleDownload = async (raw: any) => {
+         const at = resolveAttachments(raw);
+         if (!at.length) return;
+
+         // try to download each file; if cross-origin prevents download attribute, fallback to open in new tab
+         for (const a of at) {
+            try {
+               const url = a.fileUrl;
+               const name = a.fileName || getFileNameFromUrl(url);
+               const el = document.createElement('a');
+               el.href = url;
+               el.download = name;
+               el.target = '_blank';
+               document.body.appendChild(el);
+               el.click();
+               el.remove();
+            } catch (err) {
+               window.open(a.fileUrl, '_blank');
+            }
+         }
+      }
+
    return (
       <main>
          <div className="flex flex-col w-full px-5 xl:px-40 py-10">
@@ -74,7 +130,18 @@ export default function ReportsPage() {
                   ) : (
                      reports.map((report) => {
                         const publishedAtFormatted = new Date(report.publishedAt).toLocaleDateString('ru-RU');
-                        const achievements = report.keyAchievements ? JSON.parse(report.keyAchievements) : [];
+                        const achievements = (() => {
+                           const s = report.keyAchievements;
+                           if (!s) return [] as string[];
+                           try {
+                              const parsed = JSON.parse(s);
+                              return Array.isArray(parsed) ? parsed : [String(parsed)];
+                           } catch (e) {
+                              // Not valid JSON — fallback to splitting by newlines or return raw string
+                              const parts = String(s).split(/\r?\n/).map(p => p.trim()).filter(Boolean);
+                              return parts.length ? parts : [String(s)];
+                           }
+                        })();
                         return <Card className="w-full px-6" key={report.id}>
                            <CardHeader className="p-0">
                               <div className="flex gap-3 items-center">
@@ -89,7 +156,7 @@ export default function ReportsPage() {
                                  </div>
                               </div>
                               <CardAction>
-                                 <Button type="submit" className="w-full bg-red-pink font-medium cursor-pointer"><Download size={16} /><span className="hidden sm:flex">Скачать отчет</span></Button>
+                                 <Button type="button" onClick={() => handleDownload(report.fileUrl)} className="w-full bg-red-pink font-medium cursor-pointer"><Download size={16} /><span className="hidden sm:flex">Скачать отчет</span></Button>
                               </CardAction>
 
                            </CardHeader>

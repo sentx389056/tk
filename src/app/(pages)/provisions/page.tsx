@@ -10,11 +10,14 @@ type Provision = {
    description: string;
    approvedAt: Date;
    organization: string;
+   fileUrl: any;
 };
 
 export default function ProvisionsPage() {
    const [provisions, setProvisions] = useState<Provision[]>([]);
    const [isLoading, setLoading] = useState<boolean>(true);
+   const [search, setSearch] = useState<string>('');
+   const [filtered, setFiltered] = useState<Provision[]>([]);
 
    useEffect(() => {
       const fetchProvisions = async () => {
@@ -24,10 +27,26 @@ export default function ProvisionsPage() {
          }
          const data = await res.json();
          setProvisions(data);
+            setFiltered(data);
          setLoading(false);
       }
       fetchProvisions();
    }, []);
+
+   useEffect(() => {
+      const t = setTimeout(() => {
+         if (!search) {
+            setFiltered(provisions);
+            return;
+         }
+
+         const q = search.trim().toLowerCase();
+         const result = provisions.filter((p) => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
+         setFiltered(result);
+      }, 200);
+
+      return () => clearTimeout(t);
+   }, [search, provisions]);
 
    return (
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">
@@ -36,7 +55,7 @@ export default function ProvisionsPage() {
                <h1 className="text-4xl font-bold text-center mb-2">Положения о ТК</h1>
                <p className="text-center text-base font-light text-gray-700 max-w-180">Нормативные документы, регламентирующие деятельность Технического комитета</p>
             </div>
-            <SearchInput />
+            <SearchInput value={search} onChange={setSearch} count={filtered.length} />
             <section className="mt-8 flex flex-col gap-10">
                {isLoading ? (
                   <div className="flex flex-col gap-10">
@@ -70,13 +89,14 @@ export default function ProvisionsPage() {
                      </div>
                   </div>
                ) : (
-                  provisions.map((provision) => {
+                  filtered.map((provision) => {
                      return <ProvisionCard
                         key={provision.id}
                         title={provision.title}
                         description={provision.description}
                         approvedAt={new Date(provision.approvedAt)}
                         organization={provision.organization}
+                        fileUrl={provision.fileUrl}
                      />
                   }))}
             </section>

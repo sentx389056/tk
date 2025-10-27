@@ -23,6 +23,7 @@ export function SectionProtocol() {
     const [title, setTitle] = useState('');
     const [publishedAt, setPublishedAt] = useState<string>(new Date().toISOString().slice(0, 10));
     const [files, setFiles] = useState<FileList | null>(null);
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         const fetchProtocols = async () => {
@@ -43,7 +44,8 @@ export function SectionProtocol() {
     }
 
     async function handleAdd(e: any) {
-        e.preventDefault();
+        // keep signature compatible when called from form
+        if (e && typeof e.preventDefault === 'function') e.preventDefault();
         try {
             const fd = new FormData();
             fd.append('title', title);
@@ -56,7 +58,7 @@ export function SectionProtocol() {
             if (!res.ok) {
                 const err = await res.json().catch(() => ({}));
                 toast.error(err?.error || 'Ошибка при загрузке');
-                return;
+                return false;
             }
             const data = await res.json();
             const newProtocol = data.protocol;
@@ -65,16 +67,26 @@ export function SectionProtocol() {
             // reset form
             setTitle('');
             setFiles(null);
+            return true;
         } catch (error) {
             console.error(error);
             toast.error('Серверная ошибка');
+            return false;
+        }
+    }
+
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        const ok = await handleAdd(e);
+        if (ok) {
+            setIsOpen(false);
         }
     }
 
     return (
         <div>
-            <form onSubmit={handleAdd} className="overflow-scroll">
-                <Sheet>
+            <form onSubmit={handleSubmit} className="overflow-scroll">
+                <Sheet open={isOpen} onOpenChange={setIsOpen}>
                     <SheetTrigger asChild>
                         <Button variant="outline" className="m-1">Добавить протокол</Button>
                     </SheetTrigger>
@@ -100,7 +112,7 @@ export function SectionProtocol() {
                             </div>
                         </div>
                         <SheetFooter>
-                            <Button type="submit">Добавить</Button>
+                            <Button type="submit" onClick={handleSubmit}>Добавить</Button>
                             <SheetClose asChild>
                                 <Button variant="outline">Закрыть</Button>
                             </SheetClose>
