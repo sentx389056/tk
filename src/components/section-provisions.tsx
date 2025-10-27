@@ -1,6 +1,9 @@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { Skeleton } from "./ui/skeleton";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell, TableFooter } from "./ui/table";
 import { useEffect, useState } from "react";
@@ -12,13 +15,19 @@ type Provision = {
     description: string,
     approvedAt: Date,
     organization: string,
-    fileUrl: string,
+    fileUrl: any,
 }
 
 export function SectionProvisions() {
 
     const [provisons, setProvisions] = useState<Provision[]>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
+
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [approvedAt, setApprovedAt] = useState('');
+    const [organization, setOrganization] = useState('');
+    const [file, setFile] = useState<File | null>(null);
 
     useEffect(() => {
         const fetchProvisions = async () => {
@@ -38,8 +47,84 @@ export function SectionProvisions() {
         toast.success("Объект успешно удален!");
     }
 
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('fileUrl', file as Blob);
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('approvedAt', approvedAt);
+        formData.append('organization', organization);
+
+        const res = await fetch('/api/provisions/add', {
+            method: 'POST',
+            body: formData,
+        })
+
+        if (res.ok) {
+            toast.success('Объект успешно добавлен!')
+        } else {
+            toast.error('Ошибка добавления!')
+        }
+    }
+
+    const getFileNameFromUrl = (url: string) => {
+        try {
+            const withoutQuery = url.split('?')[0];
+            const parts = withoutQuery.split('/').filter(Boolean);
+            const last = parts.length ? parts[parts.length - 1] : withoutQuery;
+            return decodeURIComponent(last);
+        } catch (e) {
+            return 'Файл';
+        }
+    }
+
     return (
         <div>
+            <form onSubmit={handleSubmit}>
+                <Sheet>
+                    <SheetTrigger asChild>
+                        <Button variant="outline" className="m-1">Добавить объект</Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                        <SheetHeader>
+                            <SheetTitle>Добавление объекта</SheetTitle>
+                            <SheetDescription>
+                                Внесите данные в заданные ниже поля. Нажмите «Добавить», когда закончите.
+                            </SheetDescription>
+                        </SheetHeader>
+                        <div className="grid flex-1 auto-rows-min gap-6 px-4">
+                            <div className="grid gap-3">
+                                <Label htmlFor="sheet-name">Наименование*</Label>
+                                <Input id="sheet-name" value={title} onChange={(e) => setTitle(e.target.value)} type="text" required />
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="sheet-description">Описание*</Label>
+                                <Input id="sheet-description" value={description} onChange={(e) => setDescription(e.target.value)} type="text" required />
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="sheet-endDate">Дата принятия*</Label>
+                                <Input id="sheet-endDate" value={approvedAt} onChange={(e) => setApprovedAt(e.target.value)} type="date" required />
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="sheet-endDate">Организация*</Label>
+                                <Input id="sheet-endDate" value={organization} onChange={(e) => setOrganization(e.target.value)} type="text" required />
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="sheet-file">Прикрепления*</Label>
+                                <Input id="sheet-file" onChange={(e) => setFile(e.target.files?.[0] || null)} type="file" accept=".pdf,.doc,.docx" required />
+                            </div>
+                        </div>
+                        <SheetFooter>
+                            <Button type="submit" onClick={handleSubmit}>Добавить</Button>
+                            <SheetClose asChild>
+                                <Button variant="outline">Закрыть</Button>
+                            </SheetClose>
+                        </SheetFooter>
+                    </SheetContent>
+                </Sheet>
+            </form>
             {isLoading ? (
                 <Table className="text-base">
                     <TableHeader>
@@ -49,7 +134,7 @@ export function SectionProvisions() {
                             <TableHead className="text-gray-500">Описание</TableHead>
                             <TableHead className="text-gray-500">Дата принятия</TableHead>
                             <TableHead className="text-gray-500">Организация</TableHead>
-                            <TableHead className="text-gray-500">file_url</TableHead>
+                            <TableHead className="text-gray-500">Приложения</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableRow>
@@ -87,7 +172,7 @@ export function SectionProvisions() {
                             <TableHead>Описание</TableHead>
                             <TableHead>Дата принятия</TableHead>
                             <TableHead>Организация</TableHead>
-                            <TableHead>file_url</TableHead>
+                            <TableHead>Приложения</TableHead>
                             <TableHead className="text-right">Действия</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -97,9 +182,46 @@ export function SectionProvisions() {
                                 <TableCell className="font-medium">{provision.id}</TableCell>
                                 <TableCell>{provision.title}</TableCell>
                                 <TableCell>{provision.description}</TableCell>
-                                <TableCell>DATA</TableCell>
+                                <TableCell>{provision.approvedAt ? new Date(provision.approvedAt).toLocaleDateString('ru-RU') : ''}</TableCell>
                                 <TableCell>{provision.organization}</TableCell>
-                                <TableCell>{provision.fileUrl}</TableCell>
+                                <TableCell>
+                                    {(() => {
+                                        try {
+                                            if (typeof provision.fileUrl === 'string') {
+                                                const trimmed = provision.fileUrl.trim();
+                                                if ((trimmed.startsWith('[') || trimmed.startsWith('{'))) {
+                                                    const at = JSON.parse(trimmed);
+                                                    if (Array.isArray(at)) {
+                                                        return at.map((a: any, idx: number) => (
+                                                            <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName || getFileNameFromUrl(a.fileUrl)}</a></div>
+                                                        ));
+                                                    }
+                                                    if (at && at.fileUrl) {
+                                                        return <a className="underline text-blue-600" href={at.fileUrl} target="_blank" rel="noreferrer">{at.fileName || getFileNameFromUrl(at.fileUrl)}</a>;
+                                                    }
+                                                }
+                                                if (trimmed) {
+                                                    const name = getFileNameFromUrl(trimmed);
+                                                    return <a className="underline text-blue-600" href={trimmed} target="_blank" rel="noreferrer">{name}</a>;
+                                                }
+                                            }
+
+                                            const at = provision.fileUrl as any;
+                                            if (Array.isArray(at)) {
+                                                return at.map((a: any, idx: number) => (
+                                                    <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName || getFileNameFromUrl(a.fileUrl)}</a></div>
+                                                ));
+                                            }
+                                            if (at && typeof at === 'object' && at.fileUrl) {
+                                                return <a className="underline text-blue-600" href={at.fileUrl} target="_blank" rel="noreferrer">{at.fileName || getFileNameFromUrl(at.fileUrl)}</a>;
+                                            }
+
+                                            return null;
+                                        } catch (e) {
+                                            return null;
+                                        }
+                                    })()}
+                                </TableCell>
                                 <TableCell className="text-right">
                                     <Popover>
                                         <PopoverTrigger asChild>

@@ -5,6 +5,9 @@ import { Skeleton } from "./ui/skeleton";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell, TableFooter } from "./ui/table";
 import { useEffect, useState } from "react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 type Member = {
     id: number,
@@ -22,9 +25,17 @@ export function SectionMembers() {
     const [members, setMembers] = useState<Member[]>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
 
+    const [name, setName] = useState<string>('');
+    const [position, setPosition] = useState<string>('');
+    const [organization, setOrganization] = useState<string>('');
+    const [experience, setExperience] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [phone, setPhone] = useState<string>('');
+    const [address, setAddress] = useState<string>('');
+
     useEffect(() => {
         const fetchMembers = async () => {
-            const res = await fetch('/api/users');
+            const res = await fetch('/api/members');
             if (!res.ok) {
                 throw new Error('Failed to fetch members');
             }
@@ -36,12 +47,90 @@ export function SectionMembers() {
     }, []);
 
     async function handleDelete(id: any) {
-        await fetch(`/api/users/delete/${id}`, { method: 'DELETE' });
+        await fetch(`/api/members/delete/${id}`, { method: 'DELETE' });
         toast.success("Объект успешно удален!");
     }
 
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const res = await fetch('/api/members/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name,
+                position,
+                organization,
+                experience,
+                email,
+                phone,
+                address,
+            }),
+        });
+
+        if (res.ok) {
+            toast.success("Объект успешно добавлен!");
+            console.log({ name, position, organization, experience, email, phone, address });
+        } else {
+            toast.error("Ошибка при добавлении объекта.");
+        }
+    };
+
     return (
         <div>
+            <form onSubmit={handleSubmit}>
+                <Sheet>
+                    <SheetTrigger asChild>
+                        <Button variant="outline" className="m-1">Добавить объект</Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                        <SheetHeader>
+                            <SheetTitle>Добавление объекта</SheetTitle>
+                            <SheetDescription>
+                                Внесите данные в заданные ниже поля. Нажмите «Добавить», когда закончите.
+                            </SheetDescription>
+                        </SheetHeader>
+                        <div className="grid flex-1 auto-rows-min gap-6 px-4">
+                            <div className="grid gap-3">
+                                <Label htmlFor="sheet-name">ФИО*</Label>
+                                <Input id="sheet-name" value={name} onChange={(e) => setName(e.target.value)} required/>
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="sheet-position">Должность*</Label>
+                                <Input id="sheet-position" value={position} onChange={(e) => setPosition(e.target.value)} required/>
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="sheet-organization">Организация*</Label>
+                                <Input id="sheet-organization" value={organization} onChange={(e) => setOrganization(e.target.value)} required/>
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="sheet-experience">Опыт*</Label>
+                                <Input id="sheet-experience" value={experience} onChange={(e) => setExperience(e.target.value)} required/>
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="sheet-email">Почта*</Label>
+                                <Input id="sheet-email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="sheet-phone">Телефон*</Label>
+                                <Input id="sheet-phone" value={phone} onChange={(e) => setPhone(e.target.value)} required/>
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="sheet-address">Адрес*</Label>
+                                <Input id="sheet-address" value={address} onChange={(e) => setAddress(e.target.value)} required/>
+                            </div>
+                        </div>
+                        <SheetFooter>
+                            <Button type="submit" onClick={handleSubmit}>Добавить</Button>
+                            <SheetClose asChild>
+                                <Button variant="outline">Закрыть</Button>
+                            </SheetClose>
+                        </SheetFooter>
+                    </SheetContent>
+                </Sheet>
+            </form>
             {isLoading ? (
                 <Table className="text-base">
                     <TableHeader>

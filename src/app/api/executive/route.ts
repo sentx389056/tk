@@ -4,10 +4,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
     try {
         const executives = await prisma.executive.findMany({
-            include: {
-                person: true,
-            },
-            orderBy: { person: { name: 'asc' } },
+            orderBy: { name: 'asc' },
         });
 
         return NextResponse.json(executives, { status: 200 });

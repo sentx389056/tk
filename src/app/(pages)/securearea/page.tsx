@@ -114,7 +114,7 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
 
     useEffect(() => {
         const fetchMembers = async () => {
-            const res = await fetch('/api/users');
+            const res = await fetch('/api/members');
             if (!res.ok) {
                 throw new Error('Failed to fetch members');
             }

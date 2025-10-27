@@ -5,7 +5,9 @@ import { Skeleton } from "./ui/skeleton";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell, TableFooter } from "./ui/table";
 import { useEffect, useState } from "react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
-import { report } from "process";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 type Protocol = {
     id: number,
@@ -18,6 +20,9 @@ export function SectionProtocol() {
 
     const [protocols, setProtocols] = useState<Protocol[]>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
+    const [title, setTitle] = useState('');
+    const [publishedAt, setPublishedAt] = useState<string>(new Date().toISOString().slice(0, 10));
+    const [files, setFiles] = useState<FileList | null>(null);
 
     useEffect(() => {
         const fetchProtocols = async () => {
@@ -37,8 +42,72 @@ export function SectionProtocol() {
         toast.success("Объект успешно удален!");
     }
 
+    async function handleAdd(e: any) {
+        e.preventDefault();
+        try {
+            const fd = new FormData();
+            fd.append('title', title);
+            fd.append('publishedAt', publishedAt);
+            if (files) {
+                Array.from(files).forEach((f) => fd.append('attachments', f));
+            }
+
+            const res = await fetch('/api/protocols/add', { method: 'POST', body: fd });
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                toast.error(err?.error || 'Ошибка при загрузке');
+                return;
+            }
+            const data = await res.json();
+            const newProtocol = data.protocol;
+            setProtocols(prev => [newProtocol, ...prev]);
+            toast.success('Протокол добавлен');
+            // reset form
+            setTitle('');
+            setFiles(null);
+        } catch (error) {
+            console.error(error);
+            toast.error('Серверная ошибка');
+        }
+    }
+
     return (
         <div>
+            <form onSubmit={handleAdd} className="overflow-scroll">
+                <Sheet>
+                    <SheetTrigger asChild>
+                        <Button variant="outline" className="m-1">Добавить протокол</Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                        <SheetHeader>
+                            <SheetTitle>Добавление протокола</SheetTitle>
+                            <SheetDescription>
+                                Заполните название и прикрепите файлы протокола.
+                            </SheetDescription>
+                        </SheetHeader>
+                        <div className="grid flex-1 auto-rows-min gap-6 px-4">
+                            <div className="grid gap-3">
+                                <Label htmlFor="protocol-title">Наименование*</Label>
+                                <Input id="protocol-title" value={title} onChange={(e) => setTitle(e.target.value)} type="text" required />
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="protocol-date">Дата протокола</Label>
+                                <Input id="protocol-date" type="date" value={publishedAt} onChange={(e) => setPublishedAt(e.target.value)} />
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="protocol-files">Файлы (PDF, DOC)*</Label>
+                                <input id="protocol-files" type="file" multiple onChange={(e) => setFiles(e.target.files)} className="w-full" accept=".pdf,.doc,.docx" required />
+                            </div>
+                        </div>
+                        <SheetFooter>
+                            <Button type="submit">Добавить</Button>
+                            <SheetClose asChild>
+                                <Button variant="outline">Закрыть</Button>
+                            </SheetClose>
+                        </SheetFooter>
+                    </SheetContent>
+                </Sheet>
+            </form>
             {isLoading ? (
                 <Table className="text-base">
                     <TableHeader>
@@ -91,8 +160,22 @@ export function SectionProtocol() {
                             <TableRow key={protocol.id}>
                                 <TableCell className="font-medium">{protocol.id}</TableCell>
                                 <TableCell>{protocol.title}</TableCell>
-                                <TableCell>{protocol.attachments}</TableCell>
-                                <TableCell>DATA</TableCell>
+                                <TableCell>
+                                    {(() => {
+                                        try {
+                                            const at = typeof protocol.attachments === 'string' ? JSON.parse(protocol.attachments) : protocol.attachments;
+                                            if (Array.isArray(at)) {
+                                                return at.map((a: any, idx: number) => (
+                                                    <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName}</a></div>
+                                                ));
+                                            }
+                                            return null;
+                                        } catch (e) {
+                                            return null;
+                                        }
+                                    })()}
+                                </TableCell>
+                                <TableCell>{new Date(protocol.publishedAt).toLocaleDateString('ru-RU')}</TableCell>
                                 <TableCell className="text-right">
                                     <Popover>
                                         <PopoverTrigger asChild>

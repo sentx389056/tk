@@ -14,8 +14,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ========== ЧЕЛОВЕК (общая информация) ==========
-model Person {
+// ========== ПОЛЬЗОВАТЕЛЬ (для входа) ==========
+// Связан только с Executive (руководством)
+model User {
+  id        Int      @id @default(autoincrement())
+  login     String   @unique
+  password  String   // хэш
+
+  executive Executive @relation(fields: [executiveId], references: [id])
+  executiveId Int    @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ========== РУКОВОДСТВО ==========
+model Executive {
   id           Int      @id @default(autoincrement())
   name         String
   position     String
@@ -25,39 +39,28 @@ model Person {
   phone        String?
   address      String?
 
-  // Связи — без fields/references здесь!
-  user        User?
-  executive   Executive?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-// ========== ПОЛЬЗОВАТЕЛЬ (для входа) ==========
-model User {
-  id        Int    @id @default(autoincrement())
-  login     String @unique
-  password  String // хэш
-
-  // Связь с Person — внешний ключ здесь
-  person    Person @relation(fields: [personId], references: [id])
-  personId  Int    @unique
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-// ========== РУКОВОДСТВО ==========
-model Executive {
-  id           Int    @id @default(autoincrement())
   biography    String?
   education    String?
-  achievements String? // JSON: ["Достижение 1", "Достижение 2"]
-  awards       String? // JSON: ["Награда A", "Премия B"]
+  achievements String? // JSON
+  awards       String? // JSON
 
-  // Связь с Person — внешний ключ здесь
-  person       Person @relation(fields: [personId], references: [id])
-  personId     Int    @unique
+  // Связь с User
+  user         User?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ========== ЧЛЕН ТЕХНИЧЕСКОГО КОМИТЕТА (СОСТАВ ТК) ==========
+model TechnicalCommitteeMember {
+  id           Int      @id @default(autoincrement())
+  name         String
+  position     String
+  organization String
+  experience   String?
+  email        String   @unique
+  phone        String?
+  address      String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -69,7 +72,7 @@ model StandardFund {
   title         String
   description   String?
   approved      Boolean  @default(false)
-  approvedAt    DateTime? // дата принятия (если approved = true)
+  approvedAt    DateTime?
   organization  String
   fileUrl       String
 
@@ -82,7 +85,7 @@ model Protocol {
   id            Int      @id @default(autoincrement())
   title         String
   publishedAt   DateTime @default(now())
-  attachments   String   // JSON: [{ "fileName": "file1.pdf", "fileUrl": "/files/1.pdf" }, ...]
+  attachments   String   // JSON
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -93,7 +96,7 @@ model AnnualReport {
   id               Int      @id @default(autoincrement())
   title            String
   publishedAt      DateTime @default(now())
-  keyAchievements  String   // JSON: ["Запущен стандарт X", "Проведено 12 заседаний"]
+  keyAchievements  String   // JSON
   fileUrl          String
 
   createdAt DateTime @default(now())
@@ -105,7 +108,7 @@ model TechnicalCommitteeRegulation {
   id           Int      @id @default(autoincrement())
   title        String
   description  String?
-  approvedAt   DateTime // дата утверждения
+  approvedAt   DateTime
   organization String
   fileUrl      String
 
@@ -129,11 +132,11 @@ model StandardProject {
 // ========== ЗАСЕДАНИЯ ==========
 model Meeting {
   id            Int      @id @default(autoincrement())
-  title         String   // Название заседания
-  publishedAt   DateTime @default(now()) // Дата публикации
-  format        String   // Например: "Очное", "Заочное", "Гибридное"
-  location      String   // Место проведения
-  attachments   String   // JSON: [{ "fileName": "...", "fileUrl": "..." }]
+  title         String
+  publishedAt   DateTime @default(now())
+  format        String
+  location      String
+  attachments   String   // JSON
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

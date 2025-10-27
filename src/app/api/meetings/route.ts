@@ -8,7 +8,18 @@ export async function GET() {
                 publishedAt: 'asc',
             },
         });
-        return NextResponse.json(meetings, { status: 200 });
+        // parse attachments field (stored as JSON string) into objects for the client
+        const parsed = meetings.map((m) => ({
+            ...m,
+            attachments: (() => {
+                try {
+                    return typeof m.attachments === 'string' ? JSON.parse(m.attachments) : m.attachments;
+                } catch {
+                    return m.attachments;
+                }
+            })(),
+        }));
+        return NextResponse.json(parsed, { status: 200 });
     } catch (error) {
         console.error('Ошибка в API /meetings:', error);
         return NextResponse.json({ error: 'Не удалось загрузить заседания' }, { status: 500 });

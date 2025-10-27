@@ -3,7 +3,7 @@ import TeamCard from "@/components/TeamCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
 
-type User = {
+type Member = {
    id: number;
    name: string;
    email: string;
@@ -14,20 +14,20 @@ type User = {
 };
 
 export default function TeamPage() {
-   const [users, setUsers] = useState<User[]>([]);
+   const [members, setMembers] = useState<Member[]>([]);
    const [isloading, setLoading] = useState<boolean>(true);
 
    useEffect(() => {
-      const fetchUsers = async () => {
-         const res = await fetch('/api/users');
+      const fetchMembers = async () => {
+         const res = await fetch('/api/members');
          if (!res.ok) {
-            throw new Error('Failed to fetch users');
+            throw new Error('Failed to fetch members');
          }
          const data = await res.json();
-         setUsers(data);
+         setMembers(data);
          setLoading(false);
       };
-      fetchUsers()
+      fetchMembers()
    }, []);
 
    return (
@@ -46,8 +46,8 @@ export default function TeamPage() {
                         <Skeleton className="h-[300] w-2xs rounded-xl" />
                   </div>
                ) : (
-                  users.map((user) => {
-                     return <TeamCard key={user.id} name={user.name} email={user.email} position={user.position} organization={user.organization} phone={user.phone} experience={user.experience} />
+                  members.map((member) => {
+                     return <TeamCard key={member.id} name={member.name} email={member.email} position={member.position} organization={member.organization} phone={member.phone} experience={member.experience} />
                   })
                )}
             </section>

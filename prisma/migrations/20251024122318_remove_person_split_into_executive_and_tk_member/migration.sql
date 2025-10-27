@@ -1,5 +1,37 @@
 -- CreateTable
-CREATE TABLE "Person" (
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "login" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "executiveId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Executive" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "position" TEXT NOT NULL,
+    "organization" TEXT NOT NULL,
+    "experience" TEXT,
+    "email" TEXT NOT NULL,
+    "phone" TEXT,
+    "address" TEXT,
+    "biography" TEXT,
+    "education" TEXT,
+    "achievements" TEXT,
+    "awards" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Executive_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TechnicalCommitteeMember" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "position" TEXT NOT NULL,
@@ -11,33 +43,7 @@ CREATE TABLE "Person" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Person_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
-    "login" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "personId" INTEGER NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Executive" (
-    "id" SERIAL NOT NULL,
-    "biography" TEXT,
-    "education" TEXT,
-    "achievements" TEXT,
-    "awards" TEXT,
-    "personId" INTEGER NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "Executive_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "TechnicalCommitteeMember_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -108,20 +114,31 @@ CREATE TABLE "StandardProject" (
     CONSTRAINT "StandardProject_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "Person_email_key" ON "Person"("email");
+-- CreateTable
+CREATE TABLE "Meeting" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "publishedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "format" TEXT NOT NULL,
+    "location" TEXT NOT NULL,
+    "attachments" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Meeting_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_login_key" ON "User"("login");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_personId_key" ON "User"("personId");
+CREATE UNIQUE INDEX "User_executiveId_key" ON "User"("executiveId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Executive_personId_key" ON "Executive"("personId");
+CREATE UNIQUE INDEX "Executive_email_key" ON "Executive"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "TechnicalCommitteeMember_email_key" ON "TechnicalCommitteeMember"("email");
 
 -- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_personId_fkey" FOREIGN KEY ("personId") REFERENCES "Person"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Executive" ADD CONSTRAINT "Executive_personId_fkey" FOREIGN KEY ("personId") REFERENCES "Person"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_executiveId_fkey" FOREIGN KEY ("executiveId") REFERENCES "Executive"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

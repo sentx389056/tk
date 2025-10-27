@@ -4,15 +4,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
 
 type Executive = {
-  person: {
-    name: string;
-    position: string;
-    organization: string;
-    email: string;
-    phone: string;
-    experience: string;
-  };
   id: number;
+  name: string;
+  position: string;
+  organization: string;
+  email: string;
+  phone: string;
+  experience: string;
   biography: string;
   education: string;
   achievements: string;
@@ -70,12 +68,12 @@ export default function ManagementPage() {
               return (
                 <ManagementCard
                   key={exec.id}
-                  name={exec.person.name}
-                  position={exec.person.position}
-                  organization={exec.person.organization}
-                  email={exec.person.email}
-                  phone={exec.person.phone}
-                  experience={exec.person.experience}
+                  name={exec.name}
+                  position={exec.position}
+                  organization={exec.organization}
+                  email={exec.email}
+                  phone={exec.phone}
+                  experience={exec.experience}
                   biography={exec.biography}
                   education={exec.education}
                   achievements={achievements}
