@@ -6,7 +6,7 @@ export async function DELETE(request: Request, { params }: any) {
         // Get user ID from the cookie
         const cookies = request.headers.get('cookie');
         let userId = null;
-
+        
         if (cookies) {
             const tkUserCookie = cookies.split(';').find(c => c.trim().startsWith('tk_user='));
             if (tkUserCookie) {
@@ -19,25 +19,27 @@ export async function DELETE(request: Request, { params }: any) {
             }
         }
 
-        const standard = await prisma.standardFund.findUnique({
+        // Get the executive before deleting
+        const protectedDocument = await prisma.protectedDocument.findUnique({
             where: { id: Number(params.id) },
             select: { id: true, title: true }
         });
 
-        await prisma.standardFund.delete({
+        // Delete the executive
+        await prisma.protectedDocument.delete({
             where: { id: Number(params.id) }
         });
 
         // Log the action if we have both user ID and executive data
-        if (userId && standard) {
+        if (userId && protectedDocument) {
             await prisma.log.create({
                 data: {
                     type: 'DELETE',
-                    action: 'Удаление фонда стандартов',
+                    action: 'Удаление документа по стандартизации',
                     userId,
                     metadata: JSON.stringify({
-                        standardId: standard.id,
-                        standardName: standard.title,
+                        protectedDocumentId: protectedDocument.id,
+                        protectedDocumentName: protectedDocument.title,
                         timestamp: new Date().toISOString()
                     })
                 }
@@ -46,7 +48,7 @@ export async function DELETE(request: Request, { params }: any) {
 
         return NextResponse.json({ ok: true });
     } catch (error) {
-        console.error('Error deleting standard:', error);
-        return NextResponse.json({ error: 'Failed to delete standard' }, { status: 500 });
+        console.error('Error deleting protectedDocument:', error);
+        return NextResponse.json({ error: 'Failed to delete protectedDocument' }, { status: 500 });
     }
 }

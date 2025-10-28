@@ -20,26 +20,27 @@ enum LogType {
 }
 
 model Log {
-  id         Int       @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   type       LogType
   action     String
   userId     Int
-  user       User      @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
   documentId Int?
   metadata   String?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  login     String   @unique
-  password  String
-  memberId  Int?     @unique
-  member    TechnicalCommitteeMember? @relation(fields: [memberId], references: [id])
-  logs      Log[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                 Int                       @id @default(autoincrement())
+  login              String                    @unique
+  password           String
+  memberId           Int?                      @unique
+  member             TechnicalCommitteeMember? @relation(fields: [memberId], references: [id])
+  logs               Log[]
+  protectedDocuments ProtectedDocument[]
+  createdAt          DateTime                  @default(now())
+  updatedAt          DateTime                  @updatedAt
 }
 
 model Executive {
@@ -95,13 +96,13 @@ model Protocol {
 }
 
 model AnnualReport {
-  id               Int      @id @default(autoincrement())
-  title            String
-  publishedAt      DateTime @default(now())
-  keyAchievements  String
-  fileUrl          String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id              Int      @id @default(autoincrement())
+  title           String
+  publishedAt     DateTime @default(now())
+  keyAchievements String
+  fileUrl         String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 // This model is already defined above
@@ -152,4 +153,17 @@ model Meeting {
   attachments String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model ProtectedDocument {
+  id              Int      @id @default(autoincrement())
+  title           String
+  description     String?
+  filePath        String // server-side path to file (not public)
+  fileName        String
+  copyrightHolder String?
+  createdBy       Int?
+  createdByUser   User?    @relation(fields: [createdBy], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

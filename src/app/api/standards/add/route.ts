@@ -23,16 +23,12 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
 
-    const file = formData.get('fileUrl') as File | null;
+    const file = formData.get('fileUrl') as File;
     const title = formData.get('title') as string;
     const description = formData.get('description') as string | null;
     const approved = formData.get('approved') === 'true';
     const approvedAtStr = formData.get('approvedAt') as string | null;
     const organization = formData.get('organization') as string;
-
-    if (!file || !title || !organization) {
-      return NextResponse.json({ error: 'Не все обязательные поля заполнены' }, { status: 400 });
-    }
 
     const ext = extname(file.name).toLowerCase();
     const randomFileName = randomBytes(16).toString('hex');
@@ -86,6 +82,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, id: standard.id }, { status: 201 });
   } catch (error) {
     console.error('Ошибка при создании фонда:', error);
-    return NextResponse.json({ error: 'Ошибка сервера' }, { status: 500 });
+    return NextResponse.json({ error: 'Не все обязательные поля заполнены!' }, { status: 500 });
   }
 }

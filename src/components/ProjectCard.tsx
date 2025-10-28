@@ -27,10 +27,10 @@ export default function ProjectCard({ title, description, startDate, endDate, fi
 
    const handleDownload = async () => {
       if (!fileUrl) return;
-      
+
       try {
          let urls: { fileUrl: string, fileName?: string }[] = [];
-         
+
          if (typeof fileUrl === 'string') {
             const trimmed = fileUrl.trim();
             if ((trimmed.startsWith('[') || trimmed.startsWith('{'))) {
@@ -47,10 +47,10 @@ export default function ProjectCard({ title, description, startDate, endDate, fi
 
          for (const url of urls) {
             if (!url.fileUrl) continue;
-            
+
             const response = await fetch(url.fileUrl);
             if (!response.ok) throw new Error('Failed to download file');
-            
+
             const blob = await response.blob();
             const downloadUrl = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -65,6 +65,7 @@ export default function ProjectCard({ title, description, startDate, endDate, fi
          console.error('Ошибка при скачивании:', error);
       }
    };
+   
    return (
       <Card className="w-full px-6">
          <CardHeader className="p-0">
@@ -73,16 +74,17 @@ export default function ProjectCard({ title, description, startDate, endDate, fi
                   <FileText size={32} color="#CC4E3A" className="hidden sm:flex" />
                   <div className="flex flex-col">
                      <CardTitle className="mb-3">{title}</CardTitle>
-                     <CardDescription className="text-gray-500">
-                        {description}
-                     </CardDescription>
+                     {(description) && (
+                        <CardDescription className="text-gray-500">
+                           {description}
+                        </CardDescription>
+                     )}
                   </div>
                </div>
-
             </div>
             <CardAction>
-               <Button 
-                  type="button" 
+               <Button
+                  type="button"
                   className="w-full bg-red-pink font-medium cursor-pointer"
                   onClick={handleDownload}
                   disabled={!fileUrl}
@@ -92,18 +94,20 @@ export default function ProjectCard({ title, description, startDate, endDate, fi
                </Button>
             </CardAction>
          </CardHeader>
-         <CardContent className="p-0 flex items-center gap-30 flex-wrap sm:flex-nowrap max-sm:gap-4">
-            <CardDescription className="text-gray-500 flex gap-2 items-center">
-               <Calendar size={16} />
-               <p>Начало:</p>
-               <p>{startDateFormatted}</p>
-            </CardDescription>
-            <CardDescription className="text-gray-500 flex gap-2 items-center">
-               <Calendar size={16} />
-               <p>Окончание:</p>
-               <p>{endDateFormatted}</p>
-            </CardDescription>
-         </CardContent>
+         {(startDateFormatted && endDateFormatted) && (
+            <CardContent className="p-0 flex items-center gap-30 flex-wrap sm:flex-nowrap max-sm:gap-4">
+               <CardDescription className="text-gray-500 flex gap-2 items-center">
+                  <Calendar size={16} />
+                  <p>Начало:</p>
+                  <p>{startDateFormatted}</p>
+               </CardDescription>
+               <CardDescription className="text-gray-500 flex gap-2 items-center">
+                  <Calendar size={16} />
+                  <p>Окончание:</p>
+                  <p>{endDateFormatted}</p>
+               </CardDescription>
+            </CardContent>
+         )}
       </Card>
    )
 }

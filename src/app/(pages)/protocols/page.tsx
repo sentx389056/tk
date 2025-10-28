@@ -30,7 +30,7 @@ export default function ProtocolsPage() {
          }
          const data = await res.json();
          setProtocols(data);
-            setFiltered(data);
+         setFiltered(data);
          setLoading(false);
       }
       fetchProtocols();
@@ -102,51 +102,55 @@ export default function ProtocolsPage() {
                               </div>
                               <div>
                                  <CardTitle className="mb-1">{protocol.title}</CardTitle>
-                                 <CardDescription className="text-gray-500 flex gap-1 items-center">
-                                    <Calendar size={16} />{publishedAtFormatted}
-                                 </CardDescription>
+                                 {(publishedAtFormatted) && (
+                                    <CardDescription className="text-gray-500 flex gap-1 items-center">
+                                       <Calendar size={16} />{publishedAtFormatted}
+                                    </CardDescription>
+                                 )}
                               </div>
                            </div>
                         </CardHeader>
-                        <div>
-                           <p className="font-semibold text-sm">Документы:</p>
-                           {(() => {
-                              try {
-                                 const raw = protocol.attachments ?? protocol.fileUrl;
-                                 if (!raw) return <MaterialMeetingCard name="Без файлов" size="—" />;
+                        {(protocol.attachments.length > 0) && (
+                           <div>
+                              <p className="font-semibold text-sm">Документы:</p>
+                              {(() => {
+                                 try {
+                                    const raw = protocol.attachments ?? protocol.fileUrl;
+                                    if (!raw) return <MaterialMeetingCard name="Без файлов" size="—" />;
 
-                                 // Try to parse if it's a JSON string
-                                 let parsed = raw;
-                                 if (typeof raw === 'string') {
-                                    const trimmed = raw.trim();
-                                    if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
-                                       parsed = JSON.parse(trimmed);
+                                    // Try to parse if it's a JSON string
+                                    let parsed = raw;
+                                    if (typeof raw === 'string') {
+                                       const trimmed = raw.trim();
+                                       if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+                                          parsed = JSON.parse(trimmed);
+                                       }
                                     }
-                                 }
 
-                                 // If parsed is an array of attachments
-                                 if (Array.isArray(parsed) && parsed.length > 0) {
-                                    return parsed.map((att: any, idx: number) => (
-                                       <MaterialMeetingCard key={idx} name={att.fileName || `Файл ${idx + 1}`} size={att.fileSize || '—'} fileUrl={att.fileUrl} />
-                                    ));
-                                 }
+                                    // If parsed is an array of attachments
+                                    if (Array.isArray(parsed) && parsed.length > 0) {
+                                       return parsed.map((att: any, idx: number) => (
+                                          <MaterialMeetingCard key={idx} name={att.fileName || `Файл ${idx + 1}`} size={att.fileSize || '—'} fileUrl={att.fileUrl} />
+                                       ));
+                                    }
 
-                                 // If parsed is object with fileUrl
-                                 if (parsed && typeof parsed === 'object' && parsed.fileUrl) {
-                                    return <MaterialMeetingCard name={parsed.fileName || 'Файл'} size={parsed.fileSize || '—'} fileUrl={parsed.fileUrl} />;
-                                 }
+                                    // If parsed is object with fileUrl
+                                    if (parsed && typeof parsed === 'object' && parsed.fileUrl) {
+                                       return <MaterialMeetingCard name={parsed.fileName || 'Файл'} size={parsed.fileSize || '—'} fileUrl={parsed.fileUrl} />;
+                                    }
 
-                                 // If parsed is a plain string URL
-                                 if (typeof parsed === 'string') {
-                                    return <MaterialMeetingCard name={parsed.split('/').pop() || 'Файл'} size={'—'} fileUrl={parsed} />;
-                                 }
+                                    // If parsed is a plain string URL
+                                    if (typeof parsed === 'string') {
+                                       return <MaterialMeetingCard name={parsed.split('/').pop() || 'Файл'} size={'—'} fileUrl={parsed} />;
+                                    }
 
-                                 return <MaterialMeetingCard name="Без файлов" size="—" />;
-                              } catch (e) {
-                                 return <MaterialMeetingCard name="Без файлов" size="—" />;
-                              }
-                           })()}
-                        </div>
+                                    return <MaterialMeetingCard name="Без файлов" size="—" />;
+                                 } catch (e) {
+                                    return <MaterialMeetingCard name="Без файлов" size="—" />;
+                                 }
+                              })()}
+                           </div>
+                        )}
                      </Card>
                   })
                )}

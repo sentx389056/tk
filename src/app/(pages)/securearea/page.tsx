@@ -34,6 +34,7 @@ import { SectionProtocol } from "@/components/section-protocols";
 import { SectionAnnualReports } from "@/components/section-annualreports";
 import { SectionProvisions } from "@/components/section-provisions";
 import { SectionProjects } from "@/components/section-projects";
+import { SectionStandards } from "@/components/section-standards";
 import { SectionManagements } from "@/components/section-management";
 import { SectionLogs } from "@/components/section-logs";
 
@@ -45,6 +46,10 @@ const frameworks = [
     {
         value: "Проекты стандартов",
         label: "Проекты стандартов",
+    },
+    {
+        value: "Документы по стандартизации",
+        label: "Документы по стандартизации",
     },
     {
         value: "Журнал логов",
@@ -88,7 +93,7 @@ const items = [
     {
         title: "Проекты стандартов",
         value: "Проекты стандартов",
-    }
+    },
 ]
 
 type Member = {
@@ -117,6 +122,7 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
     const [value, setValue] = React.useState("Информация о членах");
     const [isLoading, setLoading] = useState<boolean>(true);
     const [tab, setTab] = useState<string>("Главная");
+    
 
     useEffect(() => {
         const fetchMembers = async () => {
@@ -143,6 +149,8 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
         };
         fetchStandards();
     }, []);
+
+    
 
     return (
         <main>
@@ -452,6 +460,17 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                             <div className="flex gap-3 justify-start text-left flex-col">
                                 <h2 className="font-semibold">Журнал логов</h2>
                                 logs
+                            </div>
+                        </CardHeader>
+                    </Card>
+                </div>
+            ) : value === "Документы по стандартизации" ? (
+                <div className="px-5 xl:px-40">
+                    <Card className="w-full rounded-none mb-5 py-0">
+                        <CardHeader className="p-4">
+                            <div className="flex gap-3 justify-start text-left flex-col">
+                                <h2 className="font-semibold">Документы по стандартизации</h2>
+                                <SectionStandards />
                             </div>
                         </CardHeader>
                     </Card>

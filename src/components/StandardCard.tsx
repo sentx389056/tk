@@ -80,18 +80,22 @@ export default function StandardCard({ title, description, approvedAt, organizat
                </div>
             </div>
             <CardAction>
-               <Button type="button" onClick={handleDownload} className="w-full bg-red-pink font-medium cursor-pointer"><Download size={16} /><span className="hidden sm:flex">Скачать</span></Button>
+               <Button type="button" onClick={handleDownload} className="w-full bg-red-pink font-medium cursor-pointer" disabled={!fileUrl}><Download size={16} /><span className="hidden sm:flex">Скачать</span></Button>
             </CardAction>
          </CardHeader>
          <CardContent className="p-0">
-            <CardDescription className="text-gray-500">
-               <p className="mb-1"><strong>Принят:</strong></p>
-               <p>{approvedAtFormatted}</p>
-            </CardDescription>
-            <CardDescription className="text-gray-500 mt-4">
-               <p className="mb-1"><strong>Организация:</strong></p>
-               <p>{organization}</p>
-            </CardDescription>
+            {(approvedAtFormatted) && (
+               <CardDescription className="text-gray-500">
+                  <p className="mb-1"><strong>Принят:</strong></p>
+                  <p>{approvedAtFormatted}</p>
+               </CardDescription>
+            )}
+            {(organization) && (
+               <CardDescription className="text-gray-500 mt-4">
+                  <p className="mb-1"><strong>Организация:</strong></p>
+                  <p>{organization}</p>
+               </CardDescription>
+            )}
          </CardContent>
       </Card>
    )

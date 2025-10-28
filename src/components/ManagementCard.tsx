@@ -40,53 +40,70 @@ export default function ManagementCard({
           <p className="text-xs text-gray-500 mb-6">{organization}</p>
         </div>
         <div className="flex flex-col gap-3">
-          <div className="flex gap-3 items-center text-xs text-gray-500">
-            <Mail size={16} color="#CC4E3A" /> {email}
-          </div>
-          <div className="flex gap-3 items-center text-xs text-gray-500">
-            <Phone size={16} color="#CC4E3A" /> {phone}
-          </div>
-          <div className="flex gap-3 items-center text-xs text-gray-500">
-            <Award size={16} color="#CC4E3A" /> Опыт: {experience}
-          </div>
+          {(email) && (
+            <div className="flex gap-3 items-center text-xs text-gray-500">
+              <Mail size={16} color="#CC4E3A" /> {email}
+            </div>
+          )}
+          {(phone) && (
+            <div className="flex gap-3 items-center text-xs text-gray-500">
+              <Phone size={16} color="#CC4E3A" /> {phone}
+            </div>
+          )}
+          {(experience) && (
+            <div className="flex gap-3 items-center text-xs text-gray-500">
+              <Award size={16} color="#CC4E3A" /> Опыт: {experience}
+            </div>
+          )}
         </div>
       </div>
 
       <div className="bg-white border-1 rounded-md p-7 w-full">
-        <div className="flex gap-2 items-center mb-3">
-          <User size={20} color="#CC4E3A" />
-          <p className="font-semibold text-base">Биография</p>
-        </div>
-        <p className="text-sm text-gray-500">{biography}</p>
+        {(biography) && (
+          <div>
+            <div className="flex gap-2 items-center mb-3">
+              <User size={20} color="#CC4E3A" />
+              <p className="font-semibold text-base">Биография</p>
+            </div>
+            <p className="text-sm text-gray-500">{biography}</p>
+          </div>
+        )}
+        {(education) && (
+          <div>
+            <div className="flex gap-2 items-center mb-3 mt-6">
+              <Building2 size={20} color="#CC4E3A" />
+              <p className="font-semibold text-base">Образование</p>
+            </div>
+            <p className="text-sm text-gray-500">{education}</p>
+          </div>
+        )}
+        {(achievements.length > 0 || awards.length > 0) && (
+          <div>
+            <div className="flex gap-2 items-center mb-3 mt-6">
+              <Award size={20} color="#CC4E3A" />
+              <p className="font-semibold text-base">Достижения и награды</p>
+            </div>
+            <ul className="list-none">
+              {achievements.map((achievement, index) => (
+                <li
+                  key={`ach-${index}`}
+                  className="text-gray-700 text-sm mb-2 before:content-['•'] before:text-red-pink before:mr-2 before:float-left"
+                >
+                  {achievement}
+                </li>
+              ))}
+              {awards.map((award, index) => (
+                <li
+                  key={`award-${index}`}
+                  className="text-gray-700 text-sm mb-2 before:content-['•'] before:text-red-pink before:mr-2 before:float-left"
+                >
+                  {award}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <div className="flex gap-2 items-center mb-3 mt-6">
-          <Building2 size={20} color="#CC4E3A" />
-          <p className="font-semibold text-base">Образование</p>
-        </div>
-        <p className="text-sm text-gray-500">{education}</p>
-
-        <div className="flex gap-2 items-center mb-3 mt-6">
-          <Award size={20} color="#CC4E3A" />
-          <p className="font-semibold text-base">Достижения и награды</p>
-        </div>
-        <ul className="list-none">
-          {achievements.map((achievement, index) => (
-            <li
-              key={`ach-${index}`}
-              className="text-gray-700 text-sm mb-2 before:content-['•'] before:text-red-pink before:mr-2 before:float-left"
-            >
-              {achievement}
-            </li>
-          ))}
-          {awards.map((award, index) => (
-            <li
-              key={`award-${index}`}
-              className="text-gray-700 text-sm mb-2 before:content-['•'] before:text-red-pink before:mr-2 before:float-left"
-            >
-              {award}
-            </li>
-          ))}
-        </ul>
+        )}
       </div>
     </div>
   );

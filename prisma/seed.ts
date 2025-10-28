@@ -144,6 +144,29 @@ async function main() {
     },
   });
 
+  console.log('Creating protected documents...');
+  const protected1 = await prisma.protectedDocument.create({
+    data: {
+      title: 'Защищённый документ 1',
+      description: 'Документ с ограниченным доступом по авторским правам',
+      filePath: 'protected_uploads/sample-protected-doc-1.txt',
+      fileName: 'sample-protected-doc-1.txt',
+      copyrightHolder: 'ТК 191',
+      createdBy: admin.id,
+    }
+  });
+
+  const protected2 = await prisma.protectedDocument.create({
+    data: {
+      title: 'Защищённый документ 2',
+      description: 'Дополнительный защищённый документ',
+      filePath: 'protected_uploads/sample-protected-doc-2.txt',
+      fileName: 'sample-protected-doc-2.txt',
+      copyrightHolder: 'ТК 191',
+      createdBy: admin.id,
+    }
+  });
+
   console.log('Creating logs...');
   await prisma.log.createMany({
     data: [

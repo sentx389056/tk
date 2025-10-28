@@ -31,61 +31,61 @@ export default function ReportsPage() {
       fetchReports();
    }, [])
 
-      const getFileNameFromUrl = (url: string) => {
-         try {
-            const withoutQuery = url.split('?')[0];
-            const parts = withoutQuery.split('/').filter(Boolean);
-            const last = parts.length ? parts[parts.length - 1] : withoutQuery;
-            return decodeURIComponent(last);
-         } catch (e) {
-            return 'file';
-         }
+   const getFileNameFromUrl = (url: string) => {
+      try {
+         const withoutQuery = url.split('?')[0];
+         const parts = withoutQuery.split('/').filter(Boolean);
+         const last = parts.length ? parts[parts.length - 1] : withoutQuery;
+         return decodeURIComponent(last);
+      } catch (e) {
+         return 'file';
       }
+   }
 
-      const resolveAttachments = (raw: any) => {
-         if (!raw) return [] as { fileUrl: string; fileName?: string }[];
-         try {
-            if (typeof raw === 'string') {
-               const trimmed = raw.trim();
-               if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
-                  const parsed = JSON.parse(trimmed);
-                  if (Array.isArray(parsed)) return parsed;
-                  if (parsed && parsed.fileUrl) return [parsed];
-               }
-               // plain url
-               return [{ fileUrl: trimmed, fileName: getFileNameFromUrl(trimmed) }];
+   const resolveAttachments = (raw: any) => {
+      if (!raw) return [] as { fileUrl: string; fileName?: string }[];
+      try {
+         if (typeof raw === 'string') {
+            const trimmed = raw.trim();
+            if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+               const parsed = JSON.parse(trimmed);
+               if (Array.isArray(parsed)) return parsed;
+               if (parsed && parsed.fileUrl) return [parsed];
             }
-
-            if (Array.isArray(raw)) return raw;
-
-            if (raw && typeof raw === 'object' && raw.fileUrl) return [raw];
-         } catch (e) {
-            return [];
+            // plain url
+            return [{ fileUrl: trimmed, fileName: getFileNameFromUrl(trimmed) }];
          }
-         return [] as { fileUrl: string; fileName?: string }[];
+
+         if (Array.isArray(raw)) return raw;
+
+         if (raw && typeof raw === 'object' && raw.fileUrl) return [raw];
+      } catch (e) {
+         return [];
       }
+      return [] as { fileUrl: string; fileName?: string }[];
+   }
 
-      const handleDownload = async (raw: any) => {
-         const at = resolveAttachments(raw);
-         if (!at.length) return;
+   const handleDownload = async (raw: any) => {
+      const at = resolveAttachments(raw);
+      if (!at.length) return;
 
-         // try to download each file; if cross-origin prevents download attribute, fallback to open in new tab
-         for (const a of at) {
-            try {
-               const url = a.fileUrl;
-               const name = a.fileName || getFileNameFromUrl(url);
-               const el = document.createElement('a');
-               el.href = url;
-               el.download = name;
-               el.target = '_blank';
-               document.body.appendChild(el);
-               el.click();
-               el.remove();
-            } catch (err) {
-               window.open(a.fileUrl, '_blank');
-            }
+      // try to download each file; if cross-origin prevents download attribute, fallback to open in new tab
+      for (const a of at) {
+         try {
+            const url = a.fileUrl;
+            const name = a.fileName || getFileNameFromUrl(url);
+            const el = document.createElement('a');
+            el.href = url;
+            el.download = name;
+            el.target = '_blank';
+            document.body.appendChild(el);
+            el.click();
+            el.remove();
+         } catch (err) {
+            window.open(a.fileUrl, '_blank');
          }
       }
+   }
 
    return (
       <main>
@@ -150,22 +150,26 @@ export default function ReportsPage() {
                                  </div>
                                  <div>
                                     <CardTitle className="mb-1">{report.title}</CardTitle>
-                                    <CardDescription className="text-gray-500 flex gap-1 items-center">
-                                       <Calendar size={16} />{publishedAtFormatted}
-                                    </CardDescription>
+                                    {(publishedAtFormatted) && (
+                                       <CardDescription className="text-gray-500 flex gap-1 items-center">
+                                          <Calendar size={16} />{publishedAtFormatted}
+                                       </CardDescription>
+                                    )}
                                  </div>
                               </div>
                               <CardAction>
-                                 <Button type="button" onClick={() => handleDownload(report.fileUrl)} className="w-full bg-red-pink font-medium cursor-pointer"><Download size={16} /><span className="hidden sm:flex">Скачать отчет</span></Button>
+                                 <Button type="button" onClick={() => handleDownload(report.fileUrl)} className="w-full bg-red-pink font-medium cursor-pointer" disabled={!report.fileUrl}><Download size={16} /><span className="hidden sm:flex">Скачать отчет</span></Button>
                               </CardAction>
 
                            </CardHeader>
-                           <div>
-                              <p className="font-semibold text-sm flex gap-2 mb-3"><TrendingUp size={20} color="#16A34A" />Основные достижения:</p>
-                              <MainTask tasks={
-                                 achievements
-                              } />
-                           </div>
+                           {(achievements.length > 0) && (
+                              <div>
+                                 <p className="font-semibold text-sm flex gap-2 mb-3"><TrendingUp size={20} color="#16A34A" />Основные достижения:</p>
+                                 <MainTask tasks={
+                                    achievements
+                                 } />
+                              </div>
+                           )}
                         </Card>
                      })
                   )}

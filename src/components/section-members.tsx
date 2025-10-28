@@ -109,28 +109,28 @@ export function SectionMembers() {
                                 <Input id="sheet-name" value={name} onChange={(e) => setName(e.target.value)} required/>
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="sheet-position">Должность*</Label>
-                                <Input id="sheet-position" value={position} onChange={(e) => setPosition(e.target.value)} required/>
+                                <Label htmlFor="sheet-position">Должность</Label>
+                                <Input id="sheet-position" value={position} onChange={(e) => setPosition(e.target.value)}/>
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="sheet-organization">Организация*</Label>
-                                <Input id="sheet-organization" value={organization} onChange={(e) => setOrganization(e.target.value)} required/>
+                                <Label htmlFor="sheet-organization">Организация</Label>
+                                <Input id="sheet-organization" value={organization} onChange={(e) => setOrganization(e.target.value)}/>
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="sheet-experience">Опыт*</Label>
-                                <Input id="sheet-experience" value={experience} onChange={(e) => setExperience(e.target.value)} required/>
+                                <Label htmlFor="sheet-experience">Опыт</Label>
+                                <Input id="sheet-experience" value={experience} onChange={(e) => setExperience(e.target.value)} />
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="sheet-email">Почта*</Label>
-                                <Input id="sheet-email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
+                                <Label htmlFor="sheet-email">Почта</Label>
+                                <Input id="sheet-email" value={email} onChange={(e) => setEmail(e.target.value)} />
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="sheet-phone">Телефон*</Label>
-                                <Input id="sheet-phone" value={phone} onChange={(e) => setPhone(e.target.value)} required/>
+                                <Label htmlFor="sheet-phone">Телефон</Label>
+                                <Input id="sheet-phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="sheet-address">Адрес*</Label>
-                                <Input id="sheet-address" value={address} onChange={(e) => setAddress(e.target.value)} required/>
+                                <Label htmlFor="sheet-address">Адрес</Label>
+                                <Input id="sheet-address" value={address} onChange={(e) => setAddress(e.target.value)} />
                             </div>
                         </div>
                         <SheetFooter>

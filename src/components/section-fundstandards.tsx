@@ -149,7 +149,7 @@ export function SectionFundStandards() {
                             </div>
                             <div className="grid gap-3">
                                 <Label htmlFor="sheet-file">Прикрепления*</Label>
-                                <Input id="sheet-file" onChange={(e) => setFile(e.target.files?.[0] || null)} type="file" accept=".pdf,.doc,.docx" required />
+                                <Input id="sheet-file" onChange={(e) => setFile(e.target.files?.[0] || null)} type="file" accept=".pdf,.doc,.docx"  />
                             </div>
 
                         </div>

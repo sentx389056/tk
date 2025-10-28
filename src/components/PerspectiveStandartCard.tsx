@@ -28,7 +28,7 @@ export default function PerspectiveStandartCard({ title, description, approvedAt
 
       try {
          let urls: { fileUrl: string, fileName?: string }[] = [];
-         
+
          if (typeof fileUrl === 'string') {
             const trimmed = fileUrl.trim();
             if ((trimmed.startsWith('[') || trimmed.startsWith('{'))) {
@@ -45,10 +45,10 @@ export default function PerspectiveStandartCard({ title, description, approvedAt
 
          for (const url of urls) {
             if (!url.fileUrl) continue;
-            
+
             const response = await fetch(url.fileUrl);
             if (!response.ok) throw new Error('Failed to download file');
-            
+
             const blob = await response.blob();
             const downloadUrl = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -71,13 +71,15 @@ export default function PerspectiveStandartCard({ title, description, approvedAt
                   <FileText size={16} className="hidden md:flex" />
                   <CardTitle className="mb-1">{title}</CardTitle>
                </div>
-               <CardDescription className="text-gray-500">
-                  {description}
-               </CardDescription>
+               {(description) && (
+                  <CardDescription className="text-gray-500">
+                     {description}
+                  </CardDescription>
+               )}
             </div>
             <CardAction>
-               <Button 
-                  type="button" 
+               <Button
+                  type="button"
                   className="w-full bg-red-pink font-medium cursor-pointer"
                   onClick={handleDownload}
                   disabled={!fileUrl}
@@ -87,12 +89,14 @@ export default function PerspectiveStandartCard({ title, description, approvedAt
                </Button>
             </CardAction>
          </CardHeader>
-         <CardContent className="p-0">
-            <CardDescription className="text-gray-500 flex gap-2 items-center">
-               <Calendar size={16} />
-               <p>{approvedAtFormatted}</p>
-            </CardDescription>
-         </CardContent>
+         {(approvedAtFormatted) && (
+            <CardContent className="p-0">
+               <CardDescription className="text-gray-500 flex gap-2 items-center">
+                  <Calendar size={16} />
+                  <p>{approvedAtFormatted}</p>
+               </CardDescription>
+            </CardContent>
+         )}
       </Card>
    )
 }

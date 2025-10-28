@@ -29,7 +29,7 @@ export default function MeetingsPage() {
          }
          const data = await res.json();
          setMeetings(data);
-            setFiltered(data);
+         setFiltered(data);
          setLoading(false);
       }
       fetchMeetings();
@@ -101,32 +101,40 @@ export default function MeetingsPage() {
                               </div>
                               <div>
                                  <CardTitle className="mb-1">{meeting.title}</CardTitle>
-                                 <CardDescription className="text-gray-500 flex gap-1 items-center">
-                                    <Calendar size={16} />{publishedAtFormatted}
-                                 </CardDescription>
+                                 {(publishedAtFormatted) && (
+                                    <CardDescription className="text-gray-500 flex gap-1 items-center">
+                                       <Calendar size={16} />{publishedAtFormatted}
+                                    </CardDescription>
+                                 )}
                               </div>
                            </div>
                         </CardHeader>
                         <CardContent className="p-0 flex gap-80 max-sm:gap-15">
-                           <CardDescription className="text-black font-semibold flex flex-col gap-2">
-                              <p className="mb-1 flex items-center gap-2"><FlagTriangleRight size={16} />Формат</p>
-                              <p className="text-gray-500 font-medium">{meeting.format}</p>
-                           </CardDescription>
-                           <CardDescription className="text-black font-semibold flex flex-col gap-2">
-                              <p className="mb-1 flex items-center gap-2"><MapPin size={16} />Место</p>
-                              <p className="text-gray-500 font-medium">{meeting.location}</p>
-                           </CardDescription>
-                        </CardContent>
-                        <div>
-                           <p className="font-semibold text-sm">Материалы заседания:</p>
-                           {Array.isArray(meeting.attachments) && meeting.attachments.length > 0 ? (
-                              meeting.attachments.map((att, idx) => (
-                                 <MaterialMeetingCard key={idx} name={att.fileName || `Файл ${idx + 1}`} size={'—'} fileUrl={att.fileUrl} />
-                              ))
-                           ) : (
-                              <MaterialMeetingCard name="Повестка дня" size="245 КБ" />
+                           {(meeting.format) && (
+                              <CardDescription className="text-black font-semibold flex flex-col gap-2">
+                                 <p className="mb-1 flex items-center gap-2"><FlagTriangleRight size={16} />Формат</p>
+                                 <p className="text-gray-500 font-medium">{meeting.format}</p>
+                              </CardDescription>
                            )}
-                        </div>
+                           {(meeting.location) && (
+                              <CardDescription className="text-black font-semibold flex flex-col gap-2">
+                                 <p className="mb-1 flex items-center gap-2"><MapPin size={16} />Место</p>
+                                 <p className="text-gray-500 font-medium">{meeting.location}</p>
+                              </CardDescription>
+                           )}
+                        </CardContent>
+                        {(meeting.attachments && meeting.attachments.length > 0) && (
+                           <div>
+                              <p className="font-semibold text-sm">Материалы заседания:</p>
+                              {Array.isArray(meeting.attachments) && meeting.attachments.length > 0 ? (
+                                 meeting.attachments.map((att, idx) => (
+                                    <MaterialMeetingCard key={idx} name={att.fileName || `Файл ${idx + 1}`} size={'—'} fileUrl={att.fileUrl} />
+                                 ))
+                              ) : (
+                                 <MaterialMeetingCard name="Повестка дня" size="245 КБ" />
+                              )}
+                           </div>
+                        )}
                      </Card>
                   })
                )

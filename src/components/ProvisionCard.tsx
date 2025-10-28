@@ -27,7 +27,7 @@ export default function ProvisionCard({ title, description, approvedAt, organiza
    const handleDownload = async () => {
       try {
          let urls: { fileUrl: string, fileName?: string }[] = [];
-         
+
          if (typeof fileUrl === 'string') {
             const trimmed = fileUrl.trim();
             if ((trimmed.startsWith('[') || trimmed.startsWith('{'))) {
@@ -44,7 +44,7 @@ export default function ProvisionCard({ title, description, approvedAt, organiza
 
          for (const url of urls) {
             if (!url.fileUrl) continue;
-            
+
             const response = await fetch(url.fileUrl);
             const blob = await response.blob();
             const downloadUrl = window.URL.createObjectURL(blob);
@@ -69,16 +69,19 @@ export default function ProvisionCard({ title, description, approvedAt, organiza
                </div>
                <div>
                   <CardTitle className="mb-1">{title}</CardTitle>
-                  <CardDescription className="text-gray-500">
-                     {description}
-                  </CardDescription>
+                  {(description) && (
+                     <CardDescription className="text-gray-500">
+                        {description}
+                     </CardDescription>
+                  )}
                </div>
             </div>
             <CardAction>
-               <Button 
-                  type="button" 
+               <Button
+                  type="button"
                   className="w-full bg-red-pink font-medium cursor-pointer"
                   onClick={handleDownload}
+                  disabled={!fileUrl}
                >
                   <Download size={16} />
                   <span className="hidden sm:flex">Скачать</span>
@@ -86,14 +89,18 @@ export default function ProvisionCard({ title, description, approvedAt, organiza
             </CardAction>
          </CardHeader>
          <CardContent className="p-0">
-            <CardDescription className="text-gray-500">
-               <p className="mb-1"><strong>Утвержден:</strong></p>
-               <p>{approvedAtFormatted}</p>
-            </CardDescription>
-            <CardDescription className="text-gray-500 mt-4">
-               <p className="mb-1"><strong>Организация:</strong></p>
-               <p>{organization}</p>
-            </CardDescription>
+            {(approvedAtFormatted) && (
+               <CardDescription className="text-gray-500">
+                  <p className="mb-1"><strong>Утвержден:</strong></p>
+                  <p>{approvedAtFormatted}</p>
+               </CardDescription>
+            )}
+            {(organization) && (
+               <CardDescription className="text-gray-500 mt-4">
+                  <p className="mb-1"><strong>Организация:</strong></p>
+                  <p>{organization}</p>
+               </CardDescription>
+            )}
          </CardContent>
       </Card>
    )
