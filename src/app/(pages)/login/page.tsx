@@ -144,7 +144,7 @@ export default function LoginPage() {
                                 </div>
                             </CardHeader>
                             <CardContent>
-                                <div className="flex gap-3">
+                                <div className="flex gap-3 items-center justify-center">
                                     <Button className="bg-red-pink" onClick={() => router.push('/securearea')}>Перейти в закрытый раздел</Button>
                                     <Button className="" onClick={async () => { await fetch('/api/auth/logout', { method: 'POST' }); window.location.reload(); }}>Выйти</Button>
                                 </div>

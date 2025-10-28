@@ -6,6 +6,23 @@ import { extname, join } from "path";
 
 export async function POST(request: NextRequest) {
     try {
+
+        // Get user ID from the cookie first
+        const cookies = request.headers.get('cookie');
+        let userId = null;
+
+        if (cookies) {
+            const tkUserCookie = cookies.split(';').find(c => c.trim().startsWith('tk_user='));
+            if (tkUserCookie) {
+                try {
+                    const userData = JSON.parse(decodeURIComponent(tkUserCookie.split('=')[1]));
+                    userId = userData.id;
+                } catch (e) {
+                    console.error('Error parsing user cookie:', e);
+                }
+            }
+        }
+
         const formData = await request.formData();
 
         const title = String(formData.get('title') || '');
@@ -49,6 +66,21 @@ export async function POST(request: NextRequest) {
                 attachments: JSON.stringify(savedFiles),
             },
         });
+
+        if (userId) {
+            await prisma.log.create({
+                data: {
+                    type: 'ADD',
+                    action: 'Добавление заседания',
+                    userId,
+                    metadata: JSON.stringify({
+                        meetingId: meeting.id,
+                        meetingName: meeting.title,
+                        timestamp: new Date().toISOString()
+                    })
+                }
+            });
+        }
 
         return NextResponse.json({ success: true, meeting: { ...meeting, attachments: savedFiles } }, { status: 201 });
     } catch (error) {

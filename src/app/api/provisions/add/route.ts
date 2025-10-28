@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
             await prisma.log.create({
                 data: {
                     type: 'ADD',
-                    action: 'PROVISION_ADD',
+                    action: 'Добавление положения о ТК',
                     userId,
                     documentId: provision.id,
                     metadata: JSON.stringify({

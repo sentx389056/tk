@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
             await prisma.log.create({
                 data: {
                     type: 'ADD',
-                    action: 'EXECUTIVE_ADD',
+                    action: 'Добавление руководящего сотрудника',
                     userId,
                     metadata: JSON.stringify({
                         executiveId: executive.id,
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json(executive);
     } catch (error) {
-        console.error('Ошибка при создании отчёта:', error);
+        console.error('Ошибка при создании руководителя:', error);
         return NextResponse.json({ error: 'Ошибка сервера' }, { status: 500 });
     }
 }

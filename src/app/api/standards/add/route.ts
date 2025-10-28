@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
       await prisma.log.create({
         data: {
           type: 'ADD',
-          action: 'STANDARD_ADD',
+          action: 'Добавление фонда стандартов',
           userId: user.id,
           documentId: standard.id,
           metadata: JSON.stringify({
