@@ -34,13 +34,26 @@ export function SectionFundStandards() {
 
     useEffect(() => {
         const fetchStandards = async () => {
-            const res = await fetch('/api/standards');
-            if (!res.ok) {
-                throw new Error('Failed to fetch standards');
+            try {
+                const res = await fetch('/api/standards?page=1&pageSize=10000');
+                if (!res.ok) {
+                    throw new Error('Failed to fetch standards');
+                }
+                const data = await res.json();
+                // API may return either an array (legacy) or a paginated object { standards, total, ... }
+                if (Array.isArray(data)) {
+                    setStandards(data);
+                } else if (data && Array.isArray(data.standards)) {
+                    setStandards(data.standards);
+                } else {
+                    setStandards([]);
+                }
+            } catch (err) {
+                console.error('Error fetching standards:', err);
+                setStandards([]);
+            } finally {
+                setLoading(false);
             }
-            const data = await res.json();
-            setStandards(data);
-            setLoading(false);
         }
         fetchStandards();
     }, []);
@@ -130,22 +143,22 @@ export function SectionFundStandards() {
                                 <Input id="sheet-name" value={title} onChange={(e) => setTitle(e.target.value)} type="text" required />
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="sheet-description">Описание*</Label>
-                                <Input id="sheet-description" value={description} onChange={(e) => setDescription(e.target.value)} type="text" required />
+                                <Label htmlFor="sheet-description">Описание</Label>
+                                <Input id="sheet-description" value={description} onChange={(e) => setDescription(e.target.value)} type="text" />
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="sheet-approved">Принят*</Label>
-                                <Input id="sheet-approved" checked={approved} onChange={(e) => setApproved(e.target.checked)} type="checkbox" required />
+                                <Label htmlFor="sheet-approved">Принят</Label>
+                                <Input id="sheet-approved" checked={approved} onChange={(e) => setApproved(e.target.checked)} type="checkbox"  />
                             </div>
                             {approved && (
                                 <div className="grid gap-3">
-                                    <Label htmlFor="sheet-approvedAt">Дата принятия*</Label>
-                                    <Input id="sheet-approvedAt" value={approvedAt} onChange={(e) => setApprovedAt(e.target.value)} type="date" required />
+                                    <Label htmlFor="sheet-approvedAt">Дата принятия</Label>
+                                    <Input id="sheet-approvedAt" value={approvedAt} onChange={(e) => setApprovedAt(e.target.value)} type="date"  />
                                 </div>
                             )}
                             <div className="grid gap-3">
-                                <Label htmlFor="sheet-description">Организация*</Label>
-                                <Input id="sheet-description" value={organization} onChange={(e) => setOrganization(e.target.value)} type="text" required />
+                                <Label htmlFor="sheet-description">Организация</Label>
+                                <Input id="sheet-description" value={organization} onChange={(e) => setOrganization(e.target.value)} type="text"  />
                             </div>
                             <div className="grid gap-3">
                                 <Label htmlFor="sheet-file">Прикрепления*</Label>

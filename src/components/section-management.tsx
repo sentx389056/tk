@@ -128,80 +128,80 @@ export function SectionManagements() {
                         </SheetHeader>
                         <div className="flex-1 overflow-y-auto py-4">
                             <div className="grid gap-6 px-4">
-                            <div className="grid gap-3">
-                                <Label htmlFor="sheet-name">ФИО*</Label>
-                                <Input id="sheet-name" value={name} onChange={(e) => setName(e.target.value)} type="text" required />
-                            </div>
-                            <div className="grid gap-3">
-                                <Label htmlFor="sheet-position">Должность*</Label>
-                                <Input id="sheet-position" value={position} onChange={(e) => setPosition(e.target.value)} type="text" required />
-                            </div>
-                            <div className="grid gap-3">
-                                <Label htmlFor="sheet-organization">Организация*</Label>
-                                <Input id="sheet-organization" value={organization} onChange={(e) => setOrganization(e.target.value)} type="text" required />
-                            </div>
-                            <div className="grid gap-3">
-                                <Label htmlFor="sheet-email">Почта*</Label>
-                                <Input id="sheet-email" value={email} onChange={(e) => setEmail(e.target.value)} type="text" required />
-                            </div>
-                            <div className="grid gap-3">
-                                <Label htmlFor="sheet-phone">Телефон*</Label>
-                                <Input id="sheet-phone" value={phone} onChange={(e) => setPhone(e.target.value)} type="text" required />
-                            </div>
-                            <div className="grid gap-3">
-                                <Label htmlFor="sheet-phone">Адрес*</Label>
-                                <Input id="sheet-phone" value={address} onChange={(e) => setAddress(e.target.value)} type="text" required />
-                            </div>
-                            <div className="grid gap-3">
-                                <Label htmlFor="sheet-experience">Опыт*</Label>
-                                <Input id="sheet-experience" value={experience} onChange={(e) => setExperience(e.target.value)} type="text" required />
-                            </div>
-                            <div className="grid gap-3">
-                                <Label htmlFor="sheet-bio">Биография*</Label>
-                                <Input id="sheet-bio" value={biography} onChange={(e) => setBiography(e.target.value)} type="text" required />
-                            </div>
-                            <div className="grid gap-3">
-                                <Label htmlFor="sheet-education">Образование*</Label>
-                                <Input id="sheet-education" value={education} onChange={(e) => setEducation(e.target.value)} type="text" required />
-                            </div>
-                            <div className="grid gap-3">
-                                <Label htmlFor="sheet-achievements">Достижения*</Label>
-                                <Input id="sheet-achievements" value={newAchievement} onChange={(e) => setNewAchievement(e.target.value)} type="text" />
-                            </div>
-                            <Button variant="outline" className="m-1" onClick={addAchievement}>+</Button>
-                            <ul className="space-y-1">
-                                {achievements.map((ach, i) => (
-                                    <li key={i} className="flex justify-between items-center bg-gray-100 p-2 rounded">
-                                        {ach}
-                                        <button
-                                            type="button"
-                                            onClick={() => removeAchievement(i)}
-                                            className="text-red-500"
-                                        >
-                                            Удалить
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
-                            <div className="grid gap-3">
-                                <Label htmlFor="sheet-awards">Награды*</Label>
-                                <Input id="sheet-awards" value={newAward} onChange={(e) => setNewAward(e.target.value)} type="text" />
-                            </div>
-                            <Button variant="outline" className="m-1" onClick={addAward}>+</Button>
-                            <ul className="space-y-1">
-                                {awards.map((awd, i) => (
-                                    <li key={i} className="flex justify-between items-center bg-gray-100 p-2 rounded">
-                                        {awd}
-                                        <button
-                                            type="button"
-                                            onClick={() => removeAward(i)}
-                                            className="text-red-500"
-                                        >
-                                            Удалить
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
+                                <div className="grid gap-3">
+                                    <Label htmlFor="sheet-name">ФИО*</Label>
+                                    <Input id="sheet-name" value={name} onChange={(e) => setName(e.target.value)} type="text" required />
+                                </div>
+                                <div className="grid gap-3">
+                                    <Label htmlFor="sheet-position">Должность</Label>
+                                    <Input id="sheet-position" value={position} onChange={(e) => setPosition(e.target.value)} type="text" />
+                                </div>
+                                <div className="grid gap-3">
+                                    <Label htmlFor="sheet-organization">Организация</Label>
+                                    <Input id="sheet-organization" value={organization} onChange={(e) => setOrganization(e.target.value)} type="text" />
+                                </div>
+                                <div className="grid gap-3">
+                                    <Label htmlFor="sheet-email">Почта</Label>
+                                    <Input id="sheet-email" value={email} onChange={(e) => setEmail(e.target.value)} type="text"  />
+                                </div>
+                                <div className="grid gap-3">
+                                    <Label htmlFor="sheet-phone">Телефон</Label>
+                                    <Input id="sheet-phone" value={phone} onChange={(e) => setPhone(e.target.value)} type="text"  />
+                                </div>
+                                <div className="grid gap-3">
+                                    <Label htmlFor="sheet-phone">Адрес</Label>
+                                    <Input id="sheet-phone" value={address} onChange={(e) => setAddress(e.target.value)} type="text"  />
+                                </div>
+                                <div className="grid gap-3">
+                                    <Label htmlFor="sheet-experience">Опыт</Label>
+                                    <Input id="sheet-experience" value={experience} onChange={(e) => setExperience(e.target.value)} type="text"  />
+                                </div>
+                                <div className="grid gap-3">
+                                    <Label htmlFor="sheet-bio">Биография</Label>
+                                    <Input id="sheet-bio" value={biography} onChange={(e) => setBiography(e.target.value)} type="text"  />
+                                </div>
+                                <div className="grid gap-3">
+                                    <Label htmlFor="sheet-education">Образование</Label>
+                                    <Input id="sheet-education" value={education} onChange={(e) => setEducation(e.target.value)} type="text"  />
+                                </div>
+                                <div className="grid gap-3">
+                                    <Label htmlFor="sheet-achievements">Достижения</Label>
+                                    <Input id="sheet-achievements" value={newAchievement} onChange={(e) => setNewAchievement(e.target.value)} type="text" />
+                                </div>
+                                <Button variant="outline" className="m-1" onClick={addAchievement}>+</Button>
+                                <ul className="space-y-1">
+                                    {achievements.map((ach, i) => (
+                                        <li key={i} className="flex justify-between items-center bg-gray-100 p-2 rounded">
+                                            {ach}
+                                            <button
+                                                type="button"
+                                                onClick={() => removeAchievement(i)}
+                                                className="text-red-500"
+                                            >
+                                                Удалить
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <div className="grid gap-3">
+                                    <Label htmlFor="sheet-awards">Награды</Label>
+                                    <Input id="sheet-awards" value={newAward} onChange={(e) => setNewAward(e.target.value)} type="text" />
+                                </div>
+                                <Button variant="outline" className="m-1" onClick={addAward}>+</Button>
+                                <ul className="space-y-1">
+                                    {awards.map((awd, i) => (
+                                        <li key={i} className="flex justify-between items-center bg-gray-100 p-2 rounded">
+                                            {awd}
+                                            <button
+                                                type="button"
+                                                onClick={() => removeAward(i)}
+                                                className="text-red-500"
+                                            >
+                                                Удалить
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
                         </div>
                         <SheetFooter className="flex-none p-4 border-t bg-white">
@@ -214,137 +214,137 @@ export function SectionManagements() {
                 </Sheet>
             </form>
             <div className="h-[60vh] w-full overflow-auto">
-            {isLoading ? (
-                <Table className="text-base min-w-full">
-                    <TableHeader className="sticky top-0 bg-white z-10">
+                {isLoading ? (
+                    <Table className="text-base min-w-full">
+                        <TableHeader className="sticky top-0 bg-white z-10">
+                            <TableRow>
+                                <TableHead className="text-gray-500">ID</TableHead>
+                                <TableHead className="text-gray-500">ФИО</TableHead>
+                                <TableHead className="text-gray-500">Должность</TableHead>
+                                <TableHead className="text-gray-500">Организация</TableHead>
+                                <TableHead className="text-gray-500">Почта</TableHead>
+                                <TableHead className="text-gray-500">Телефон</TableHead>
+                                <TableHead className="text-gray-500">Адрес</TableHead>
+                                <TableHead className="text-gray-500">Опыт</TableHead>
+                                <TableHead className="text-gray-500">Биография</TableHead>
+                                <TableHead className="text-gray-500">Образование</TableHead>
+                                <TableHead className="text-gray-500">Достижения</TableHead>
+                                <TableHead className="text-gray-500">Награды</TableHead>
+                            </TableRow>
+                        </TableHeader>
                         <TableRow>
-                            <TableHead className="text-gray-500">ID</TableHead>
-                            <TableHead className="text-gray-500">ФИО</TableHead>
-                            <TableHead className="text-gray-500">Должность</TableHead>
-                            <TableHead className="text-gray-500">Организация</TableHead>
-                            <TableHead className="text-gray-500">Почта</TableHead>
-                            <TableHead className="text-gray-500">Телефон</TableHead>
-                            <TableHead className="text-gray-500">Адрес</TableHead>
-                            <TableHead className="text-gray-500">Опыт</TableHead>
-                            <TableHead className="text-gray-500">Биография</TableHead>
-                            <TableHead className="text-gray-500">Образование</TableHead>
-                            <TableHead className="text-gray-500">Достижения</TableHead>
-                            <TableHead className="text-gray-500">Награды</TableHead>
+                            <TableCell colSpan={12} className="!p-0">
+                                <Skeleton className="h-[35] w-full rounded-none" />
+                            </TableCell>
                         </TableRow>
-                    </TableHeader>
-                    <TableRow>
-                        <TableCell colSpan={12} className="!p-0">
-                            <Skeleton className="h-[35] w-full rounded-none" />
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan={12} className="!p-0">
-                            <Skeleton className="h-[35] w-full rounded-none" />
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan={12} className="!p-0">
-                            <Skeleton className="h-[35] w-full rounded-none" />
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan={12} className="!p-0">
-                            <Skeleton className="h-[35] w-full rounded-none" />
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan={12} className="!p-0">
-                            <Skeleton className="h-[35] w-full rounded-none" />
-                        </TableCell>
-                    </TableRow>
-                </Table>
-            ) : (
-                <Table className="text-base min-w-full">
-                    <TableHeader className="sticky top-0 bg-white z-10">
                         <TableRow>
-                            <TableHead className="w-[100px]">ID</TableHead>
-                            <TableHead>ФИО</TableHead>
-                            <TableHead>Должность</TableHead>
-                            <TableHead>Организация</TableHead>
-                            <TableHead>Почта</TableHead>
-                            <TableHead>Телефон</TableHead>
-                            <TableHead>Адрес</TableHead>
-                            <TableHead>Опыт</TableHead>
-                            <TableHead>Биография</TableHead>
-                            <TableHead>Образование</TableHead>
-                            <TableHead>Достижения</TableHead>
-                            <TableHead>Награды</TableHead>
-                            <TableHead className="text-right">Действия</TableHead>
+                            <TableCell colSpan={12} className="!p-0">
+                                <Skeleton className="h-[35] w-full rounded-none" />
+                            </TableCell>
                         </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {executives.map((executive) => (
-                            <TableRow key={executive.id}>
-                                <TableCell className="font-medium">{executive.id}</TableCell>
-                                <TableCell>{executive.name}</TableCell>
-                                <TableCell>{executive.position}</TableCell>
-                                <TableCell>{executive.organization}</TableCell>
-                                <TableCell>{executive.email}</TableCell>
-                                <TableCell>{executive.phone}</TableCell>
-                                <TableCell>{executive.address}</TableCell>
-                                <TableCell>{executive.experience}</TableCell>
-                                <TableCell>{executive.biography}</TableCell>
-                                <TableCell>{executive.education}</TableCell>
-                                <TableCell>{executive.achievements}</TableCell>
-                                <TableCell>{executive.awards}</TableCell>
-                                <TableCell className="text-right">
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <Button variant="outline">...</Button>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-80">
-                                            <div className="grid gap-4">
-                                                <div className="space-y-2">
-                                                    <h4 className="leading-none font-medium">Действия</h4>
+                        <TableRow>
+                            <TableCell colSpan={12} className="!p-0">
+                                <Skeleton className="h-[35] w-full rounded-none" />
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell colSpan={12} className="!p-0">
+                                <Skeleton className="h-[35] w-full rounded-none" />
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell colSpan={12} className="!p-0">
+                                <Skeleton className="h-[35] w-full rounded-none" />
+                            </TableCell>
+                        </TableRow>
+                    </Table>
+                ) : (
+                    <Table className="text-base min-w-full">
+                        <TableHeader className="sticky top-0 bg-white z-10">
+                            <TableRow>
+                                <TableHead className="w-[100px]">ID</TableHead>
+                                <TableHead>ФИО</TableHead>
+                                <TableHead>Должность</TableHead>
+                                <TableHead>Организация</TableHead>
+                                <TableHead>Почта</TableHead>
+                                <TableHead>Телефон</TableHead>
+                                <TableHead>Адрес</TableHead>
+                                <TableHead>Опыт</TableHead>
+                                <TableHead>Биография</TableHead>
+                                <TableHead>Образование</TableHead>
+                                <TableHead>Достижения</TableHead>
+                                <TableHead>Награды</TableHead>
+                                <TableHead className="text-right">Действия</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {executives.map((executive) => (
+                                <TableRow key={executive.id}>
+                                    <TableCell className="font-medium">{executive.id}</TableCell>
+                                    <TableCell>{executive.name}</TableCell>
+                                    <TableCell>{executive.position}</TableCell>
+                                    <TableCell>{executive.organization}</TableCell>
+                                    <TableCell>{executive.email}</TableCell>
+                                    <TableCell>{executive.phone}</TableCell>
+                                    <TableCell>{executive.address}</TableCell>
+                                    <TableCell>{executive.experience}</TableCell>
+                                    <TableCell>{executive.biography}</TableCell>
+                                    <TableCell>{executive.education}</TableCell>
+                                    <TableCell>{executive.achievements}</TableCell>
+                                    <TableCell>{executive.awards}</TableCell>
+                                    <TableCell className="text-right">
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <Button variant="outline">...</Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-80">
+                                                <div className="grid gap-4">
+                                                    <div className="space-y-2">
+                                                        <h4 className="leading-none font-medium">Действия</h4>
 
-                                                </div>
-                                                <div className="grid gap-2">
-                                                    {/* <div className="grid grid-cols-3 items-center gap-4">
+                                                    </div>
+                                                    <div className="grid gap-2">
+                                                        {/* <div className="grid grid-cols-3 items-center gap-4">
                                                         Редактировать
                                                     </div> */}
-                                                    <div className="grid grid-cols-3 items-center gap-4">
-                                                        <AlertDialog>
-                                                            <AlertDialogTrigger asChild>
-                                                                <Button variant="outline">Удалить</Button>
-                                                            </AlertDialogTrigger>
-                                                            <AlertDialogContent>
-                                                                <AlertDialogHeader>
-                                                                    <AlertDialogTitle>Вы уверены что хотите удалить этот объект?</AlertDialogTitle>
-                                                                    <AlertDialogDescription>
-                                                                        Это действие невозможно отменить. Это приведет к безвозвратному удалению записи.
-                                                                    </AlertDialogDescription>
-                                                                </AlertDialogHeader>
-                                                                <AlertDialogFooter>
-                                                                    <AlertDialogCancel>Отменить</AlertDialogCancel>
-                                                                    <AlertDialogAction onClick={() => handleDelete(executive.id)}>Удалить</AlertDialogAction>
-                                                                </AlertDialogFooter>
-                                                            </AlertDialogContent>
-                                                        </AlertDialog>
-                                                    </div>
-                                                    {/* <div className="grid grid-cols-3 items-center gap-4">
+                                                        <div className="grid grid-cols-3 items-center gap-4">
+                                                            <AlertDialog>
+                                                                <AlertDialogTrigger asChild>
+                                                                    <Button variant="outline">Удалить</Button>
+                                                                </AlertDialogTrigger>
+                                                                <AlertDialogContent>
+                                                                    <AlertDialogHeader>
+                                                                        <AlertDialogTitle>Вы уверены что хотите удалить этот объект?</AlertDialogTitle>
+                                                                        <AlertDialogDescription>
+                                                                            Это действие невозможно отменить. Это приведет к безвозвратному удалению записи.
+                                                                        </AlertDialogDescription>
+                                                                    </AlertDialogHeader>
+                                                                    <AlertDialogFooter>
+                                                                        <AlertDialogCancel>Отменить</AlertDialogCancel>
+                                                                        <AlertDialogAction onClick={() => handleDelete(executive.id)}>Удалить</AlertDialogAction>
+                                                                    </AlertDialogFooter>
+                                                                </AlertDialogContent>
+                                                            </AlertDialog>
+                                                        </div>
+                                                        {/* <div className="grid grid-cols-3 items-center gap-4">
                                                         Скачать
                                                     </div> */}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </PopoverContent>
-                                    </Popover>
-                                </TableCell>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                        <TableFooter className="w-full">
+                            <TableRow>
+                                <TableCell colSpan={1}>Всего:</TableCell>
+                                <TableCell className="text-right">{executives.length}</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                    <TableFooter className="w-full">
-                        <TableRow>
-                            <TableCell colSpan={1}>Всего:</TableCell>
-                            <TableCell className="text-right">{executives.length}</TableCell>
-                        </TableRow>
-                    </TableFooter>
-                </Table>
-            )}
+                        </TableFooter>
+                    </Table>
+                )}
             </div>
         </div>
     )

@@ -31,14 +31,20 @@ export function SectionProvisions() {
 
     useEffect(() => {
         const fetchProvisions = async () => {
-            const res = await fetch('/api/provisions');
-            if (!res.ok) {
-                throw new Error('Failed to fetch standards');
+            try {
+                const res = await fetch('/api/provisions?all=true');
+                if (!res.ok) {
+                    throw new Error('Failed to fetch provisions');
+                }
+                const data = await res.json();
+                setProvisions(data);
+            } catch (error) {
+                console.error('Error:', error);
+                toast.error('Не удалось загрузить положения');
+            } finally {
+                setLoading(false);
             }
-            const data = await res.json();
-            setProvisions(data);
-            setLoading(false);
-        }
+        };
         fetchProvisions();
     }, []);
 
@@ -149,16 +155,16 @@ export function SectionProvisions() {
                                 <Input id="sheet-name" value={title} onChange={(e) => setTitle(e.target.value)} type="text" required />
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="sheet-description">Описание*</Label>
-                                <Input id="sheet-description" value={description} onChange={(e) => setDescription(e.target.value)} type="text" required />
+                                <Label htmlFor="sheet-description">Описание</Label>
+                                <Input id="sheet-description" value={description} onChange={(e) => setDescription(e.target.value)} type="text" />
                             </div>
                             <div className="grid gap-3">
                                 <Label htmlFor="sheet-endDate">Дата принятия*</Label>
-                                <Input id="sheet-endDate" value={approvedAt} onChange={(e) => setApprovedAt(e.target.value)} type="date" required />
+                                <Input id="sheet-endDate" value={approvedAt} onChange={(e) => setApprovedAt(e.target.value)} type="date"  required/>
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="sheet-endDate">Организация*</Label>
-                                <Input id="sheet-endDate" value={organization} onChange={(e) => setOrganization(e.target.value)} type="text" required />
+                                <Label htmlFor="sheet-endDate">Организация</Label>
+                                <Input id="sheet-endDate" value={organization} onChange={(e) => setOrganization(e.target.value)} type="text"  />
                             </div>
                             <div className="grid gap-3">
                                 <Label htmlFor="sheet-file">Прикрепления*</Label>

@@ -1,6 +1,7 @@
 "use client";
 import ProjectCard from "@/components/ProjectCard";
 import SearchInput from "@/components/SearchInput";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
 
@@ -13,40 +14,63 @@ type Project = {
    fileUrl?: any;
 }
 
+type PaginatedResponse = {
+   projects: Project[];
+   total: number;
+   page: number;
+   pageSize: number;
+   totalPages: number;
+};
+
 export default function ProjectsPage() {
    const [projects, setProjects] = useState<Project[]>([]);
    const [isLoading, setLoading] = useState<boolean>(true);
-   const [search, setSearch] = useState<string>('');
-   const [filtered, setFiltered] = useState<Project[]>([]);
+   const [search, setSearch] = useState<string>("");
+   const [page, setPage] = useState(1);
+   const [pageSize] = useState(10);
+   const [totalPages, setTotalPages] = useState(1);
+   const [total, setTotal] = useState(0);
 
-   useEffect(() => {
-      const fetchProjects = async () => {
-         const res = await fetch('/api/projects');
+   const fetchProjects = async () => {
+      setLoading(true);
+      try {
+         const params = new URLSearchParams({
+            page: page.toString(),
+            pageSize: pageSize.toString()
+         });
+         
+         if (search) {
+            params.append('search', search);
+         }
+
+         const res = await fetch(`/api/projects?${params}`);
          if (!res.ok) {
             throw new Error('Failed to fetch projects');
          }
-         const data = await res.json();
-         setProjects(data);
-         setFiltered(data);
+         const data: PaginatedResponse = await res.json();
+         setProjects(data.projects);
+         setTotal(data.total);
+         setTotalPages(data.totalPages);
+      } catch (error) {
+         console.error('Error:', error);
+         setProjects([]);
+      } finally {
          setLoading(false);
       }
-      fetchProjects();
-   }, []);
+   };
 
+   // Reset to first page when search changes
+   useEffect(() => {
+      setPage(1);
+   }, [search]);
+
+   // Fetch when page or search changes
    useEffect(() => {
       const t = setTimeout(() => {
-         if (!search) {
-            setFiltered(projects);
-            return;
-         }
-
-         const q = search.trim().toLowerCase();
-         const result = projects.filter((p) => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
-         setFiltered(result);
-      }, 200);
-
+         fetchProjects();
+      }, 350);
       return () => clearTimeout(t);
-   }, [search, projects]);
+   }, [page, search]);
 
    return (
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">
@@ -55,7 +79,7 @@ export default function ProjectsPage() {
                <h1 className="text-4xl font-bold text-center mb-2">Проекты стандартов</h1>
                <p className="text-center text-base font-light text-gray-700 max-w-180">Проекты национальных стандартов, разрабатываемые Техническим комитетом</p>
             </div>
-            <SearchInput value={search} onChange={setSearch} count={filtered.length} />
+            <SearchInput value={search} onChange={setSearch} count={total} />
             <section className="mt-8 flex flex-col gap-10">
                {isLoading ? (
                   <div className="flex flex-col gap-10">
@@ -74,17 +98,37 @@ export default function ProjectsPage() {
                         </div>
                      </div>
                   </div>
+               ) : projects.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                     Проекты не найдены
+                  </div>
                ) : (
-                  filtered.map((project) => {
-                     return <ProjectCard
-                        key={project.id}
-                        title={project.title}
-                        description={project.description}
-                        startDate={new Date(project.startDate)}
-                        endDate={new Date(project.endDate)}
-                        fileUrl={project.fileUrl}
-                     />
-                  })
+                  <>
+                     {projects.map((project) => (
+                        <ProjectCard
+                           key={project.id}
+                           title={project.title}
+                           description={project.description}
+                           startDate={new Date(project.startDate)}
+                           endDate={new Date(project.endDate)}
+                           fileUrl={project.fileUrl}
+                        />
+                     ))}
+                     {/* Pagination controls */}
+                     {projects.length > 0 && (
+                        <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                           <div className="text-sm text-gray-500">Страница {page} из {totalPages}</div>
+                           <div className="flex gap-2">
+                              <Button variant="outline" size="sm" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1 || isLoading}>
+                                 Предыдущая
+                              </Button>
+                              <Button variant="outline" size="sm" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages || isLoading}>
+                                 Следующая
+                              </Button>
+                           </div>
+                        </div>
+                     )}
+                  </>
                )}
             </section>
          </div>

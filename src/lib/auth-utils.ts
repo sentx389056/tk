@@ -14,13 +14,23 @@ export async function getUserFromRequest(request: Request) {
 
         // Verify user exists in database
         const user = await prisma.user.findUnique({
-            where: { id: userData.id },
-            select: {
-                id: true,
-                login: true,
-                createdAt: true,
-                updatedAt: true
-            }
+                where: { id: userData.id },
+                select: {
+                    id: true,
+                    login: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    member: {
+                        select: {
+                            id: true,
+                            name: true,
+                            position: true,
+                            organization: true,
+                            email: true,
+                            phone: true
+                        }
+                    }
+                }
         });
 
         return user;

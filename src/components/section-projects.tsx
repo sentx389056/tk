@@ -31,13 +31,27 @@ export function SectionProjects() {
 
     useEffect(() => {
         const fetchProjects = async () => {
-            const res = await fetch('/api/projects');
-            if (!res.ok) {
-                throw new Error('Failed to fetch standards');
+            try {
+                const res = await fetch('/api/projects');
+                if (!res.ok) {
+                    throw new Error('Failed to fetch standards');
+                }
+                const data = await res.json();
+                // support paginated response { projects, total, totalPages }
+                if (Array.isArray((data as any).projects)) {
+                    setProjects((data as any).projects);
+                } else if (Array.isArray(data)) {
+                    // fallback if API returns array
+                    setProjects(data as any);
+                } else {
+                    setProjects([]);
+                }
+            } catch (err) {
+                console.error('Failed to fetch projects:', err);
+                setProjects([]);
+            } finally {
+                setLoading(false);
             }
-            const data = await res.json();
-            setProjects(data);
-            setLoading(false);
         }
         fetchProjects();
     }, []);
@@ -111,8 +125,8 @@ export function SectionProjects() {
                                 <Input id="sheet-name" value={title} onChange={(e) => setTitle(e.target.value)} type="text" required />
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="sheet-description">Описание*</Label>
-                                <Input id="sheet-description" value={description} onChange={(e) => setDescription(e.target.value)} type="text" required />
+                                <Label htmlFor="sheet-description">Описание</Label>
+                                <Input id="sheet-description" value={description} onChange={(e) => setDescription(e.target.value)} type="text" />
                             </div>
                             <div className="grid gap-3">
                                 <Label htmlFor="sheet-startDate">Дата принятия*</Label>
@@ -189,52 +203,52 @@ export function SectionProjects() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                            {projects.map((project) => (
-                                <TableRow key={project.id}>
-                                    <TableCell className="font-medium">{project.id}</TableCell>
-                                    <TableCell>{project.title}</TableCell>
-                                    <TableCell>{project.description}</TableCell>
-                                    <TableCell>{project.startDate ? new Date(project.startDate).toLocaleDateString('ru-RU') : ''}</TableCell>
-                                    <TableCell>{project.endDate ? new Date(project.endDate).toLocaleDateString('ru-RU') : ''}</TableCell>
-                                    <TableCell>
-                                        {(() => {
-                                            try {
-                                                if (typeof project.fileUrl === 'string') {
-                                                    const trimmed = project.fileUrl.trim();
-                                                    if ((trimmed.startsWith('[') || trimmed.startsWith('{'))) {
-                                                        const at = JSON.parse(trimmed);
-                                                        if (Array.isArray(at)) {
-                                                            return at.map((a: any, idx: number) => (
-                                                                <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName || getFileNameFromUrl(a.fileUrl)}</a></div>
-                                                            ));
-                                                        }
-                                                        if (at && at.fileUrl) {
-                                                            return <a className="underline text-blue-600" href={at.fileUrl} target="_blank" rel="noreferrer">{at.fileName || getFileNameFromUrl(at.fileUrl)}</a>;
-                                                        }
+                        {projects.map((project) => (
+                            <TableRow key={project.id}>
+                                <TableCell className="font-medium">{project.id}</TableCell>
+                                <TableCell>{project.title}</TableCell>
+                                <TableCell>{project.description}</TableCell>
+                                <TableCell>{project.startDate ? new Date(project.startDate).toLocaleDateString('ru-RU') : ''}</TableCell>
+                                <TableCell>{project.endDate ? new Date(project.endDate).toLocaleDateString('ru-RU') : ''}</TableCell>
+                                <TableCell>
+                                    {(() => {
+                                        try {
+                                            if (typeof project.fileUrl === 'string') {
+                                                const trimmed = project.fileUrl.trim();
+                                                if ((trimmed.startsWith('[') || trimmed.startsWith('{'))) {
+                                                    const at = JSON.parse(trimmed);
+                                                    if (Array.isArray(at)) {
+                                                        return at.map((a: any, idx: number) => (
+                                                            <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName || getFileNameFromUrl(a.fileUrl)}</a></div>
+                                                        ));
                                                     }
-                                                    if (trimmed) {
-                                                        const name = getFileNameFromUrl(trimmed);
-                                                        return <a className="underline text-blue-600" href={trimmed} target="_blank" rel="noreferrer">{name}</a>;
+                                                    if (at && at.fileUrl) {
+                                                        return <a className="underline text-blue-600" href={at.fileUrl} target="_blank" rel="noreferrer">{at.fileName || getFileNameFromUrl(at.fileUrl)}</a>;
                                                     }
                                                 }
-
-                                                const at = project.fileUrl as any;
-                                                if (Array.isArray(at)) {
-                                                    return at.map((a: any, idx: number) => (
-                                                        <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName || getFileNameFromUrl(a.fileUrl)}</a></div>
-                                                    ));
+                                                if (trimmed) {
+                                                    const name = getFileNameFromUrl(trimmed);
+                                                    return <a className="underline text-blue-600" href={trimmed} target="_blank" rel="noreferrer">{name}</a>;
                                                 }
-                                                if (at && typeof at === 'object' && at.fileUrl) {
-                                                    return <a className="underline text-blue-600" href={at.fileUrl} target="_blank" rel="noreferrer">{at.fileName || getFileNameFromUrl(at.fileUrl)}</a>;
-                                                }
-
-                                                return null;
-                                            } catch (e) {
-                                                return null;
                                             }
-                                        })()}
-                                    </TableCell>
-                                    <TableCell className="text-right">
+
+                                            const at = project.fileUrl as any;
+                                            if (Array.isArray(at)) {
+                                                return at.map((a: any, idx: number) => (
+                                                    <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName || getFileNameFromUrl(a.fileUrl)}</a></div>
+                                                ));
+                                            }
+                                            if (at && typeof at === 'object' && at.fileUrl) {
+                                                return <a className="underline text-blue-600" href={at.fileUrl} target="_blank" rel="noreferrer">{at.fileName || getFileNameFromUrl(at.fileUrl)}</a>;
+                                            }
+
+                                            return null;
+                                        } catch (e) {
+                                            return null;
+                                        }
+                                    })()}
+                                </TableCell>
+                                <TableCell className="text-right">
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <Button variant="outline">...</Button>

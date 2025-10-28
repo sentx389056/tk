@@ -17,10 +17,21 @@ type Log = {
     action: string;
     user: {
         login: string;
+        member?: {
+            name?: string;
+        }
     };
     documentId: number | null;
     metadata: string | null;
     createdAt: string;
+};
+
+type PaginatedResponse = {
+    logs: Log[];
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
 };
 
 export function SectionLogs() {
@@ -29,13 +40,23 @@ export function SectionLogs() {
     const [filter, setFilter] = React.useState<LogType | 'ALL'>('ALL');
     const [dateFrom, setDateFrom] = React.useState('');
     const [dateTo, setDateTo] = React.useState('');
+    const [memberName, setMemberName] = React.useState('');
+    const [page, setPage] = React.useState(1);
+    const [pageSize] = React.useState(10);
+    const [totalPages, setTotalPages] = React.useState(1);
 
     const fetchLogs = React.useCallback(async () => {
         setLoading(true);
         try {
-            const options: any = {};
+            const options: any = {
+                page,
+                pageSize
+            };
             if (filter !== 'ALL') {
                 options.type = filter;
+            }
+            if (memberName) {
+                options.memberName = memberName;
             }
             if (dateFrom) {
                 options.startDate = new Date(dateFrom);
@@ -43,18 +64,32 @@ export function SectionLogs() {
             if (dateTo) {
                 options.endDate = new Date(dateTo);
             }
-            const data = await getLogs(options);
-            setLogs(data);
+            const data = await getLogs(options) as PaginatedResponse;
+            setLogs(data.logs);
+            setTotalPages(data.totalPages);
         } catch (error) {
             console.error('Error fetching logs:', error);
         } finally {
             setLoading(false);
         }
-    }, [filter, dateFrom, dateTo]);
+    }, [filter, dateFrom, dateTo, memberName]);
+
+    React.useEffect(() => {
+        setPage(1); // Reset to first page when filter changes
+        fetchLogs();
+    }, [filter]);
 
     React.useEffect(() => {
         fetchLogs();
-    }, [filter]);
+    }, [page]); // Fetch when page changes
+
+    // Auto-apply member name filter with debounce
+    React.useEffect(() => {
+        const t = setTimeout(() => {
+            fetchLogs();
+        }, 350);
+        return () => clearTimeout(t);
+    }, [memberName, fetchLogs]);
 
     const formatDate = (date: string) => {
         return new Date(date).toLocaleString('ru-RU', {
@@ -94,6 +129,12 @@ export function SectionLogs() {
                         </SelectContent>
                     </Select>
                     <Input
+                        placeholder="По имени пользователя"
+                        value={memberName}
+                        onChange={(e) => setMemberName(e.target.value)}
+                        className="w-[200px]"
+                    />
+                    <Input
                         type="date"
                         value={dateFrom}
                         onChange={(e) => setDateFrom(e.target.value)}
@@ -130,7 +171,7 @@ export function SectionLogs() {
                                          log.type === 'ADD' ? 'Добавление' :
                                          'Скачивание'}
                                     </span>
-                                    <span className="font-medium text-sm">{log.user.login}</span>
+                                    <span className="font-medium text-sm">{log.user.member?.name || log.user.login}</span>
                                 </div>
                                 <p className="text-sm text-gray-600">{log.action}</p>
                                 {log.metadata && (
@@ -149,6 +190,29 @@ export function SectionLogs() {
                             Нет записей в журнале
                         </div>
                     )}
+                </div>
+                <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                    <div className="text-sm text-gray-500">
+                        Страница {page} из {totalPages}
+                    </div>
+                    <div className="flex gap-2">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setPage(p => Math.max(1, p - 1))}
+                            disabled={page <= 1}
+                        >
+                            Предыдущая
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setPage(p => p + 1)}
+                            disabled={page >= totalPages}
+                        >
+                            Следующая
+                        </Button>
+                    </div>
                 </div>
             </CardContent>
         </Card>

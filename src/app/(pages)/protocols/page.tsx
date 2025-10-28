@@ -16,40 +16,64 @@ type Protocol = {
    attachments?: any;
 }
 
+type PaginatedResponse = {
+   protocols: Protocol[];
+   total: number;
+   page: number;
+   pageSize: number;
+   totalPages: number;
+};
+
 export default function ProtocolsPage() {
+
    const [protocols, setProtocols] = useState<Protocol[]>([]);
    const [isloading, setLoading] = useState<boolean>(true);
    const [search, setSearch] = useState<string>('');
-   const [filtered, setFiltered] = useState<Protocol[]>([]);
+   const [page, setPage] = useState(1);
+   const [pageSize] = useState(10);
+   const [totalPages, setTotalPages] = useState(1);
+   const [total, setTotal] = useState(0);
 
-   useEffect(() => {
-      const fetchProtocols = async () => {
-         const res = await fetch('/api/protocols');
+   const fetchProtocols = async () => {
+      setLoading(true);
+      try {
+         const params = new URLSearchParams({
+            page: page.toString(),
+            pageSize: pageSize.toString()
+         });
+         
+         if (search) {
+            params.append('search', search);
+         }
+
+         const res = await fetch(`/api/protocols?${params}`);
          if (!res.ok) {
             throw new Error('Failed to fetch protocols');
          }
-         const data = await res.json();
-         setProtocols(data);
-         setFiltered(data);
+         const data: PaginatedResponse = await res.json();
+         setProtocols(data.protocols);
+         setTotal(data.total);
+         setTotalPages(data.totalPages);
+      } catch (error) {
+         console.error('Error:', error);
+         setProtocols([]);
+      } finally {
          setLoading(false);
       }
-      fetchProtocols();
-   }, []);
+   };
 
    useEffect(() => {
-      const t = setTimeout(() => {
-         if (!search) {
-            setFiltered(protocols);
-            return;
-         }
+      const timer = setTimeout(() => {
+         fetchProtocols();
+      }, 350);
 
-         const q = search.trim().toLowerCase();
-         const result = protocols.filter((p) => p.title.toLowerCase().includes(q) || (p.description || '').toLowerCase().includes(q));
-         setFiltered(result);
-      }, 200);
+      return () => clearTimeout(timer);
+   }, [page, search]);
 
-      return () => clearTimeout(t);
-   }, [search, protocols]);
+   // reset to first page when search changes
+   useEffect(() => {
+      setPage(1);
+   }, [search]);
 
    return (
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">
@@ -58,7 +82,7 @@ export default function ProtocolsPage() {
                <h1 className="text-4xl font-bold text-center mb-2">Протоколы</h1>
                <p className="text-center text-base font-light text-gray-700 max-w-180">Официальные протоколы заседаний Технического комитета по стандартизации</p>
             </div>
-            <SearchInput value={search} onChange={setSearch} count={filtered.length} />
+            <SearchInput value={search} onChange={setSearch} count={total} />
             <section className="mt-8 gap-10 flex flex-col">
                {isloading ? (
                   <div className="flex flex-col gap-10">
@@ -91,12 +115,18 @@ export default function ProtocolsPage() {
                         </div>
                      </div>
                   </div>
+               ) : protocols.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                     Протоколы не найдены
+                  </div>
                ) : (
-                  filtered.map((protocol) => {
-                     const publishedAtFormatted = new Date(protocol.publishedAt).toLocaleDateString('ru-RU');
-                     return <Card className="w-full px-6" key={protocol.id}>
-                        <CardHeader className="p-0">
-                           <div className="flex gap-3 items-center">
+                  <div className="flex flex-col gap-10">
+                     {protocols.map((protocol) => {
+                        const publishedAtFormatted = new Date(protocol.publishedAt).toLocaleDateString('ru-RU');
+                        return (
+                           <Card className="w-full px-6" key={protocol.id}>
+                              <CardHeader className="p-0">
+                                 <div className="flex gap-3 items-center">
                               <div className="bg-red-pink p-3 rounded-md">
                                  <FileText size={24} color="white" />
                               </div>
@@ -152,10 +182,35 @@ export default function ProtocolsPage() {
                            </div>
                         )}
                      </Card>
-                  })
+                        );
+                     })}
+                     
+                     {/* Pagination controls */}
+                     {protocols.length > 0 && (
+                        <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                           <div className="text-sm text-gray-500">Страница {page} из {totalPages}</div>
+                           <div className="flex gap-2">
+                              <button
+                                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                 onClick={() => setPage(p => Math.max(1, p - 1))}
+                                 disabled={page <= 1 || isloading}
+                              >
+                                 Предыдущая
+                              </button>
+                              <button
+                                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                                 disabled={page >= totalPages || isloading}
+                              >
+                                 Следующая
+                              </button>
+                           </div>
+                        </div>
+                     )}
+                  </div>
                )}
             </section>
          </div>
       </main>
-   )
+   );
 }

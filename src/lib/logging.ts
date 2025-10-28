@@ -34,13 +34,36 @@ export async function createLog(data: LogData) {
     }
 }
 
+export type PaginatedLogsResponse = {
+    logs: {
+        id: number;
+        type: LogType;
+        action: string;
+        user: {
+            login: string;
+            member?: {
+                name?: string;
+            }
+        };
+        documentId: number | null;
+        metadata: string | null;
+        createdAt: string;
+    }[];
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+};
+
 export async function getLogs(options?: {
     type?: LogType;
     userId?: number;
+    memberName?: string;
     startDate?: Date;
     endDate?: Date;
-    limit?: number;
-}): Promise<any[]> {
+    page?: number;
+    pageSize?: number;
+}): Promise<PaginatedLogsResponse> {
     try {
         let url = '/api/logs';
         const params = new URLSearchParams();
@@ -51,14 +74,20 @@ export async function getLogs(options?: {
         if (options?.userId) {
             params.append('userId', options.userId.toString());
         }
+        if (options?.memberName) {
+            params.append('memberName', options.memberName);
+        }
         if (options?.startDate) {
             params.append('startDate', options.startDate.toISOString());
         }
         if (options?.endDate) {
             params.append('endDate', options.endDate.toISOString());
         }
-        if (options?.limit) {
-            params.append('limit', options.limit.toString());
+        if (options?.page) {
+            params.append('page', options.page.toString());
+        }
+        if (options?.pageSize) {
+            params.append('pageSize', options.pageSize.toString());
         }
 
         if (params.toString()) {
@@ -80,9 +109,15 @@ export async function getLogs(options?: {
         }
 
         const data = await response.json();
-        return Array.isArray(data) ? data : [];
+        return data;
     } catch (error) {
         console.error('Error fetching logs:', error);
-        return [];
+        return {
+            logs: [],
+            total: 0,
+            page: 1,
+            pageSize: 10,
+            totalPages: 0
+        };
     }
 }

@@ -31,24 +31,34 @@ export default function TeamPage() {
    }, []);
 
    return (
-      <main className="flex flex-col w-full px-5 xl:px-40 py-10">
-         <div className="py-10">
+      <main className="flex flex-col w-full px-4 sm:px-6 lg:px-8 xl:px-40 py-6 sm:py-10">
+         <div className="py-6 sm:py-10">
             <div className="flex flex-col items-center">
-               <h1 className="text-4xl font-bold text-center mb-2">Состав Технического комитета</h1>
-               <p className="text-center text-base font-light text-gray-700 max-w-180">Участники ТК по стандартизации в области кинематографии и архивного дела</p>
+               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-2 sm:mb-4">Состав Технического комитета</h1>
+               <p className="text-center text-sm sm:text-base font-light text-gray-700 max-w-[90%] sm:max-w-[80%] md:max-w-[70%]">
+                  Участники ТК по стандартизации в области кинематографии и архивного дела
+               </p>
             </div>
-            <section className="flex gap-10 mt-15 max-md:flex-wrap">
+            <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mt-8 sm:mt-10">
                {isloading ? (
-                  <div className="flex w-full gap-10 justify-center max-xl:flex-wrap">
-                        <Skeleton className="h-[300] w-2xs rounded-xl" />
-                        <Skeleton className="h-[300] w-2xs rounded-xl" />
-                        <Skeleton className="h-[300] w-2xs rounded-xl" />
-                        <Skeleton className="h-[300] w-2xs rounded-xl" />
-                  </div>
+                  <>
+                     <Skeleton className="h-[300px] rounded-xl" />
+                     <Skeleton className="h-[300px] rounded-xl hidden sm:block" />
+                     <Skeleton className="h-[300px] rounded-xl hidden lg:block" />
+                     <Skeleton className="h-[300px] rounded-xl hidden xl:block" />
+                  </>
                ) : (
-                  members.map((member) => {
-                     return <TeamCard key={member.id} name={member.name} email={member.email} position={member.position} organization={member.organization} phone={member.phone} experience={member.experience} />
-                  })
+                  members.map((member) => (
+                     <TeamCard 
+                        key={member.id} 
+                        name={member.name} 
+                        email={member.email} 
+                        position={member.position} 
+                        organization={member.organization} 
+                        phone={member.phone} 
+                        experience={member.experience}
+                     />
+                  ))
                )}
             </section>
          </div>

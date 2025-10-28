@@ -53,9 +53,11 @@ export function UserHeader() {
         }
     }
 
+    const displayName = user?.member?.name || user.login;
+
     return (
         <div className="flex items-center gap-2 text-white">
-            <span>Пользователь: {user.login}</span>
+            <span>Пользователь: {displayName}</span>
             <button onClick={handleLogout} className="underline ml-4 opacity-80 hover:opacity-100">
                 Выйти
             </button>

@@ -27,13 +27,25 @@ export function SectionProtocol() {
 
     useEffect(() => {
         const fetchProtocols = async () => {
-            const res = await fetch('/api/protocols');
-            if (!res.ok) {
-                throw new Error('Failed to fetch members');
+            try {
+                const res = await fetch('/api/protocols?page=1&pageSize=10000');
+                if (!res.ok) {
+                    throw new Error('Failed to fetch members');
+                }
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    setProtocols(data);
+                } else if (data && Array.isArray(data.protocols)) {
+                    setProtocols(data.protocols);
+                } else {
+                    setProtocols([]);
+                }
+            } catch (err) {
+                console.error('Error fetching protocols:', err);
+                setProtocols([]);
+            } finally {
+                setLoading(false);
             }
-            const data = await res.json();
-            setProtocols(data);
-            setLoading(false);
         }
         fetchProtocols();
     }, []);

@@ -31,13 +31,26 @@ export function SectionMeetings() {
 
     useEffect(() => {
         const fetchMeetings = async () => {
-            const res = await fetch('/api/meetings');
-            if (!res.ok) {
-                throw new Error('Failed to fetch members');
+            try {
+                const res = await fetch('/api/meetings?page=1&pageSize=10000');
+                if (!res.ok) {
+                    throw new Error('Failed to fetch members');
+                }
+                const data = await res.json();
+                // API may return either an array (legacy) or a paginated object { meetings, total, ... }
+                if (Array.isArray(data)) {
+                    setMeetings(data);
+                } else if (data && Array.isArray(data.meetings)) {
+                    setMeetings(data.meetings);
+                } else {
+                    setMeetings([]);
+                }
+            } catch (err) {
+                console.error('Error fetching meetings:', err);
+                setMeetings([]);
+            } finally {
+                setLoading(false);
             }
-            const data = await res.json();
-            setMeetings(data);
-            setLoading(false);
         }
         fetchMeetings();
     }, []);

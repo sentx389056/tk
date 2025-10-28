@@ -5,13 +5,12 @@ import { Calendar, Download, FileText } from "lucide-react";
 interface PerspectiveStandartCardProps {
    title: string;
    description: string;
-   approvedAt: Date;
+   startDate: Date;
+   endDate: Date;
    fileUrl?: any;
 }
 
-export default function PerspectiveStandartCard({ title, description, approvedAt, fileUrl }: PerspectiveStandartCardProps) {
-   const approvedAtFormatted = approvedAt.toLocaleDateString('ru-RU');
-
+export default function PerspectiveStandartCard({ title, description, startDate, endDate, fileUrl }: PerspectiveStandartCardProps) {
    const getFileNameFromUrl = (url: string) => {
       try {
          const withoutQuery = url.split('?')[0];
@@ -89,11 +88,13 @@ export default function PerspectiveStandartCard({ title, description, approvedAt
                </Button>
             </CardAction>
          </CardHeader>
-         {(approvedAtFormatted) && (
+         {(startDate && endDate) && (
             <CardContent className="p-0">
                <CardDescription className="text-gray-500 flex gap-2 items-center">
                   <Calendar size={16} />
-                  <p>{approvedAtFormatted}</p>
+                  <p>Дата принятия: {startDate.toLocaleDateString()}</p>
+                  <Calendar size={16} />
+                  <p>Дата окончания: {endDate.toLocaleDateString()}</p>
                </CardDescription>
             </CardContent>
          )}

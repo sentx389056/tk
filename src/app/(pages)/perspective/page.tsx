@@ -9,7 +9,8 @@ type Standard = {
    id: number;
    title: string;
    description: string;
-   approvedAt: Date;
+   startDate: Date;
+   endDate: Date;
    fileUrl?: string;
 };
 
@@ -19,14 +20,33 @@ export default function PerspectivePage() {
 
    useEffect(() => {
       const fetchStandards = async () => {
-         const res = await fetch('/api/standards');
-         if (!res.ok) {
-            throw new Error('Failed to fetch standards');
+         setLoading(true);
+         try {
+            const res = await fetch('/api/standards-project');
+            if (!res.ok) {
+               // try to get error message from JSON body
+               const errBody = await res.json().catch(() => null);
+               console.error('API error fetching standards:', errBody || res.statusText);
+               throw new Error(errBody?.error || 'Failed to fetch standards');
+            }
+            const data = await res.json();
+
+            // API may return either a paginated object { standards: [] } or a plain array
+            if (data && Array.isArray((data as any).standards)) {
+               setStandards((data as any).standards);
+            } else if (Array.isArray(data)) {
+               setStandards(data as any);
+            } else {
+               setStandards([]);
+            }
+         } catch (error) {
+            console.error('Failed to fetch standards:', error);
+            setStandards([]);
+         } finally {
+            setLoading(false);
          }
-         const data = await res.json();
-         setStandards(data);
-         setLoading(false);
       };
+
       fetchStandards();
    }, []);
 
@@ -83,7 +103,8 @@ export default function PerspectivePage() {
                            key={standard.id}
                            title={standard.title}
                            description={standard.description}
-                           approvedAt={new Date(standard.approvedAt)}
+                           startDate={new Date(standard.startDate)}
+                           endDate={new Date(standard.endDate)}
                            fileUrl={standard.fileUrl}
                         />
                      }))}

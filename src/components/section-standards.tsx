@@ -45,7 +45,7 @@ export function SectionStandards() {
             const data = await res.json();
             setDocs(data || []);
             setLoading(false);
-             try {
+            try {
                 const me = await fetch('/api/auth/me');
                 const meJson = await me.json();
                 const userId = meJson?.user?.id;
@@ -196,22 +196,20 @@ export function SectionStandards() {
                                                         Редактировать
                                                     </div> */}
                                                     <div className="grid grid-cols-3 items-center gap-4">
+                                                        <Button variant="outline" onClick={async () => {
+                                                                    try {
+                                                                        window.open(`/api/protected-documents/download?id=${d.id}`, '_blank');
+                                                                    } catch (e) {
+                                                                        console.error(e);
+                                                                        toast.error('Не удалось открыть документ');
+                                                                    }
+                                                                }}>Просмотреть
+                                                                </Button>
                                                         <AlertDialog>
                                                             <div className="flex flex-col gap-5">
                                                                 <AlertDialogTrigger asChild>
                                                                     <Button variant="outline">Удалить</Button>
-                                                                </AlertDialogTrigger>
-                                                                <AlertDialogTrigger asChild>
-                                                                        <Button variant="outline" onClick={async () => {
-                                                                            try {
-                                                                                window.open(`/api/protected-documents/download?id=${d.id}`, '_blank');
-                                                                            } catch (e) {
-                                                                                console.error(e);
-                                                                                toast.error('Не удалось открыть документ');
-                                                                            }
-                                                                        }}>Просмотреть</Button>
-                                                                </AlertDialogTrigger>
-                                                            </div>
+                                                                </AlertDialogTrigger>                                                            </div>
                                                             <AlertDialogContent>
                                                                 <AlertDialogHeader>
                                                                     <AlertDialogTitle>Вы уверены что хотите удалить этот объект?</AlertDialogTitle>

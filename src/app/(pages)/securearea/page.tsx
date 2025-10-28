@@ -122,33 +122,96 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
     const [value, setValue] = React.useState("Информация о членах");
     const [isLoading, setLoading] = useState<boolean>(true);
     const [tab, setTab] = useState<string>("Главная");
+    const [page, setPage] = useState(1);
+    const [pageSize] = useState(10);
+    const [totalPages, setTotalPages] = useState(1);
+    const [total, setTotal] = useState(0);
+    // members pagination
+    const [membersPage, setMembersPage] = useState(1);
+    const [membersPageSize] = useState(10);
+    const [membersTotalPages, setMembersTotalPages] = useState(1);
+    const [membersTotal, setMembersTotal] = useState(0);
     
 
     useEffect(() => {
         const fetchMembers = async () => {
-            const res = await fetch('/api/members');
-            if (!res.ok) {
-                throw new Error('Failed to fetch members');
+            setLoading(true);
+            try {
+                const params = new URLSearchParams({
+                    page: membersPage.toString(),
+                    pageSize: membersPageSize.toString(),
+                });
+
+                const res = await fetch(`/api/members?${params}`);
+                if (!res.ok) {
+                    throw new Error('Failed to fetch members');
+                }
+                const data = await res.json();
+                // support paginated response { members, total, totalPages }
+                if (Array.isArray((data as any).members)) {
+                    setMembers(data.members);
+                    setMembersTotal(data.total || 0);
+                    setMembersTotalPages(data.totalPages || 1);
+                } else if (Array.isArray(data)) {
+                    // fallback if API returns array
+                    setMembers(data as any);
+                    setMembersTotal((data as any).length || 0);
+                    setMembersTotalPages(1);
+                } else {
+                    setMembers([]);
+                    setMembersTotal(0);
+                    setMembersTotalPages(1);
+                }
+            } catch (err) {
+                console.error('Failed to fetch members:', err);
+                setMembers([]);
+                setMembersTotal(0);
+                setMembersTotalPages(1);
+            } finally {
+                setLoading(false);
             }
-            const data = await res.json();
-            setMembers(data);
-            setLoading(false);
         };
         fetchMembers();
-    }, []);
+    }, [membersPage, membersPageSize]);
 
     useEffect(() => {
         const fetchStandards = async () => {
-            const res = await fetch('/api/standards-project');
-            if (!res.ok) {
-                throw new Error('Failed to fetch standards');
+            setLoading(true);
+            try {
+                const params = new URLSearchParams({
+                    page: page.toString(),
+                    pageSize: pageSize.toString(),
+                    all: 'true' // добавляем флаг для админ-панели
+                });
+                
+                const res = await fetch(`/api/projects?${params}`);
+                if (!res.ok) {
+                    throw new Error('Failed to fetch standards');
+                }
+                const data = await res.json();
+                // API may return either { projects, total, totalPages } or an array when all=true
+                if (Array.isArray(data)) {
+                    setStandards(data);
+                    setTotal(data.length || 0);
+                    setTotalPages(1);
+                } else if (data && Array.isArray((data as any).projects)) {
+                    setStandards((data as any).projects);
+                    setTotal((data as any).total || 0);
+                    setTotalPages((data as any).totalPages || 1);
+                } else {
+                    setStandards([]);
+                    setTotal(0);
+                    setTotalPages(1);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                setStandards([]);
+            } finally {
+                setLoading(false);
             }
-            const data = await res.json();
-            setStandards(data);
-            setLoading(false);
         };
         fetchStandards();
-    }, []);
+    }, [page, pageSize]);
 
     
 
@@ -386,17 +449,47 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                                         </div>
                                     </div>
                                 ) : (
-                                    members.map((member) => {
-                                        return <MemberCard
-                                            key={member.id}
-                                            name={member.name}
-                                            position={member.position}
-                                            organization={member.organization}
-                                            email={member.email}
-                                            phone={member.phone}
-                                            address={member.address}
-                                        />
-                                    })
+                                    <>
+                                        {members.length === 0 ? (
+                                            <div className="text-center py-8 text-gray-500">Члены не найдены</div>
+                                        ) : (
+                                            <>
+                                                {members.map((member) => (
+                                                    <MemberCard
+                                                        key={member.id}
+                                                        name={member.name}
+                                                        position={member.position}
+                                                        organization={member.organization}
+                                                        email={member.email}
+                                                        phone={member.phone}
+                                                        address={member.address}
+                                                    />
+                                                ))}
+
+                                                <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                                                    <div className="text-sm text-gray-500">Страница {membersPage} из {membersTotalPages}</div>
+                                                    <div className="flex gap-2">
+                                                        <Button
+                                                            variant="outline"
+                                                            size="sm"
+                                                            onClick={() => setMembersPage(p => Math.max(1, p - 1))}
+                                                            disabled={membersPage <= 1 || isLoading}
+                                                        >
+                                                            Предыдущая
+                                                        </Button>
+                                                        <Button
+                                                            variant="outline"
+                                                            size="sm"
+                                                            onClick={() => setMembersPage(p => Math.min(membersTotalPages, p + 1))}
+                                                            disabled={membersPage >= membersTotalPages || isLoading}
+                                                        >
+                                                            Следующая
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        )}
+                                    </>
                                 )}
                             </div>
                         </CardHeader>
@@ -440,15 +533,47 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                                         </div>
                                     </div>
                                 ) : (
-                                    standards.map((standard) => {
-                                        return <StandardProjectCard
-                                            key={standard.id}
-                                            title={standard.title}
-                                            description={standard.description}
-                                            startDate={new Date(standard.startDate)}
-                                            endDate={new Date(standard.endDate)}
-                                        />
-                                    }))}
+                                    <>
+                                        {standards.length === 0 ? (
+                                            <div className="text-center py-8 text-gray-500">
+                                                Проекты не найдены
+                                            </div>
+                                        ) : (
+                                            <>
+                                                {standards.map((standard) => (
+                                                    <StandardProjectCard
+                                                        key={standard.id}
+                                                        title={standard.title}
+                                                        description={standard.description}
+                                                        startDate={new Date(standard.startDate)}
+                                                        endDate={new Date(standard.endDate)}
+                                                        fileUrl={standard.fileUrl}
+                                                    />
+                                                ))}
+                                                <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                                                    <div className="text-sm text-gray-500">Страница {page} из {totalPages}</div>
+                                                    <div className="flex gap-2">
+                                                        <Button
+                                                            variant="outline"
+                                                            size="sm"
+                                                            onClick={() => setPage(p => Math.max(1, p - 1))}
+                                                            disabled={page <= 1 || isLoading}
+                                                        >
+                                                            Предыдущая
+                                                        </Button>
+                                                        <Button
+                                                            variant="outline"
+                                                            size="sm"
+                                                            onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                                                            disabled={page >= totalPages || isLoading}
+                                                        >
+                                                            Следующая
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        )}
+                                    </>)}
                             </div>
                         </CardHeader>
                     </Card>

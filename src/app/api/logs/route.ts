@@ -13,7 +13,9 @@ export async function GET(request: Request) {
         const userId = searchParams.get('userId');
         const startDate = searchParams.get('startDate');
         const endDate = searchParams.get('endDate');
-        const limit = searchParams.get('limit');
+        const memberName = searchParams.get('memberName');
+        const page = parseInt(searchParams.get('page') || '1', 10);
+        const pageSize = parseInt(searchParams.get('pageSize') || '10', 10);
 
         // Build the where clause
         const where: any = {};
@@ -33,21 +35,40 @@ export async function GET(request: Request) {
                 where.createdAt.lte = new Date(endDate);
             }
         }
+        if (memberName) {
+            // filter logs by related user's member.name
+            where.user = { member: { name: { contains: memberName, mode: 'insensitive' } } };
+        }
 
-        const logs = await prisma.log.findMany({
-            where,
-            orderBy: { createdAt: 'desc' },
-            take: limit ? parseInt(limit, 10) : undefined,
-            include: {
-                user: {
-                    select: {
-                        login: true,
+        const [logs, total] = await Promise.all([
+            prisma.log.findMany({
+                where,
+                orderBy: { createdAt: 'desc' },
+                skip: (page - 1) * pageSize,
+                take: pageSize,
+                include: {
+                    user: {
+                        select: {
+                            login: true,
+                            member: {
+                                select: {
+                                    name: true,
+                                }
+                            }
+                        }
                     },
                 },
-            },
-        });
+            }),
+            prisma.log.count({ where })
+        ]);
         
-        return NextResponse.json(logs);
+        return NextResponse.json({
+            logs,
+            total,
+            page,
+            pageSize,
+            totalPages: Math.ceil(total / pageSize)
+        });
     } catch (error) {
         console.error('Failed to fetch logs:', error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
