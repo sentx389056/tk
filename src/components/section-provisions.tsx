@@ -15,6 +15,7 @@ type Provision = {
     description: string,
     approvedAt: Date,
     organization: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fileUrl: any,
 }
 
@@ -48,6 +49,7 @@ export function SectionProvisions() {
         fetchProvisions();
     }, []);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleDelete(id: any) {
         await fetch(`/api/provisions/delete/${id}`, { method: 'DELETE' });
         toast.success("Объект успешно удален!");
@@ -96,6 +98,7 @@ export function SectionProvisions() {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleDownload = async (fileUrl: any) => {
         try {
             let urls: { fileUrl: string, fileName?: string }[] = [];
@@ -247,6 +250,7 @@ export function SectionProvisions() {
                                                 if ((trimmed.startsWith('[') || trimmed.startsWith('{'))) {
                                                     const at = JSON.parse(trimmed);
                                                     if (Array.isArray(at)) {
+                                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                                         return at.map((a: any, idx: number) => (
                                                             <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName || getFileNameFromUrl(a.fileUrl)}</a></div>
                                                         ));
@@ -261,8 +265,10 @@ export function SectionProvisions() {
                                                 }
                                             }
 
+                                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                             const at = provision.fileUrl as any;
                                             if (Array.isArray(at)) {
+                                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                                 return at.map((a: any, idx: number) => (
                                                     <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName || getFileNameFromUrl(a.fileUrl)}</a></div>
                                                 ));

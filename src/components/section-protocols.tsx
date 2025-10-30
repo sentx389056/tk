@@ -50,11 +50,13 @@ export function SectionProtocol() {
         fetchProtocols();
     }, []);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleDelete(id: any) {
         await fetch(`/api/protocols/delete/${id}`, { method: 'DELETE' });
         toast.success("Объект успешно удален!");
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleAdd(e: any) {
         // keep signature compatible when called from form
         if (e && typeof e.preventDefault === 'function') e.preventDefault();
@@ -87,6 +89,7 @@ export function SectionProtocol() {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         const ok = await handleAdd(e);
@@ -189,6 +192,7 @@ export function SectionProtocol() {
                                         try {
                                             const at = typeof protocol.attachments === 'string' ? JSON.parse(protocol.attachments) : protocol.attachments;
                                             if (Array.isArray(at)) {
+                                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                                 return at.map((a: any, idx: number) => (
                                                     <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName}</a></div>
                                                 ));

@@ -1,8 +1,5 @@
-import { Award, Building2, Mail, Phone, Users } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Separator } from "./ui/separator";
-import Image from "next/image"
 
 interface TeamCardProps {
     name: string;
@@ -24,7 +21,10 @@ export default function MemberCard({ name, position, organization, email, phone,
                         Организация: {organization}
                     </div>
                     <div>
-                        Email: {address}
+                        Email: {email}
+                    </div>
+                    <div>
+                        Адрес: {address}
                     </div>
                     <div>
                         Телефон: {phone}

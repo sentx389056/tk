@@ -59,6 +59,7 @@ export function SectionStandards() {
         fetchDocs();
     }, []);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleAdd(e: any) {
         if (e && typeof e.preventDefault === 'function') e.preventDefault();
         if (!file) {
@@ -92,12 +93,14 @@ export function SectionStandards() {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         const ok = await handleAdd(e);
         if (ok) setIsOpen(false);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleDelete(id: any) {
         await fetch(`/api/protected-documents/delete/${id}`, { method: 'DELETE' });
         toast.success("Объект успешно удален!");

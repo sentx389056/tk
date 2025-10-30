@@ -4,6 +4,7 @@ import { getUserFromRequest } from '@/lib/auth-utils';
 import fs from 'fs';
 import path from 'path';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function saveFile(field: any) {
   // field is a File from FormData
   const arrayBuffer = await field.arrayBuffer();

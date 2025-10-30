@@ -18,6 +18,7 @@ export async function GET(request: Request) {
         const pageSize = parseInt(searchParams.get('pageSize') || '10', 10);
 
         // Build the where clause
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const where: any = {};
         
         if (type) {

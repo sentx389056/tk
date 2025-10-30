@@ -8,6 +8,7 @@ interface StandardCardProps {
    description: string;
    approvedAt: Date;
    organization: string;
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
    fileUrl?: any;
 }
 

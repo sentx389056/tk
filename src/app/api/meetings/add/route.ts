@@ -41,6 +41,7 @@ export async function POST(request: NextRequest) {
         const savedFiles: Array<{ fileName: string; fileUrl: string }> = [];
 
         for (const f of files) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if (!f || typeof (f as any).arrayBuffer !== 'function') continue;
             const file = f as File;
             const ext = extname(file.name).toLowerCase();

@@ -38,10 +38,13 @@ export function SectionProjects() {
                 }
                 const data = await res.json();
                 // support paginated response { projects, total, totalPages }
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 if (Array.isArray((data as any).projects)) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     setProjects((data as any).projects);
                 } else if (Array.isArray(data)) {
                     // fallback if API returns array
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     setProjects(data as any);
                 } else {
                     setProjects([]);
@@ -56,6 +59,7 @@ export function SectionProjects() {
         fetchProjects();
     }, []);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleDelete(id: any) {
         await fetch(`/api/standards-project/delete/${id}`, { method: 'DELETE' });
         toast.success("Объект успешно удален!");
@@ -218,6 +222,7 @@ export function SectionProjects() {
                                                 if ((trimmed.startsWith('[') || trimmed.startsWith('{'))) {
                                                     const at = JSON.parse(trimmed);
                                                     if (Array.isArray(at)) {
+                                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                                         return at.map((a: any, idx: number) => (
                                                             <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName || getFileNameFromUrl(a.fileUrl)}</a></div>
                                                         ));
@@ -232,8 +237,10 @@ export function SectionProjects() {
                                                 }
                                             }
 
+                                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                             const at = project.fileUrl as any;
                                             if (Array.isArray(at)) {
+                                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                                 return at.map((a: any, idx: number) => (
                                                     <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName || getFileNameFromUrl(a.fileUrl)}</a></div>
                                                 ));

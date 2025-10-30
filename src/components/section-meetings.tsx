@@ -13,6 +13,7 @@ type Meeting = {
     id: number,
     title: string,
     location: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     attachments: any,
     format: string,
     publishedAt: Date
@@ -55,11 +56,13 @@ export function SectionMeetings() {
         fetchMeetings();
     }, []);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleDelete(id: any) {
         await fetch(`/api/meetings/delete/${id}`, { method: 'DELETE' });
         toast.success("Объект успешно удален!");
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleSubmit(e: any) {
         e.preventDefault();
         try {
@@ -201,6 +204,7 @@ export function SectionMeetings() {
                                         try {
                                             const at = typeof meet.attachments === 'string' ? JSON.parse(meet.attachments) : meet.attachments;
                                             if (Array.isArray(at)) {
+                                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                                 return at.map((a: any, idx: number) => (
                                                     <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName}</a></div>
                                                 ));

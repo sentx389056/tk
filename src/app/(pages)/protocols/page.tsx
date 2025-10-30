@@ -12,7 +12,9 @@ type Protocol = {
    description: string;
    publishedAt: Date;
    organization: string;
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
    fileUrl?: any;
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
    attachments?: any;
 }
 
@@ -159,6 +161,7 @@ export default function ProtocolsPage() {
 
                                     // If parsed is an array of attachments
                                     if (Array.isArray(parsed) && parsed.length > 0) {
+                                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                        return parsed.map((att: any, idx: number) => (
                                           <MaterialMeetingCard key={idx} name={att.fileName || `Файл ${idx + 1}`} size={att.fileSize || '—'} fileUrl={att.fileUrl} />
                                        ));

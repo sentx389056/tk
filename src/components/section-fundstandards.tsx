@@ -16,6 +16,7 @@ type Standard = {
     approved: boolean,
     approvedAt: Date,
     organization: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fileUrl: any,
 }
 
@@ -62,6 +63,7 @@ export function SectionFundStandards() {
         return approved ? "Да" : "Нет";
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleDelete(id: any) {
         await fetch(`/api/standards/delete/${id}`, { method: 'DELETE' });
         toast.success("Объект успешно удален!");
@@ -245,6 +247,7 @@ export function SectionFundStandards() {
                                                 if ((trimmed.startsWith('[') || trimmed.startsWith('{'))) {
                                                     const at = JSON.parse(trimmed);
                                                     if (Array.isArray(at)) {
+                                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                                         return at.map((a: any, idx: number) => (
                                                             <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName}</a></div>
                                                         ));
@@ -261,6 +264,7 @@ export function SectionFundStandards() {
 
                                             const at = standard.fileUrl;
                                             if (Array.isArray(at)) {
+                                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                                 return at.map((a: any, idx: number) => (
                                                     <div key={idx}><a className="underline text-blue-600" href={a.fileUrl} target="_blank" rel="noreferrer">{a.fileName}</a></div>
                                                 ));

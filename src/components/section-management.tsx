@@ -57,6 +57,7 @@ export function SectionManagements() {
         fetchExecutives();
     }, []);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleDelete(id: any) {
         await fetch(`/api/executive/delete/${id}`, { method: 'DELETE' });
         toast.success("Объект успешно удален!");

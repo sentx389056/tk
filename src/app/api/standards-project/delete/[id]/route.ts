@@ -1,16 +1,7 @@
-// import { prisma } from '@/lib/prisma';
-// import { NextResponse } from 'next/server';
-
-// export async function DELETE(_: any, { params }: any) {
-//   await prisma.standardProject.delete({
-//     where: { id: Number(params.id) }
-//   });
-//   return NextResponse.json({ ok: true });
-// }
-
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function DELETE(request: Request, { params }: any) {
   try {
     // Get user ID from the cookie

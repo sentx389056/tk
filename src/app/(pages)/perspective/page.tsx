@@ -31,10 +31,12 @@ export default function PerspectivePage() {
             }
             const data = await res.json();
 
-            // API may return either a paginated object { standards: [] } or a plain array
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if (data && Array.isArray((data as any).standards)) {
+               // eslint-disable-next-line @typescript-eslint/no-explicit-any
                setStandards((data as any).standards);
             } else if (Array.isArray(data)) {
+               // eslint-disable-next-line @typescript-eslint/no-explicit-any
                setStandards(data as any);
             } else {
                setStandards([]);

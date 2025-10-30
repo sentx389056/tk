@@ -42,6 +42,7 @@ export default function ReportsPage() {
       }
    }
 
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
    const resolveAttachments = (raw: any) => {
       if (!raw) return [] as { fileUrl: string; fileName?: string }[];
       try {
@@ -65,6 +66,7 @@ export default function ReportsPage() {
       return [] as { fileUrl: string; fileName?: string }[];
    }
 
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
    const handleDownload = async (raw: any) => {
       const at = resolveAttachments(raw);
       if (!at.length) return;

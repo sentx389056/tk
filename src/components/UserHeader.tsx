@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 export function UserHeader() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 

@@ -42,12 +42,15 @@ export default function MeetingsPage() {
             const res = await fetch(`/api/meetings?${params.toString()}`);
             if (!res.ok) throw new Error('Failed to fetch meetings');
             const data: PaginatedMeetings = await res.json();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if (Array.isArray((data as any).meetings)) {
                setMeetings(data.meetings);
                setTotal(data.total || 0);
                setTotalPages(data.totalPages || 1);
+               // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } else if (Array.isArray(data as any)) {
                // fallback if API returns array
+               // eslint-disable-next-line @typescript-eslint/no-explicit-any
                setMeetings(data as any);
             } else {
                setMeetings([]);

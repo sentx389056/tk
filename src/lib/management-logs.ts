@@ -5,6 +5,7 @@ export interface LogEventOptions {
     userId: number;
     documentId?: number;
     title: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     details?: Record<string, any>;
     section: 'STANDARDS' | 'PROVISIONS' | 'PROTOCOLS' | 'REPORTS' | 'EXECUTIVES' | 'MEMBERS' | 'MEETINGS';
     action: 'CREATE' | 'UPDATE' | 'DELETE' | 'DOWNLOAD';

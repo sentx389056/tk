@@ -48,6 +48,7 @@ export function SectionLogs() {
     const fetchLogs = React.useCallback(async () => {
         setLoading(true);
         try {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const options: any = {
                 page,
                 pageSize

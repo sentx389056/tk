@@ -1,6 +1,6 @@
 'use client';
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { OctagonAlert, Shield } from "lucide-react";
@@ -13,8 +13,10 @@ export default function LoginPage() {
     const [credentials, setCredentials] = useState({ login: '', password: '' });
     const [error, setError] = useState('');
     const [showWarning, setShowWarning] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [pendingUser, setPendingUser] = useState<any>(null);
     const router = useRouter();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [currentUser, setCurrentUser] = useState<any>(null);
     const [loadingUser, setLoadingUser] = useState(true);
 
@@ -169,7 +171,7 @@ export default function LoginPage() {
                                 <div>
                                     <CardTitle className="mb-2">Вход для членов ТК</CardTitle>
                                     <CardDescription className="text-gray-500 flex gap-1 items-center">
-                                        Доступ к закрытому разделу ТК 191<br />"Кинематография"
+                                        Доступ к закрытому разделу ТК 191<br />&quot;Кинематография&quot;
                                     </CardDescription>
                                 </div>
                             </div>

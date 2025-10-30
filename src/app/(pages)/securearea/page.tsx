@@ -1,5 +1,5 @@
 'use client';
-import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader} from "@/components/ui/card";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -17,8 +17,7 @@ import {
 } from "@/components/ui/popover"
 
 import { ChevronsUpDown, Check } from "lucide-react";
-import Link from "next/link";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MemberCard from "@/components/MemberCard";
 import StandardProjectCard from "@/components/StandardProjectCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -38,6 +37,7 @@ import { SectionStandards } from "@/components/section-standards";
 import { SectionManagements } from "@/components/section-management";
 import { SectionLogs } from "@/components/section-logs";
 import { SectionDiscussions } from "@/components/section-discussions";
+import Link from "next/link";
 
 const frameworks = [
     {
@@ -153,13 +153,16 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                 }
                 const data = await res.json();
                 // support paginated response { members, total, totalPages }
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 if (Array.isArray((data as any).members)) {
                     setMembers(data.members);
                     setMembersTotal(data.total || 0);
                     setMembersTotalPages(data.totalPages || 1);
                 } else if (Array.isArray(data)) {
                     // fallback if API returns array
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     setMembers(data as any);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     setMembersTotal((data as any).length || 0);
                     setMembersTotalPages(1);
                 } else {
@@ -199,9 +202,13 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                     setStandards(data);
                     setTotal(data.length || 0);
                     setTotalPages(1);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 } else if (data && Array.isArray((data as any).projects)) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     setStandards((data as any).projects);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     setTotal((data as any).total || 0);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     setTotalPages((data as any).totalPages || 1);
                 } else {
                     setStandards([]);
@@ -304,9 +311,9 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                                                                             asChild
                                                                             className="data-[slot=sidebar-menu-button]:!p-1.5"
                                                                         >
-                                                                            <a href="/">
-                                                                                <span className="text-base font-semibold">ТК "Кинематография"</span>
-                                                                            </a>
+                                                                            <Link href="/">
+                                                                                <span className="text-base font-semibold">ТК &quot;Кинематография&quot;</span>
+                                                                            </Link>
                                                                         </SidebarMenuButton>
                                                                     </SidebarMenuItem>
                                                                 </SidebarMenu>

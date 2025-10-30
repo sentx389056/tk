@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function DELETE(request: Request, { params }: any) {
     try {
         // Get user ID from the cookie

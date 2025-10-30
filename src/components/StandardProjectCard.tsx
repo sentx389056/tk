@@ -8,6 +8,7 @@ type StandardProjectCardProps = {
     description: string;
     startDate: Date;
     endDate: Date;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fileUrl?: any;
 }
 
