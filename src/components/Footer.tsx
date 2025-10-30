@@ -64,6 +64,9 @@ export default function Footer() {
                      <li>
                         <Link href="/contacts" className="text-gray-500 text-sm">Контакты</Link>
                      </li>
+                     <li>
+                        <Link href="/login" className="text-gray-500 text-sm">Вход для членов тк</Link>
+                     </li>
                   </ul>
                </nav>
             </div>

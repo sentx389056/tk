@@ -61,9 +61,6 @@ export default async function Home() {
           </section>
           <section>
             <div className="p-8 bg-white shadow-md rounded-lg">
-              <div className="flex items-center mb-6 gap-3">
-                <TrendingUp size={32} color="#16A34A" />
-              </div>
               <LastEvents />
             </div>
           </section>

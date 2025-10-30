@@ -6,7 +6,7 @@ import {
    NavigationMenu, NavigationMenuContent,
    NavigationMenuItem, NavigationMenuLink,
    NavigationMenuList,
-   NavigationMenuTrigger, navigationMenuTriggerStyle
+   NavigationMenuTrigger
 } from "@/components/ui/navigation-menu";
 import {
    Sheet,
@@ -77,11 +77,11 @@ const info = {
 
 export default function Header() {
    return (
-      <header className="flex items-center justify-between w-full bg-black px-5 xl:px-40 py-2">
+      <header className="flex items-center justify-between w-full bg-black xl:px-40 py-2">
          <Link href="/">
             <Image src="/logo.svg" alt="gff-tk logo" width={225} height={70} />
          </Link>
-         <div className="hidden xl:flex items-center justify-between gap-6">
+         <div className="hidden 2xl:flex items-center justify-between gap-6">
             <NavigationMenu viewport={false}>
                <NavigationMenuList>
                   <NavigationMenuItem>
@@ -147,7 +147,7 @@ export default function Header() {
                {/* Desktop login link (visible on xl and up) */}
                <Link href="/login" className={`${buttonVariants({variant: "ghost"})} text-white`}>Вход для членов ТК</Link>
          </div>
-         <div className="grid grid-cols-1 xl:hidden items-center justify-between gap-6">
+         <div className="grid grid-cols-1 2xl:hidden items-center justify-between gap-6">
             <Sheet>
                <SheetTrigger asChild>
                   <Button variant="ghost" className="hover:bg-slate-200/50 cursor-pointer">
@@ -160,21 +160,19 @@ export default function Header() {
 
                   </SheetHeader>
                   <div className="grid flex-1 auto-rows-min px-4">
-                     <Link href="/" className={`${buttonVariants({variant: "link"})} border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] `}>
+                     <Link href="/" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground hover:underline  outline-none transition-[color,box-shadow]">
                         Главная
                      </Link>
                      <Accordion type="single" collapsible>
                         <AccordionItem value="item-1" >
                            <AccordionTrigger className="text-sm font-medium">О комитете</AccordionTrigger>
                            <AccordionContent>
-                              <Link href="/team" className="group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-light  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
+                              <Link href="/team" className="group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-light  hover:text-accent-foreground outline-none transition-[color,box-shadow] ">
                                  Состав ТК
                               </Link>
-                              <Separator />
-                              <Link href="/management" className="group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-light  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
+                              <Link href="/management" className="roup inline-flex h-9 w-full items-center justify-start py-2 text-sm font-light  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
                                  Руководство
                               </Link>
-                              <Separator />
                               <Link href="/standards" className="group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-light  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
                                  Фонд стандартов закрепленных за ТК
                               </Link>
@@ -186,11 +184,9 @@ export default function Header() {
                               <Link href="/meetings" className="group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-light  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
                                  Заседания
                               </Link>
-                              <Separator />
                               <Link href="/protocols" className="group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-light  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
                                  Протоколы
                               </Link>
-                              <Separator />
                               <Link href="/reports" className="group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-light  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
                                  Годовые отчеты
                               </Link>
@@ -198,25 +194,24 @@ export default function Header() {
                         </AccordionItem>
                         <AccordionItem value="item-3" >
                            <AccordionTrigger className="text-sm font-medium">Документы</AccordionTrigger>
+                           <Separator/>
                            <AccordionContent>
                               <Link href="/provisions" className="group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-light  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
                                  Положения о ТК
                               </Link>
-                              <Separator />
                               <Link href="/perspective" className="group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-light  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
                                  Перспективная программа работы ТК
                               </Link>
-                              <Separator />
                               <Link href="/projects" className="group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-light  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
                                  Проекты стандартов
                               </Link>
                            </AccordionContent>
                         </AccordionItem>
                      </Accordion>
-                     <Link href="/contacts" className="border-t-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
+                     <Link href="/contacts" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
                         Контакты
                      </Link>
-                     <Link href="/login" className="border-t-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
+                     <Link href="/login" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
                         Вход для членов ТК
                      </Link>
                   </div>

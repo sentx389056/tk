@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { TrendingUp } from 'lucide-react';
 
 interface DbEvent {
     id: number;
@@ -147,7 +148,11 @@ export default async function LastEvents() {
 
         return (
             <div className="mb-8">
-                <h2 className="text-2xl font-bold mb-4">Последние события</h2>
+                <div className="flex gap-3">
+                    <TrendingUp size={32} color="#16A34A" />
+                    <h2 className="text-2xl font-bold mb-4">Последние события</h2>
+                </div>
+
                 <ul className="space-y-6">
                     {latestEvents.map((event: FormattedEvent) => (
                         <li key={event.id} className="pl-4 border-l-3 border-red-pink">

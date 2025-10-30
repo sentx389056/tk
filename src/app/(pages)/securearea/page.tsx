@@ -23,7 +23,7 @@ import MemberCard from "@/components/MemberCard";
 import StandardProjectCard from "@/components/StandardProjectCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { UserHeader } from "@/components/UserHeader";
 import { SectionMembers } from "@/components/section-members";
 import { Separator } from "@/components/ui/separator";
@@ -37,6 +37,7 @@ import { SectionProjects } from "@/components/section-projects";
 import { SectionStandards } from "@/components/section-standards";
 import { SectionManagements } from "@/components/section-management";
 import { SectionLogs } from "@/components/section-logs";
+import { SectionDiscussions } from "@/components/section-discussions";
 
 const frameworks = [
     {
@@ -46,6 +47,10 @@ const frameworks = [
     {
         value: "Проекты стандартов",
         label: "Проекты стандартов",
+    },
+    {
+        value: "Обсуждения",
+        label: "Обсуждения",
     },
     {
         value: "Документы по стандартизации",
@@ -131,7 +136,7 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
     const [membersPageSize] = useState(10);
     const [membersTotalPages, setMembersTotalPages] = useState(1);
     const [membersTotal, setMembersTotal] = useState(0);
-    
+
 
     useEffect(() => {
         const fetchMembers = async () => {
@@ -183,7 +188,7 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                     pageSize: pageSize.toString(),
                     all: 'true' // добавляем флаг для админ-панели
                 });
-                
+
                 const res = await fetch(`/api/projects?${params}`);
                 if (!res.ok) {
                     throw new Error('Failed to fetch standards');
@@ -213,7 +218,7 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
         fetchStandards();
     }, [page, pageSize]);
 
-    
+
 
     return (
         <main>
@@ -225,15 +230,15 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                     <UserHeader />
                 </div>
             </div>
-            <div className="flex flex-col w-full px-5 xl:px-40">
+            <div className="mb-5 flex flex-col w-full px-5 xl:px-40">
                 <div>
-                    <div className="flex flex-row">
+                    <div className="flex">
                         <Card className="w-full py-0 mt-5">
                             <CardHeader className="p-4">
-                                <div className="flex gap-3 items-center justify-start text-left">
-                                    <p>Выберите категорию:</p>
+                                <div className="flex gap-10 items-center justify-start max-sm:flex-col">
+                                    <p>Выберите раздел:</p>
                                     <Popover open={open} onOpenChange={setOpen}>
-                                        <PopoverTrigger asChild>
+                                        <PopoverTrigger asChild className="max-sm:w-full">
                                             <Button
                                                 variant="outline"
                                                 role="combobox"
@@ -246,7 +251,7 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                                                 <ChevronsUpDown className="opacity-50" />
                                             </Button>
                                         </PopoverTrigger>
-                                        <PopoverContent className="w-[200px] p-0">
+                                        <PopoverContent className="w-70 p-0">
                                             <Command>
                                                 <CommandInput placeholder="Поиск раздела..." className="h-9" />
                                                 <CommandList>
@@ -275,22 +280,23 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                                             </Command>
                                         </PopoverContent>
                                     </Popover>
-                                    <div className="ml-auto">
+                                    <div className="ml-auto max-sm:m-0 w-full">
                                         <Dialog>
                                             <form>
                                                 <DialogTrigger asChild>
-                                                    <Button variant="outline">Панель управления</Button>
+                                                    <Button variant="outline" className="max-sm:w-full">Панель управления</Button>
                                                 </DialogTrigger>
-                                                <DialogContent>
+                                                <DialogContent className="max-w-[1420px] max-2xl:w-full">
                                                     <SidebarProvider
                                                         style={
                                                             {
-                                                                "--sidebar-width": "calc(var(--spacing) * 72)",
-                                                                "--header-height": "calc(var(--spacing) * 12)",
+                                                                // Use explicit sizes to avoid invalid `calc` with undefined CSS vars
+                                                                "--sidebar-width": "18rem",
+                                                                "--header-height": "3rem",
                                                             } as React.CSSProperties
                                                         }
                                                     >
-                                                        <Sidebar collapsible="offcanvas" {...props}>
+                                                        <Sidebar collapsible="icon" variant="inset" {...props}>
                                                             <SidebarHeader>
                                                                 <SidebarMenu>
                                                                     <SidebarMenuItem>
@@ -330,13 +336,13 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                                                         </Sidebar>
                                                         <SidebarInset>
                                                             <div className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
-                                                                <div>
+                                                                <div className="flex items-center">
+                                                                    <SidebarTrigger className="-ml-1" />
                                                                     <Separator
                                                                         orientation="vertical"
                                                                         className="mx-2 data-[orientation=vertical]:h-4"
                                                                     />
                                                                     <h2 className="text-base font-medium pl-5">{tab}</h2>
-
                                                                 </div>
                                                             </div>
                                                             <div className="flex flex-1 flex-col">
@@ -578,24 +584,24 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                         </CardHeader>
                     </Card>
                 </div>
-            ) : value === "Журнал логов" ? (
+            ) : value === "Документы по стандартизации" ? (
                 <div className="px-5 xl:px-40">
                     <Card className="w-full rounded-none mb-5 py-0">
-                        <CardHeader className="p-4">
+                        <CardHeader className="p-4 overflow-auto">
                             <div className="flex gap-3 justify-start text-left flex-col">
-                                <h2 className="font-semibold">Журнал логов</h2>
-                                logs
+                                <h2 className="font-semibold">Документы по стандартизации</h2>
+                                <SectionStandards />
                             </div>
                         </CardHeader>
                     </Card>
                 </div>
-            ) : value === "Документы по стандартизации" ? (
+            ) : value === "Обсуждения" ? (
                 <div className="px-5 xl:px-40">
                     <Card className="w-full rounded-none mb-5 py-0">
                         <CardHeader className="p-4">
                             <div className="flex gap-3 justify-start text-left flex-col">
-                                <h2 className="font-semibold">Документы по стандартизации</h2>
-                                <SectionStandards />
+                                <h2 className="font-semibold">Обсуждения</h2>
+                                <SectionDiscussions />
                             </div>
                         </CardHeader>
                     </Card>

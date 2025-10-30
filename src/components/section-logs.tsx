@@ -161,10 +161,10 @@ export function SectionLogs() {
                             <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
                                     <span className={`px-2 py-1 text-xs rounded ${
-                                        log.type === 'AUTH' ? 'bg-blue-100 text-blue-800' :
-                                        log.type === 'DELETE' ? 'bg-red-100 text-red-800' :
-                                        log.type === 'ADD' ? 'bg-green-100 text-green-800' :
-                                        'bg-purple-100 text-purple-800'
+                                        log.type === 'AUTH' ? 'bg-blue-100 text-blue-800 max-sm:hidden' :
+                                        log.type === 'DELETE' ? 'bg-red-100 text-red-800 max-sm:hidden' :
+                                        log.type === 'ADD' ? 'bg-green-100 text-green-800 max-sm:hidden' :
+                                        'bg-purple-100 text-purple-800 max-sm:hidden'
                                     }`}>
                                         {log.type === 'AUTH' ? 'Авторизация' :
                                          log.type === 'DELETE' ? 'Удаление' :

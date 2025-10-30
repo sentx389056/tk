@@ -144,7 +144,7 @@ export function SectionStandards() {
             </form>
 
             {isLoading ? (
-                <Table className="text-base">
+                <Table className="text-base max-w-[1420px] max-2xl:w-full">
                     <TableHeader>
                         <TableRow>
                             <TableHead className="text-gray-500">ID</TableHead>
