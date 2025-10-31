@@ -23,7 +23,7 @@ export default function PerspectiveStandartCard({ title, description, startDate,
       }
    }
 
-   const handleDownload = async () => {
+   const handleDownload = () => {
       if (!fileUrl) return;
 
       try {
@@ -45,19 +45,13 @@ export default function PerspectiveStandartCard({ title, description, startDate,
 
          for (const url of urls) {
             if (!url.fileUrl) continue;
-
-            const response = await fetch(url.fileUrl);
-            if (!response.ok) throw new Error('Failed to download file');
-
-            const blob = await response.blob();
-            const downloadUrl = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = downloadUrl;
+            a.href = url.fileUrl; // прямой переход на наш серверный роут
             a.download = url.fileName || getFileNameFromUrl(url.fileUrl);
+            a.target = '_blank';
             document.body.appendChild(a);
             a.click();
-            window.URL.revokeObjectURL(downloadUrl);
-            document.body.removeChild(a);
+            a.remove();
          }
       } catch (error) {
          console.error('Ошибка при скачивании:', error);

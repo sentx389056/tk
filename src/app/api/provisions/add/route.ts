@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { randomBytes } from "crypto";
-import { writeFile } from "fs/promises";
+import { writeFile, mkdir } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
 import { extname, join } from "path";
 
@@ -34,11 +34,13 @@ export async function POST(request: NextRequest) {
         const randomFileName = randomBytes(16).toString('hex');
         const fileName = `${randomFileName}${ext}`;
 
-        const uploadDir = join(process.cwd(), 'public', 'uploads', 'project-standards');
+        const uploadsRoot = process.env.UPLOADS_DIR || join(process.cwd(), 'uploads');
+        const uploadDir = join(uploadsRoot, 'project-standards');
         const filePath = join(uploadDir, fileName);
 
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
+        await mkdir(uploadDir, { recursive: true });
         await writeFile(filePath, buffer);
 
         const fileUrl = `/uploads/project-standards/${fileName}`;

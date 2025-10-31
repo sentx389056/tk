@@ -38,7 +38,7 @@ export default function StandardsPage() {
             page: page.toString(),
             pageSize: pageSize.toString()
          });
-         
+
          if (search) {
             params.append('search', search);
          }

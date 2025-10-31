@@ -21,24 +21,24 @@ async function main() {
   console.log('Creating technical committee members...');
   const member1 = await prisma.technicalCommitteeMember.create({
     data: {
-      name: 'Иван Иванов',
-      position: 'Председатель',
-      organization: 'Кинокомитет',
-      experience: '10 лет',
-      email: 'ivan.ivanov@example.test',
-      phone: '+7 900 000 0001',
+      name: 'Иванов Сергей Петрович',
+      position: 'Председатель ТК',
+      organization: 'Госфильмофонд России',
+      experience: '15 лет',
+      email: 'ivanov@gosfilmofond.ru',
+      phone: '+7 (495) 123-45-67',
       address: 'Москва',
     },
   });
 
   const member2 = await prisma.technicalCommitteeMember.create({
     data: {
-      name: 'Мария Петрова',
+      name: 'Петрова Мария Сергеевна',
       position: 'Член комитета',
       organization: 'Кинокомитет',
       experience: '6 лет',
       email: 'maria.petrova@example.test',
-      phone: '+7 900 000 0002',
+      phone: '+7 (495) 123-45-64',
       address: 'Санкт-Петербург',
     },
   });
@@ -64,12 +64,12 @@ async function main() {
   console.log('Creating executives...');
   await prisma.executive.create({
     data: {
-      name: 'Олег Смирнов',
-      position: 'Директор',
-      organization: 'КиноЦентр',
+      name: 'Иванов Сергей Петрович',
+      position: 'Генеральный директор',
+      organization: 'Госфильмофонд России',
       experience: '15 лет',
-      email: 'oleg.smirnov@example.test',
-      phone: '+7 900 000 0003',
+      email: 'ivanov@gosfilmofond.ru',
+      phone: '+7 (495) 123-45-67',
       address: 'Екатеринбург',
       biography: 'Опытный руководитель в кинокультуре',
     },

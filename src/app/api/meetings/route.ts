@@ -20,7 +20,7 @@ export async function GET(request: Request) {
         const [meetings, total] = await Promise.all([
             prisma.meeting.findMany({
                 where,
-                orderBy: { publishedAt: 'asc' },
+                orderBy: { id: 'desc' },
                 skip: (page - 1) * pageSize,
                 take: pageSize,
             }),

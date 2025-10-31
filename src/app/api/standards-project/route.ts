@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
     try {
         const stProjects = await prisma.standardProject.findMany({
-            orderBy: { id: 'asc' },
+            orderBy: { id: 'desc' },
         });
 
         return NextResponse.json(stProjects, { status: 200 });

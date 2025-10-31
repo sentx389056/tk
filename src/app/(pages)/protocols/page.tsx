@@ -163,7 +163,7 @@ export default function ProtocolsPage() {
                                     if (Array.isArray(parsed) && parsed.length > 0) {
                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                        return parsed.map((att: any, idx: number) => (
-                                          <MaterialMeetingCard key={idx} name={att.fileName || `Файл ${idx + 1}`} size={att.fileSize || '—'} fileUrl={att.fileUrl} />
+                                          <MaterialMeetingCard key={idx} name={att.fileName.slice(0, 20) + '...' && att.fileName.length > 20 ? att.fileName.slice(0, 20) + '...' : att.fileName || `Файл ${idx + 1}`} size={att.fileSize || '—'} fileUrl={att.fileUrl} />
                                        ));
                                     }
 

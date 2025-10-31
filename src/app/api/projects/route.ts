@@ -19,7 +19,7 @@ export async function GET(request: Request) {
         if (all) {
             const projects = await prisma.standardProject.findMany({
                 where,
-                orderBy: { id: 'asc' },
+                orderBy: { id: 'desc' },
             });
             return NextResponse.json(projects, { status: 200 });
         }
@@ -27,7 +27,7 @@ export async function GET(request: Request) {
         const [projects, total] = await Promise.all([
             prisma.standardProject.findMany({
                 where,
-                orderBy: { id: 'asc' },
+                orderBy: { id: 'desc' },
                 skip: (page - 1) * pageSize,
                 take: pageSize,
             }),

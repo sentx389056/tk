@@ -11,14 +11,14 @@ export async function GET(request: Request) {
         const where = search ? {
             title: {
                 contains: search,
-                mode: 'insensitive' as const
+                mode: 'insensitive' as const,
             }
         } : {};
 
         const [standards, total] = await Promise.all([
             prisma.standardFund.findMany({
                 where,
-                orderBy: { id: 'asc' },
+                orderBy: { id: 'desc' },
                 skip: (page - 1) * pageSize,
                 take: pageSize,
             }),

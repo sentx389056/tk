@@ -118,7 +118,7 @@ export function DiscussionCard({ discussion, onUpdate }: { discussion: Discussio
                         </DialogHeader>
                     </div>
                     
-                    <div className="flex-1 overflow-y-auto px-6 py-4">
+                    <div className="flex-1 overflow-y-auto px-6 py-4 rounded-md">
                         <div className="space-y-4 pb-4">
                             <div className="bg-gray-50 p-4 rounded-lg">
                                 <div className="flex justify-between items-start mb-2">
@@ -146,7 +146,7 @@ export function DiscussionCard({ discussion, onUpdate }: { discussion: Discussio
                         </div>
                     </div>
 
-                    <div className="border-t bg-white px-6 py-4">
+                    <div className="border-t bg-white px-6 py-4 rounded-md">
                         <form onSubmit={handleSubmitComment}>
                             <Textarea
                                 value={newComment}

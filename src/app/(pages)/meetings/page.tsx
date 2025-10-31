@@ -141,7 +141,7 @@ export default function MeetingsPage() {
                                     <p className="font-semibold text-sm">Материалы заседания:</p>
                                     {Array.isArray(meeting.attachments) && meeting.attachments.length > 0 ? (
                                        meeting.attachments.map((att, idx) => (
-                                          <MaterialMeetingCard key={idx} name={att.fileName || `Файл ${idx + 1}`} size={'—'} fileUrl={att.fileUrl} />
+                                          <MaterialMeetingCard key={idx} name={att.fileName.length > 20 ? att.fileName.slice(0, 20) + '...' : att.fileName || `Файл ${idx + 1}`} size={'—'} fileUrl={att.fileUrl} />
                                        ))
                                     ) : (
                                        <MaterialMeetingCard name="Повестка дня" size="245 КБ" />

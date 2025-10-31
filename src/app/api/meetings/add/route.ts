@@ -35,7 +35,8 @@ export async function POST(request: NextRequest) {
         // support multiple files under the key 'attachments'
         const files = formData.getAll('attachments') as File[];
 
-        const uploadDir = join(process.cwd(), 'public', 'files', 'meetings');
+        const uploadsRoot = process.env.UPLOADS_DIR || join(process.cwd(), 'uploads');
+        const uploadDir = join(uploadsRoot, 'meetings');
         await mkdir(uploadDir, { recursive: true });
 
         const savedFiles: Array<{ fileName: string; fileUrl: string }> = [];
@@ -49,12 +50,12 @@ export async function POST(request: NextRequest) {
             const filePath = join(uploadDir, randomFileName);
             const bytes = await file.arrayBuffer();
             const buffer = Buffer.from(bytes);
-            // basic size limit: 10MB per file
-            if (buffer.length > 10 * 1024 * 1024) {
-                return NextResponse.json({ error: 'Файл слишком большой (макс 10MB)' }, { status: 400 });
+            // basic size limit: 100MB per file
+            if (buffer.length > 100 * 1024 * 1024) {
+                return NextResponse.json({ error: 'Файл слишком большой (макс 100MB)' }, { status: 400 });
             }
             await writeFile(filePath, buffer);
-            savedFiles.push({ fileName: file.name, fileUrl: `/files/meetings/${randomFileName}` });
+            savedFiles.push({ fileName: file.name, fileUrl: `/uploads/meetings/${randomFileName}` });
         }
 
         // store meeting in DB; attachments stored as JSON string

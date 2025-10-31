@@ -29,7 +29,7 @@ export async function GET(request: Request) {
         const [provisions, total] = await Promise.all([
             prisma.technicalCommitteeRegulation.findMany({
                 where,
-                orderBy: { id: 'asc' },
+                orderBy: { id: 'desc' },
                 skip: (page - 1) * pageSize,
                 take: pageSize,
             }),
