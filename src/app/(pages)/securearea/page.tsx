@@ -45,8 +45,8 @@ const frameworks = [
         label: "Информация о членах",
     },
     {
-        value: "Проекты стандартов",
-        label: "Проекты стандартов",
+        value: "Перечни стандартов",
+        label: "Перечни стандартов",
     },
     {
         value: "Обсуждения",
@@ -96,8 +96,12 @@ const items = [
         value: "Положения о ТК",
     },
     {
-        title: "Проекты стандартов",
-        value: "Проекты стандартов",
+        title: "Перечни стандартов",
+        value: "Перечни стандартов",
+    },
+    {
+        title: "Заявки на участие",
+        value: "Заявки на участие",
     },
 ]
 
@@ -388,7 +392,7 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                                                                             <SectionProvisions />
                                                                         )}
 
-                                                                        {tab === "Проекты стандартов" && (
+                                                                        {tab === "Перечни стандартов" && (
                                                                             <SectionProjects />
                                                                         )}
 
@@ -508,12 +512,12 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                         </CardHeader>
                     </Card>
                 </div>
-            ) : value === "Проекты стандартов" ? (
+            ) : value === "Перечни стандартов" ? (
                 <div className="px-5 xl:px-40">
                     <Card className="w-full rounded-none mb-5 py-0">
                         <CardHeader className="p-4">
                             <div className="flex gap-3 justify-start text-left flex-col">
-                                <h2 className="font-semibold">Проекты стандартов</h2>
+                                <h2 className="font-semibold">Перечни стандартов</h2>
                                 {isLoading ? (
                                     <div className="flex flex-col gap-10">
                                         <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">

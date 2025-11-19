@@ -192,3 +192,15 @@ model DiscussionComment {
   createdBy   Int?
   createdByUser User?   @relation("CreatedComments", fields: [createdBy], references: [id])
 }
+
+model ApplicationRequest {
+  id             Int      @id @default(autoincrement())
+  organization   String
+  contactName    String
+  email          String
+  phone          String?
+  message        String?
+  status         String   @default("new")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}

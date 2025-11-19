@@ -37,6 +37,11 @@ const info = {
          title: "Фонд стандартов закрепленных за ТК",
          href: "/standards",
          description: "Национальные стандарты, закрепленные за Техническим комитетом по стандартизации",
+      },
+      {
+         title: "Поступившие заявки",
+         href: "/applications",
+         description: "Заявки организаций на участие в работе Технического комитета",
       }
    ],
    activity: [
@@ -68,7 +73,7 @@ const info = {
          description: "Планы и проекты Технического комитета по стандартизации в области кинематографии",
       },
       {
-         title: "Проекты стандартов",
+         title: "Перечни стандартов",
          href: "/projects",
          description: "Проекты национальных стандартов, разрабатываемые Техническим комитетом",
       },
@@ -77,19 +82,21 @@ const info = {
 
 export default function Header() {
    return (
-      <header className="flex items-center justify-between w-full bg-black xl:px-40 py-2">
-         <Link href="/">
-            <Image src="/logo.svg" alt="gff-tk logo" width={225} height={70} />
+      <header className="flex items-center justify-between w-full bg-black px-3 sm:px-6 xl:px-40 py-2">
+
+         <Link href="/" className="shrink-0">
+
+            <Image src="/TKlogo.svg" alt="gff-tk logo" width={150} height={70} className="w-[120px] h-auto sm:w-[150px]" />
          </Link>
          <div className="hidden 2xl:flex items-center justify-between gap-6">
             <NavigationMenu viewport={false}>
                <NavigationMenuList>
-                  <NavigationMenuItem>
+                  {/* <NavigationMenuItem>
                      <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
                         <Link href="/">Главная</Link>
                      </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
+                  </NavigationMenuItem> */}
+                  {/* <NavigationMenuItem>
                      <NavigationMenuTrigger className={buttonVariants({variant: "link"})}>О комитете</NavigationMenuTrigger>
                      <NavigationMenuContent>
                         <ul className="grid w-[300px] gap-4">
@@ -104,8 +111,8 @@ export default function Header() {
                            ))}
                         </ul>
                      </NavigationMenuContent>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
+                  </NavigationMenuItem> */}
+                  {/* <NavigationMenuItem>
                      <NavigationMenuTrigger className={buttonVariants({variant: "link"})}>Деятельность ТК 023</NavigationMenuTrigger>
                      <NavigationMenuContent>
                         <ul className="grid w-[300px] gap-4">
@@ -120,8 +127,8 @@ export default function Header() {
                            ))}
                         </ul>
                      </NavigationMenuContent>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
+                  </NavigationMenuItem> */}
+                  {/* <NavigationMenuItem>
                      <NavigationMenuTrigger className={buttonVariants({variant: "link"})}>Документы</NavigationMenuTrigger>
                      <NavigationMenuContent>
                         <ul className="grid w-[300px] gap-4">
@@ -136,16 +143,36 @@ export default function Header() {
                            ))}
                         </ul>
                      </NavigationMenuContent>
+                  </NavigationMenuItem> */}
+                  <NavigationMenuItem>
+                     <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
+                        <Link href="/provisions">Положение о ТК</Link>
+                     </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                      <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
-                        <Link href="/contacts">Контакты</Link>
+                        <Link href="/perspective">Перспективная программа</Link>
+                     </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                     <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
+                        <Link href="/projects">Перечни стандартов</Link>
+                     </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                     <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
+                        <Link href="/applications">Поступившие заявки на участие в ТК</Link>
+                     </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                     <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
+                        <Link href="/contacts">Контакты ТК</Link>
                      </NavigationMenuLink>
                   </NavigationMenuItem>
                </NavigationMenuList>
             </NavigationMenu>
                {/* Desktop login link (visible on xl and up) */}
-               <Link href="/login" className={`${buttonVariants({variant: "ghost"})} text-white`}>Вход для членов ТК</Link>
+               {/* <Link href="/login" className={`${buttonVariants({variant: "ghost"})} text-white`}>Вход для членов ТК</Link> */}
          </div>
          <div className="grid grid-cols-1 2xl:hidden items-center justify-between gap-6">
             <Sheet>
@@ -160,10 +187,19 @@ export default function Header() {
 
                   </SheetHeader>
                   <div className="grid flex-1 auto-rows-min px-4">
-                     <Link href="/" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground hover:underline  outline-none transition-[color,box-shadow]">
-                        Главная
+                     <Link href="/provisions" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground hover:underline  outline-none transition-[color,box-shadow]">
+                        Положение о ТК
                      </Link>
-                     <Accordion type="single" collapsible>
+                     <Link href="/perspective" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                        Перспективная программа
+                     </Link>
+                     <Link href="/projects" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                        Перечни стандартов
+                     </Link>
+                     <Link href="/applications" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                        Поступившие заявки на участие в ТК
+                     </Link>
+                     {/* <Accordion type="single" collapsible>
                         <AccordionItem value="item-1" >
                            <AccordionTrigger className="text-sm font-medium">О комитете</AccordionTrigger>
                            <AccordionContent>
@@ -175,6 +211,9 @@ export default function Header() {
                               </Link>
                               <Link href="/standards" className="group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-light  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
                                  Фонд стандартов закрепленных за ТК
+                              </Link>
+                              <Link href="/applications" className="group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-light  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
+                                 Поступившие заявки
                               </Link>
                            </AccordionContent>
                         </AccordionItem>
@@ -203,17 +242,17 @@ export default function Header() {
                                  Перспективная программа работы ТК
                               </Link>
                               <Link href="/projects" className="group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-light  hover:text-accent-foreground  outline-none transition-[color,box-shadow] ">
-                                 Проекты стандартов
+                                 Перечни стандартов
                               </Link>
                            </AccordionContent>
                         </AccordionItem>
-                     </Accordion>
+                     </Accordion> */}
                      <Link href="/contacts" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
-                        Контакты
+                        Контакты ТК
                      </Link>
-                     <Link href="/login" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                     {/* <Link href="/login" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
                         Вход для членов ТК
-                     </Link>
+                     </Link> */}
                   </div>
                   <SheetFooter></SheetFooter>
                </SheetContent>

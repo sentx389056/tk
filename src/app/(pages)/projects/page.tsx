@@ -77,7 +77,7 @@ export default function ProjectsPage() {
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">
          <div className="py-10">
             <div className="flex flex-col items-center">
-               <h1 className="text-4xl font-bold text-center mb-2">Проекты стандартов</h1>
+               <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">Перечни стандартов</h1>
                <p className="text-center text-base font-light text-gray-700 max-w-180">Проекты национальных стандартов, разрабатываемые Техническим комитетом</p>
             </div>
             <SearchInput value={search} onChange={setSearch} count={total} />
@@ -101,7 +101,7 @@ export default function ProjectsPage() {
                   </div>
                ) : projects.length === 0 ? (
                   <div className="text-center py-8 text-gray-500">
-                     Проекты не найдены
+                     Перечни стандартов не найдены
                   </div>
                ) : (
                   <>

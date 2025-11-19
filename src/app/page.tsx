@@ -1,5 +1,5 @@
 import Advantage from "@/components/Advantage";
-import { Award, Calendar, Disc2, FileText} from "lucide-react";
+import { Award, Calendar, Disc2, FileText } from "lucide-react";
 import MainTask from "@/components/MainTask";
 import LastEvents from "@/components/LastEvents";
 import Contacts from "@/components/Contacts";
@@ -59,6 +59,7 @@ export default async function Home() {
               ]
             } />
           </section>
+
           <section>
             <div className="p-8 bg-white shadow-md rounded-lg">
               <LastEvents />
@@ -73,5 +74,6 @@ export default async function Home() {
         </div>
       </div>
     </main>
+
   );
 }

@@ -24,7 +24,6 @@ export default function PerspectivePage() {
          try {
             const res = await fetch('/api/standards-project');
             if (!res.ok) {
-               // try to get error message from JSON body
                const errBody = await res.json().catch(() => null);
                console.error('API error fetching standards:', errBody || res.statusText);
                throw new Error(errBody?.error || 'Failed to fetch standards');
@@ -56,11 +55,11 @@ export default function PerspectivePage() {
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">
          <div className="py-10">
             <div className="flex flex-col items-center">
-               <h1 className="text-4xl font-bold text-center mb-2">Перспективная программа работы ТК</h1>
+               <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">Проект Перспективной программы работы ТК</h1>
                <p className="text-center text-base font-light text-gray-700 max-w-180">Планы и проекты Технического комитета по стандартизации в области кинематографии</p>
             </div>
             <section className="mt-15 shadow-md px-8 py-10 rounded-md">
-               <h2 className="text-center font-bold text-xl mb-18">Перспективная программа работы ТК 191 на 2025 год</h2>
+               <h2 className="text-center font-bold text-xl mb-18">Перспективная программа работы ТК на 2025 год</h2>
                <div>
                   <div className="flex items-center mb-6 gap-3">
                      <Disc2 size={24} color="#CC4E3A" />
@@ -79,7 +78,7 @@ export default function PerspectivePage() {
             <section className="mt-15 shadow-md px-8 py-10 rounded-md">
                <div className="flex gap-2 items-center mb-10">
                   <FileText size={24} color="#CC4E3A" />
-                  <h2 className="text-lg font-semibold">Проекты стандартов</h2>
+                  <h2 className="text-lg font-semibold">Перечни стандартов</h2>
                </div>
                <div className="flex gap-10 max-sm:flex flex-col">
                   {isLoading ? (
@@ -99,6 +98,10 @@ export default function PerspectivePage() {
                            </div>
                         </div>
                      </div>
+                  ) : standards.length === 0 ? (
+                     <div className="text-center py-8 text-gray-500">
+                     Перечни стандартов не найдены
+                  </div>
                   ) : (
                      standards.slice(-2).map((standard) => {
                         return <PerspectiveStandartCard

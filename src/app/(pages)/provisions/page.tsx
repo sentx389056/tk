@@ -77,7 +77,7 @@ export default function ProvisionsPage() {
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">
          <div className="py-10">
             <div className="flex flex-col items-center">
-               <h1 className="text-4xl font-bold text-center mb-2">Положения о ТК</h1>
+               <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">Проект Положения о ТК &quot;Кинематография&quot;</h1>
                <p className="text-center text-base font-light text-gray-700 max-w-180">Нормативные документы, регламентирующие деятельность Технического комитета</p>
             </div>
             <SearchInput value={search} onChange={setSearch} count={total} />

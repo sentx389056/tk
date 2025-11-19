@@ -150,8 +150,8 @@ export function SectionManagements() {
                                     <Input id="sheet-phone" value={phone} onChange={(e) => setPhone(e.target.value)} type="text"  />
                                 </div>
                                 <div className="grid gap-3">
-                                    <Label htmlFor="sheet-phone">Адрес</Label>
-                                    <Input id="sheet-phone" value={address} onChange={(e) => setAddress(e.target.value)} type="text"  />
+                                    <Label htmlFor="sheet-address">Адрес</Label>
+                                    <Input id="sheet-address" value={address} onChange={(e) => setAddress(e.target.value)} type="text"  />
                                 </div>
                                 <div className="grid gap-3">
                                     <Label htmlFor="sheet-experience">Опыт</Label>
