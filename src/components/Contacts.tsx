@@ -1,4 +1,4 @@
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { Globe, Mail, MapPin, Phone } from "lucide-react";
 
 export default function Contacts() {
    return (
@@ -25,6 +25,13 @@ export default function Contacts() {
                <div>
                   <h3 className="font-semibold">Электронная почта</h3>
                   <a href="mailto:chekalin.d@gff-rf.ru">chekalin.d@gff-rf.ru</a>
+               </div>
+            </li>
+            <li className="flex items-start gap-4 mt-6">
+               <Globe size={24} color="#CC4E3A" />
+               <div>
+                  <h3 className="font-semibold">Сайт</h3>
+                  <a href="mailto:chekalin.d@gff-rf.ru">TC_Cinematography</a>
                </div>
             </li>
             {/* <li className="flex items-start gap-4 mt-6">

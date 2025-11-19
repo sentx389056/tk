@@ -135,9 +135,9 @@ export default function ApplicationsPage() {
                     <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">
                         Поступившие заявки на участие в ТК
                     </h1>
-                    <p className="text-center text-sm sm:text-base font-light text-gray-700 max-w-[90%] sm:max-w-[80%] md:max-w-[70%]">
+                    {/* <p className="text-center text-sm sm:text-base font-light text-gray-700 max-w-[90%] sm:max-w-[80%] md:max-w-[70%]">
                         Заявки организаций, подавших запрос на участие в работе Технического комитета
-                    </p>
+                    </p> */}
                 </div>
 
                 <section className="w-full">

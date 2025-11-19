@@ -56,9 +56,9 @@ export default function PerspectivePage() {
          <div className="py-10">
             <div className="flex flex-col items-center">
                <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">Проект Перспективной программы работы ТК</h1>
-               <p className="text-center text-base font-light text-gray-700 max-w-180">Планы и проекты Технического комитета по стандартизации в области кинематографии</p>
+               {/* <p className="text-center text-base font-light text-gray-700 max-w-180">Планы и проекты Технического комитета по стандартизации в области кинематографии</p> */}
             </div>
-            <section className="mt-15 shadow-md px-8 py-10 rounded-md">
+            {/* <section className="mt-15 shadow-md px-8 py-10 rounded-md">
                <h2 className="text-center font-bold text-xl mb-18">Перспективная программа работы ТК на 2025 год</h2>
                <div>
                   <div className="flex items-center mb-6 gap-3">
@@ -114,7 +114,7 @@ export default function PerspectivePage() {
                         />
                      }))}
                </div>
-            </section>
+            </section> */}
          </div>
       </main>
    )
