@@ -124,7 +124,7 @@ type StandardProject = {
     fileUrl?: string;
 }
 
-export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export default function SecureAreaPage() {
     const [members, setMembers] = React.useState<Member[]>([]);
     const [standards, setStandards] = React.useState<StandardProject[]>([]);
     const [open, setOpen] = React.useState(false);
@@ -307,7 +307,7 @@ export default function SecureAreaPage({ ...props }: React.ComponentProps<typeof
                                                             } as React.CSSProperties
                                                         }
                                                     >
-                                                        <Sidebar collapsible="icon" variant="inset" {...props}>
+                                                        <Sidebar collapsible="icon" variant="inset">
                                                             <SidebarHeader>
                                                                 <SidebarMenu>
                                                                     <SidebarMenuItem>
