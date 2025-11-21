@@ -1,8 +1,7 @@
 "use client";
-import PerspectiveStandartCard from "@/components/PerspectiveStandartCard";
-import PerspectiveTasks from "@/components/PerspectiveTask";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Disc2, FileText } from "lucide-react";
+
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Link } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type Standard = {
@@ -15,6 +14,37 @@ type Standard = {
 };
 
 export default function PerspectivePage() {
+
+   const standardsTable = [
+      {
+         id: 1,
+         title: "Качество цифрового кино. Часть 1: Яркость, цветность и равномерность экрана.",
+         type: "Разработка ГОСТ Р. Прямое применение МС – IDT  ISO 26431-1: 2008",
+         directionNotice: "09.2026",
+         direction: "06.2027",
+         statement: "12.2027",
+         note: "—",
+      },
+      {
+         id: 2,
+         title: "Прокатный мастер цифрового фильма (DCDM) — Часть 1: Характеристики изображения.",
+         type: "Разработка ГОСТ Р. Прямое применение МС – IDT  ISO 26428-1: 2008",
+         directionNotice: "09.2026",
+         direction: "06.2027",
+         statement: "12.2027",
+         note: "—",
+      },
+      {
+         id: 3,
+         title: "Прокатный мастер цифрового фильма (DCDM) — Часть 2: Характеристики фонограмм.",
+         type: "Разработка ГОСТ Р. Прямое применение МС – IDT  ISO 26428-2: 2008",
+         directionNotice: "09.2026",
+         direction: "06.2027",
+         statement: "12.2027",
+         note: "—",
+      },
+   ]
+
    const [standards, setStandards] = useState<Standard[]>([]);
    const [isLoading, setLoading] = useState<boolean>(true);
 
@@ -58,6 +88,56 @@ export default function PerspectivePage() {
                <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">Проект Перспективной программы работы ТК</h1>
                {/* <p className="text-center text-base font-light text-gray-700 max-w-180">Планы и проекты Технического комитета по стандартизации в области кинематографии</p> */}
             </div>
+            <section className="w-full">
+               <Table className="w-full text-xs md:text-sm">
+                  <TableHeader>
+                     <TableRow>
+                        <TableHead className="align-middle whitespace-normal">№ п/п</TableHead>
+                        <TableHead className="align-middle whitespace-normal break-words">
+                           Наименование проекта стандарта
+                        </TableHead>
+                        <TableHead className="align-middle whitespace-normal break-words">
+                           Вид работ
+                        </TableHead>
+                        <TableHead className="text-center align-middle whitespace-normal break-words">
+                           Направление в Росстандарт уведомления о разработке стандарта
+                        </TableHead>
+                        <TableHead className="text-center align-middle whitespace-normal break-words">
+                           Направление в Росстандарт окончательной редакции проекта стандарта
+                        </TableHead>
+                        <TableHead className="text-center align-middle whitespace-normal break-words">
+                           Утверждение стандарта
+                        </TableHead>
+                        <TableHead className="align-middle whitespace-normal">Примечание</TableHead>
+                     </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                     {standardsTable.map((standard) => (
+                        <TableRow key={standard.id}>
+                           <TableCell className="font-medium align-top whitespace-normal">{standard.id}</TableCell>
+                           <TableCell className="font-medium align-top whitespace-normal break-words">
+                              {standard.title}
+                           </TableCell>
+                           <TableCell className="font-medium align-top whitespace-normal break-words">
+                              {standard.type}
+                           </TableCell>
+                           <TableCell className="font-medium align-top text-center whitespace-normal">
+                              {standard.directionNotice}
+                           </TableCell>
+                           <TableCell className="font-medium align-top text-center whitespace-normal">
+                              {standard.direction}
+                           </TableCell>
+                           <TableCell className="font-medium align-top text-center whitespace-normal">
+                              {standard.statement}
+                           </TableCell>
+                           <TableCell className="font-medium align-top text-center whitespace-normal">
+                              {standard.note}
+                           </TableCell>
+                        </TableRow>
+                     ))}
+                  </TableBody>
+               </Table>
+            </section>
             {/* <section className="mt-15 shadow-md px-8 py-10 rounded-md">
                <h2 className="text-center font-bold text-xl mb-18">Перспективная программа работы ТК на 2025 год</h2>
                <div>
