@@ -4,6 +4,11 @@ import SearchInput from "@/components/SearchInput";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
+import Markdown from "react-markdown";
+import MarkdownRenderer from "@/components/markdownRenderer";
 
 type Provision = {
    id: number;
@@ -39,7 +44,7 @@ export default function ProvisionsPage() {
             page: page.toString(),
             pageSize: pageSize.toString()
          });
-         
+
          if (search) {
             params.append('search', search);
          }
@@ -77,11 +82,11 @@ export default function ProvisionsPage() {
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">
          <div className="py-10">
             <div className="flex flex-col items-center">
-               <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">Проект Положения о ТК &quot;Кинематография&quot;</h1>
-               {/* <p className="text-center text-base font-light text-gray-700 max-w-180">Нормативные документы, регламентирующие деятельность Технического комитета</p> */}
+               <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">ПОЛОЖЕНИЕ О ТЕХНИЧЕСКОМ КОМИТЕТЕ ПО СТАНДАРТИЗАЦИИ</h1>
+               <p className="text-center mt-5 text-3xl font-medium">&quot;Кинематография&quot;</p>
             </div>
-            <SearchInput value={search} onChange={setSearch} count={total} />
-            <section className="mt-8 flex flex-col gap-10">
+            <MarkdownRenderer />
+            {/* <section className="mt-8 flex flex-col gap-10">
                {isLoading ? (
                   <div className="flex flex-col gap-10">
                      <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
@@ -119,7 +124,6 @@ export default function ProvisionsPage() {
                                  />
                               ))}
 
-                              {/* Pagination Controls */}
                               <div className="flex items-center justify-between mt-4 pt-4 border-t">
                                  <div className="text-sm text-gray-500">
                                     Страница {page} из {totalPages}
@@ -148,7 +152,8 @@ export default function ProvisionsPage() {
                      </div>
                   </>
                )}
-            </section>
+            </section> */}
+            
          </div>
       </main>
    )

@@ -1,6 +1,5 @@
 "use client";
 
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Link from "next/link";
 
 export default function ApplicationsPage() {
@@ -140,27 +139,36 @@ export default function ApplicationsPage() {
                     </p> */}
                 </div>
 
-                <section className="w-full">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead className="w-[100px]">№ п/п</TableHead>
-                                <TableHead className="w-full">Наименование организации</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {requests.map((request) => (
-                                <TableRow key={request.id}>
-                                    <TableCell className="font-medium">{request.id}</TableCell>
-                                    <TableCell>
-                                        <Link href={request.fileUrl} target="_blank">
-                                            {request.orgName}
-                                        </Link>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                <section className="w-full mt-6 text-[10px] md:text-xs">
+                    <div className="overflow-x-auto border border-gray-200 rounded-md">
+                        <table className="w-full min-w-[520px] table-fixed border border-gray-300 border-collapse text-gray-900">
+
+                            <colgroup>
+                                <col className="w-16" />
+                                <col />
+                            </colgroup>
+                            <thead className="bg-[#F2F4F7] text-[9px] md:text-[11px] tracking-wide text-gray-700 uppercase">
+
+                                <tr>
+                                    <th className="px-3 py-3 text-center align-middle border border-gray-300">№ п/п</th>
+                                    <th className="px-3 py-3 text-left align-middle border border-gray-300">Наименование организации</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {requests.map((request, index) => (
+                                    <tr key={request.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                                        <td className="px-3 py-3 text-center align-top border border-gray-300 font-medium">{request.id}</td>
+                                        <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words">
+                                            <Link href={request.fileUrl} target="_blank">
+                                                {request.orgName}
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+
+                        </table>
+                    </div>
                 </section>
             </div>
         </main>

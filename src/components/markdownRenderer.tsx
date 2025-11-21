@@ -5,7 +5,7 @@ import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function PlanDocument() {
+export default function markdownRenderer() {
     const [markdown, setMarkdown] = useState<string | null>(null);
 
     useEffect(() => {
@@ -15,7 +15,6 @@ export default function PlanDocument() {
             .catch(() => setMarkdown(""));
     }, []);
 
-    // Скелетон — имитирует A4
     if (markdown === null) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-start justify-center pt-8 pb-20 px-4">
@@ -36,7 +35,7 @@ export default function PlanDocument() {
     if (!markdown) return null;
 
     return (
-        <div className="min-h-screen bg-gray-50 flex items-start justify-center pt-8 pb-20 px-4">
+        <div className="min-h-screen  flex items-start justify-center pt-8 pb-20 px-4">
             {/* Контейнер = ширина A4 при печати ≈ 210 мм ≈ 794px */}
             <article className="w-full max-w-6xl bg-white shadow-lg ring-1 ring-black/5">
                 <div className="px-12 py-16">

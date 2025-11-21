@@ -31,7 +31,7 @@ export default function Contacts() {
                <Globe size={24} color="#CC4E3A" />
                <div>
                   <h3 className="font-semibold">Сайт</h3>
-                  <a href="mailto:chekalin.d@gff-rf.ru">TC_Cinematography</a>
+                  <a href="/">TC_Cinematography</a>
                </div>
             </li>
             {/* <li className="flex items-start gap-4 mt-6">
