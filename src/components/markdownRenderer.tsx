@@ -5,7 +5,7 @@ import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function markdownRenderer() {
+export default function MarkdownRenderer() {
     const [markdown, setMarkdown] = useState<string | null>(null);
 
     useEffect(() => {

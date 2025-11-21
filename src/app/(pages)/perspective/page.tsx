@@ -144,9 +144,11 @@ export default function PerspectivePage() {
 
    return (
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">
-         <div className="py-10">
+         <div className="py-10 relative">
+            <span className="absolute top-0 right-0 text-left">Проект</span>
             <div className="flex flex-col items-center">
-               <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">Проект Перспективной программы работы ТК</h1>
+               <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">ПЕРСПЕКТИВНАЯ ПРОГРАММА<br/>работы ТК «Кинематография» на 2026‒2029 гг.
+               </h1>
                {/* <p className="text-center text-base font-light text-gray-700 max-w-180">Планы и проекты Технического комитета по стандартизации в области кинематографии</p> */}
             </div>
 
@@ -155,39 +157,39 @@ export default function PerspectivePage() {
                   <table className="w-full min-w-[960px] table-fixed border border-gray-300 border-collapse text-gray-900">
 
                      <colgroup>
-                        <col className="w-12" />
-                        <col className="w-[32%]" />
-                        <col className="w-[19%]" />
-                        <col className="w-[9%]" />
-                        <col className="w-[9%]" />
-                        <col className="w-[9%]" />
-                        <col className="w-[12%]" />
+                        <col className="w-[5%]" />
+                        <col className="w-[20%]" />
+                        <col className="w-[20%]" />
+                        <col className="w-[15%]" />
+                        <col className="w-[15%]" />
+                        <col className="w-[15%]" />
+                        <col className="w-[10%]" />
                      </colgroup>
                      <thead className="bg-[#F2F4F7] text-[8px] sm:text-[8px] md:text-[10px] tracking-wide text-gray-700 whitespace-normal">
 
                         <tr>
-                           <th rowSpan={2} className="px-3 py-3 text-center align-middle border border-gray-300">№ п/п</th>
-                           <th rowSpan={2} className="px-3 py-3 text-left align-middle border border-gray-300">Наименование проекта стандарта</th>
-                           <th rowSpan={2} className="px-3 py-3 text-left align-middle border border-gray-300">Вид работ</th>
-                           <th colSpan={3} className="px-3 py-3 text-center align-middle border border-gray-300">Сроки</th>
-                           <th rowSpan={2} className="px-3 py-3 text-center align-middle border border-gray-300 whitespace-normal break-words">Примечание</th>
+                           <th rowSpan={2} className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">№ п/п</th>
+                           <th rowSpan={2} className="px-3 py-3 text-left align-middle border border-gray-300 text-sm">Наименование проекта стандарта</th>
+                           <th rowSpan={2} className="px-3 py-3 text-left align-middle border border-gray-300 text-sm">Вид работ</th>
+                           <th colSpan={3} className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">Сроки</th>
+                           <th rowSpan={2} className="px-3 py-3 text-center align-middle border border-gray-300 whitespace-normal break-words text-sm">Примечание</th>
                         </tr>
                         <tr>
-                           <th className="px-3 py-2 text-center align-middle border border-gray-300 leading-tight">Направление в Росстандарт уведомления о разработке стандарта</th>
-                           <th className="px-3 py-2 text-center align-middle border border-gray-300 leading-tight">Направление в Росстандарт окончательной редакции проекта стандарта</th>
-                           <th className="px-3 py-2 text-center align-middle border border-gray-300 leading-tight">Утверждение стандарта</th>
+                           <th className="px-3 py-2 text-center align-middle border border-gray-300 leading-tight text-sm">Направление в Росстандарт уведомления о разработке стандарта</th>
+                           <th className="px-3 py-2 text-center align-middle border border-gray-300 leading-tight text-sm">Направление в Росстандарт окончательной редакции проекта стандарта</th>
+                           <th className="px-3 py-2 text-center align-middle border border-gray-300 leading-tight text-sm">Утверждение стандарта</th>
                         </tr>
                      </thead>
                      <tbody>
                         {standardsTable.map((standard, index) => (
                            <tr key={standard.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                              <td className="px-3 py-3 text-center align-top border border-gray-300">{standard.id}</td>
-                              <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words">{standard.title}</td>
-                              <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words">{standard.type}</td>
-                              <td className="px-3 py-3 text-center align-top border border-gray-300 leading-snug">{standard.directionNotice}</td>
-                              <td className="px-3 py-3 text-center align-top border border-gray-300 leading-snug">{standard.direction}</td>
-                              <td className="px-3 py-3 text-center align-top border border-gray-300 leading-snug">{standard.statement}</td>
-                              <td className="px-3 py-3 text-center align-top border border-gray-300 leading-snug">{standard.note}</td>
+                              <td className="px-3 py-3 text-center align-top border border-gray-300 text-sm">{standard.id}</td>
+                              <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words text-sm">{standard.title}</td>
+                              <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words text-sm">{standard.type}</td>
+                              <td className="px-3 py-3 text-center align-top border border-gray-300 leading-snug text-sm">{standard.directionNotice}</td>
+                              <td className="px-3 py-3 text-center align-top border border-gray-300 leading-snug text-sm">{standard.direction}</td>
+                              <td className="px-3 py-3 text-center align-top border border-gray-300 leading-snug text-sm">{standard.statement}</td>
+                              <td className="px-3 py-3 text-center align-top border border-gray-300 leading-snug text-sm">{standard.note}</td>
                            </tr>
                         ))}
                      </tbody>

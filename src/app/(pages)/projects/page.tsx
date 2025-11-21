@@ -860,10 +860,9 @@ export default function ProjectsPage() {
                {/* <p className="text-center text-base font-light text-gray-700 max-w-180">Проекты национальных стандартов, разрабатываемые Техническим комитетом</p> */}
             </div>
             <div className="mt-10 flex flex-col items-center text-center gap-2">
-               <h2 className="text-base font-semibold uppercase tracking-wide max-w-3xl text-gray-900">
-                  Перечень национальных стандартов Российской Федерации и межгосударственных стандартов,
-                  действующих в Российской Федерации на национальном уровне и относящихся к компетенции
-                  ТК «Кинематография»
+               <h2 className="text-base font-semibold tracking-wide max-w-2xl text-gray-900">
+                  ПЕРЕЧЕНЬ<br/>национальных стандартов Российской Федерации и межгосударственных стандартов,
+                  действующих в Российской Федерации на национальном уровне и относящихся к компетенции<br/>ТК «Кинематография»
                </h2>
             </div>
             <section className="w-full mt-6 text-[9px] sm:text-[10px] md:text-xs">
@@ -875,20 +874,20 @@ export default function ProjectsPage() {
                         <col className="w-[20%]" />
                         <col className="w-[68%]" />
                      </colgroup>
-                     <thead className="bg-[#F2F4F7] text-[8px] sm:text-[8px] md:text-[10px] tracking-wide text-gray-700 uppercase">
+                     <thead className="bg-[#F2F4F7] text-[8px] sm:text-[8px] md:text-[10px] tracking-wide text-gray-700">
 
                         <tr>
-                           <th className="px-3 py-3 text-center align-middle border border-gray-300">№ п/п</th>
-                           <th className="px-3 py-3 text-left align-middle border border-gray-300">Обозначение</th>
-                           <th className="px-3 py-3 text-left align-middle border border-gray-300">Наименование</th>
+                           <th className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">№ п/п</th>
+                           <th className="px-3 py-3 text-left align-middle border border-gray-300 text-sm">Обозначение</th>
+                           <th className="px-3 py-3 text-left align-middle border border-gray-300 text-sm">Наименование</th>
                         </tr>
                      </thead>
                      <tbody>
                         {nationalStandards.map((standard, index) => (
                            <tr key={standard.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                              <td className="px-3 py-3 text-center align-top border border-gray-300">{standard.id}</td>
-                              <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words">{standard.code}</td>
-                              <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words">{standard.title}</td>
+                              <td className="px-3 py-3 text-center align-top border border-gray-300 text-sm">{standard.id}</td>
+                              <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words text-sm">{standard.code}</td>
+                              <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words text-sm">{standard.title}</td>
                            </tr>
                         ))}
                      </tbody>
@@ -897,8 +896,8 @@ export default function ProjectsPage() {
                </div>
             </section>
             <div className="mt-12 flex flex-col items-center text-center gap-2">
-               <h2 className="text-base font-semibold uppercase tracking-wide max-w-3xl text-gray-900">
-                  Перечень международных стандартов (ISO/TC 36), относящихся к компетенции ТК «Кинематография»
+               <h2 className="text-base font-semibold tracking-wide max-w-3xl text-gray-900">
+                  ПЕРЕЧЕНЬ<br/>международных стандартов (ИСО/ТК 36), относящихся к компетенции<br/>ТК «Кинематография»
                </h2>
             </div>
             <section className="w-full mt-6 text-[9px] sm:text-[10px] md:text-xs">
@@ -911,22 +910,22 @@ export default function ProjectsPage() {
                         <col className="w-[60%]" />
                         <col className="w-[16%]" />
                      </colgroup>
-                     <thead className="bg-[#F2F4F7] text-[8px] sm:text-[8px] md:text-[10px] tracking-wide text-gray-700 uppercase">
+                     <thead className="bg-[#F2F4F7] text-[8px] sm:text-[8px] md:text-[10px] tracking-wide text-gray-700">
 
                         <tr>
-                           <th className="px-3 py-3 text-center align-middle border border-gray-300">№ п/п</th>
-                           <th className="px-3 py-3 text-left align-middle border border-gray-300">Обозначение</th>
-                           <th className="px-3 py-3 text-left align-middle border border-gray-300">Наименование</th>
-                           <th className="px-3 py-3 text-center align-middle border border-gray-300">Код ICS</th>
+                           <th className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">№ п/п</th>
+                           <th className="px-3 py-3 text-left align-middle border border-gray-300 text-sm">Обозначение</th>
+                           <th className="px-3 py-3 text-left align-middle border border-gray-300 text-sm">Наименование</th>
+                           <th className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">Код ICS</th>
                         </tr>
                      </thead>
                      <tbody>
                         {internationalStandards.map((standard, index) => (
                            <tr key={standard.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                              <td className="px-3 py-3 text-center align-top border border-gray-300">{standard.id}</td>
-                              <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words">{standard.code}</td>
-                              <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words">{standard.title}</td>
-                              <td className="px-3 py-3 text-center align-top border border-gray-300 leading-snug whitespace-pre-line">{standard.ics}</td>
+                              <td className="px-3 py-3 text-center align-top border border-gray-300 text-sm">{standard.id}</td>
+                              <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words text-sm">{standard.code}</td>
+                              <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words text-sm">{standard.title}</td>
+                              <td className="px-3 py-3 text-center align-top border border-gray-300 leading-snug whitespace-pre-line text-sm">{standard.ics}</td>
                            </tr>
                         ))}
                      </tbody>

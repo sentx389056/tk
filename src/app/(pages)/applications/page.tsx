@@ -147,18 +147,18 @@ export default function ApplicationsPage() {
                                 <col className="w-16" />
                                 <col />
                             </colgroup>
-                            <thead className="bg-[#F2F4F7] text-[9px] md:text-[11px] tracking-wide text-gray-700 uppercase">
+                            <thead className="bg-[#F2F4F7] text-[9px] md:text-[11px] tracking-wide text-gray-700">
 
                                 <tr>
-                                    <th className="px-3 py-3 text-center align-middle border border-gray-300">№ п/п</th>
-                                    <th className="px-3 py-3 text-left align-middle border border-gray-300">Наименование организации</th>
+                                    <th className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">№ п/п</th>
+                                    <th className="px-3 py-3 text-left align-middle border border-gray-300 text-sm">Наименование организации</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {requests.map((request, index) => (
                                     <tr key={request.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                                        <td className="px-3 py-3 text-center align-top border border-gray-300 font-medium">{request.id}</td>
-                                        <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words">
+                                        <td className="px-3 py-3 text-center align-top border border-gray-300 font-medium text-sm">{request.id}</td>
+                                        <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words text-sm">
                                             <Link href={request.fileUrl} target="_blank">
                                                 {request.orgName}
                                             </Link>

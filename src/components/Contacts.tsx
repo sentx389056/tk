@@ -1,4 +1,5 @@
 import { Globe, Mail, MapPin, Phone } from "lucide-react";
+import Link from "next/link";
 
 export default function Contacts() {
    return (
@@ -31,7 +32,7 @@ export default function Contacts() {
                <Globe size={24} color="#CC4E3A" />
                <div>
                   <h3 className="font-semibold">Сайт</h3>
-                  <a href="/">TC_Cinematography</a>
+                  <Link href="/">TC_Cinematography</Link>
                </div>
             </li>
             {/* <li className="flex items-start gap-4 mt-6">
