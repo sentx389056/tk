@@ -1,7 +1,5 @@
 "use client";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Link } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type Standard = {
@@ -41,6 +39,69 @@ export default function PerspectivePage() {
          directionNotice: "09.2026",
          direction: "06.2027",
          statement: "12.2027",
+         note: "—",
+      },
+      {
+         id: 4,
+         title: "Относительный и абсолютный уровни звукового давления для многоканальных звуковых систем в кино — Методы измерения и уровни воспроизведения аналоговых фонограмм и фонограмм цифровых фильмов.",
+         type: "Разработка ГОСТ Р. Прямое применение МС – IDT ISO 22234:2005",
+         directionNotice: "09.2027",
+         direction: "06.2028",
+         statement: "12.2028",
+         note: "—",
+      },
+      {
+         id: 5,
+         title: "Кинематография. Электроакустическая частотная характеристика цепи B залов прослушивания и крытых кинотеатров — Технические характеристики и измерения.",
+         type: "Разработка ГОСТ Р. Прямое применение МС – IDT ISO 2969:2015",
+         directionNotice: "09.2027",
+         direction: "06.2028",
+         statement: "12.2028",
+         note: "—",
+      },
+      {
+         id: 6,
+         title: "Кинематография. Уровень фонового акустического шума в кинотеатрах, просмотровых залах и студиях перезаписи.",
+         type: "Разработка ГОСТ Р. Прямое применение МС – IDT ISO 9568:1993",
+         directionNotice: "09.2027",
+         direction: "06.2028",
+         statement: "12.2028",
+         note: "—",
+      },
+      {
+         id: 7,
+         title: "Кинематография. Метод измерения громкости фонограмм короткометражных фильмов.",
+         type: "Разработка ГОСТ Р. Прямое применение МС – IDT ISO 21727:2016",
+         directionNotice: "09.2027",
+         direction: "06.2028",
+         statement: "12.2028",
+         note: "—",
+      },
+      {
+         id: 8,
+         title: "Прокатный мастер цифрового фильма (DCDM) — Часть 11: Дополнительные частоты кадров.",
+         type: "Разработка ГОСТ Р. Прямое применение МС – IDT ISO 26428-11:2011",
+         directionNotice: "09.2028",
+         direction: "06.2029",
+         statement: "12.2029",
+         note: "—",
+      },
+      {
+         id: 9,
+         title: "Кинематография. Эксплуатация и консервация магнитных звуковых фонограмм для кино и телевидения.",
+         type: "Разработка ГОСТ Р. Прямое применение МС – IDT ISO 12606:1997",
+         directionNotice: "09.2028",
+         direction: "06.2029",
+         statement: "12.2029",
+         note: "—",
+      },
+      {
+         id: 10,
+         title: "Технические требования и методы испытаний для стереоскопической проекции цифрового кино.",
+         type: "Разработка ГОСТ Р. Прямое применение МС – IDT ISO 5926:2023",
+         directionNotice: "09.2028",
+         direction: "06.2029",
+         statement: "12.2029",
          note: "—",
       },
    ]
@@ -88,113 +149,52 @@ export default function PerspectivePage() {
                <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">Проект Перспективной программы работы ТК</h1>
                {/* <p className="text-center text-base font-light text-gray-700 max-w-180">Планы и проекты Технического комитета по стандартизации в области кинематографии</p> */}
             </div>
-            <section className="w-full">
-               <Table className="w-full text-xs md:text-sm">
-                  <TableHeader>
-                     <TableRow>
-                        <TableHead className="align-middle whitespace-normal">№ п/п</TableHead>
-                        <TableHead className="align-middle whitespace-normal break-words">
-                           Наименование проекта стандарта
-                        </TableHead>
-                        <TableHead className="align-middle whitespace-normal break-words">
-                           Вид работ
-                        </TableHead>
-                        <TableHead className="text-center align-middle whitespace-normal break-words">
-                           Направление в Росстандарт уведомления о разработке стандарта
-                        </TableHead>
-                        <TableHead className="text-center align-middle whitespace-normal break-words">
-                           Направление в Росстандарт окончательной редакции проекта стандарта
-                        </TableHead>
-                        <TableHead className="text-center align-middle whitespace-normal break-words">
-                           Утверждение стандарта
-                        </TableHead>
-                        <TableHead className="align-middle whitespace-normal">Примечание</TableHead>
-                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                     {standardsTable.map((standard) => (
-                        <TableRow key={standard.id}>
-                           <TableCell className="font-medium align-top whitespace-normal">{standard.id}</TableCell>
-                           <TableCell className="font-medium align-top whitespace-normal break-words">
-                              {standard.title}
-                           </TableCell>
-                           <TableCell className="font-medium align-top whitespace-normal break-words">
-                              {standard.type}
-                           </TableCell>
-                           <TableCell className="font-medium align-top text-center whitespace-normal">
-                              {standard.directionNotice}
-                           </TableCell>
-                           <TableCell className="font-medium align-top text-center whitespace-normal">
-                              {standard.direction}
-                           </TableCell>
-                           <TableCell className="font-medium align-top text-center whitespace-normal">
-                              {standard.statement}
-                           </TableCell>
-                           <TableCell className="font-medium align-top text-center whitespace-normal">
-                              {standard.note}
-                           </TableCell>
-                        </TableRow>
-                     ))}
-                  </TableBody>
-               </Table>
-            </section>
-            {/* <section className="mt-15 shadow-md px-8 py-10 rounded-md">
-               <h2 className="text-center font-bold text-xl mb-18">Перспективная программа работы ТК на 2025 год</h2>
-               <div>
-                  <div className="flex items-center mb-6 gap-3">
-                     <Disc2 size={24} color="#CC4E3A" />
-                     <h2 className="text-lg font-bold">Основные цели и задачи</h2>
-                  </div>
-                  <div>
-                     <div className="grid grid-cols-2 gap-y-4 gap-x-29 justify-center max-sm:flex flex-col max-md:gap-x-5">
-                        <PerspectiveTasks number={1} text="Завершение работы над 3 стандартами, начатыми в 2024 году" />
-                        <PerspectiveTasks number={2} text="Завершение работы над 3 стандартами, начатыми в 2024 году" />
-                        <PerspectiveTasks number={3} text="Завершение работы над 3 стандартами, начатыми в 2024 году" />
-                        <PerspectiveTasks number={4} text="Завершение работы над 3 стандартами, начатыми в 2024 году" />
-                     </div>
-                  </div>
+
+            <section className="w-full mt-6 text-[9px] sm:text-[10px] md:text-xs">
+               <div className="overflow-x-auto border border-gray-200 rounded-md">
+                  <table className="w-full min-w-[960px] table-fixed border border-gray-300 border-collapse text-gray-900">
+
+                     <colgroup>
+                        <col className="w-12" />
+                        <col className="w-[32%]" />
+                        <col className="w-[19%]" />
+                        <col className="w-[9%]" />
+                        <col className="w-[9%]" />
+                        <col className="w-[9%]" />
+                        <col className="w-[12%]" />
+                     </colgroup>
+                     <thead className="bg-[#F2F4F7] text-[8px] sm:text-[8px] md:text-[10px] tracking-wide text-gray-700 whitespace-normal">
+
+                        <tr>
+                           <th rowSpan={2} className="px-3 py-3 text-center align-middle border border-gray-300">№ п/п</th>
+                           <th rowSpan={2} className="px-3 py-3 text-left align-middle border border-gray-300">Наименование проекта стандарта</th>
+                           <th rowSpan={2} className="px-3 py-3 text-left align-middle border border-gray-300">Вид работ</th>
+                           <th colSpan={3} className="px-3 py-3 text-center align-middle border border-gray-300">Сроки</th>
+                           <th rowSpan={2} className="px-3 py-3 text-center align-middle border border-gray-300 whitespace-normal break-words">Примечание</th>
+                        </tr>
+                        <tr>
+                           <th className="px-3 py-2 text-center align-middle border border-gray-300 leading-tight">Направление в Росстандарт уведомления о разработке стандарта</th>
+                           <th className="px-3 py-2 text-center align-middle border border-gray-300 leading-tight">Направление в Росстандарт окончательной редакции проекта стандарта</th>
+                           <th className="px-3 py-2 text-center align-middle border border-gray-300 leading-tight">Утверждение стандарта</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {standardsTable.map((standard, index) => (
+                           <tr key={standard.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                              <td className="px-3 py-3 text-center align-top border border-gray-300">{standard.id}</td>
+                              <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words">{standard.title}</td>
+                              <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words">{standard.type}</td>
+                              <td className="px-3 py-3 text-center align-top border border-gray-300 leading-snug">{standard.directionNotice}</td>
+                              <td className="px-3 py-3 text-center align-top border border-gray-300 leading-snug">{standard.direction}</td>
+                              <td className="px-3 py-3 text-center align-top border border-gray-300 leading-snug">{standard.statement}</td>
+                              <td className="px-3 py-3 text-center align-top border border-gray-300 leading-snug">{standard.note}</td>
+                           </tr>
+                        ))}
+                     </tbody>
+
+                  </table>
                </div>
             </section>
-            <section className="mt-15 shadow-md px-8 py-10 rounded-md">
-               <div className="flex gap-2 items-center mb-10">
-                  <FileText size={24} color="#CC4E3A" />
-                  <h2 className="text-lg font-semibold">Перечни стандартов</h2>
-               </div>
-               <div className="flex gap-10 max-sm:flex flex-col">
-                  {isLoading ? (
-                     <div className="flex flex-col gap-10">
-                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
-                           <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
-                           <div className="space-y-2">
-                              <Skeleton className="h-4 w-[250px]" />
-                              <Skeleton className="h-4 w-[200px]" />
-                           </div>
-                        </div>
-                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
-                           <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
-                           <div className="space-y-2">
-                              <Skeleton className="h-4 w-[250px]" />
-                              <Skeleton className="h-4 w-[200px]" />
-                           </div>
-                        </div>
-                     </div>
-                  ) : standards.length === 0 ? (
-                     <div className="text-center py-8 text-gray-500">
-                     Перечни стандартов не найдены
-                  </div>
-                  ) : (
-                     standards.slice(-2).map((standard) => {
-                        return <PerspectiveStandartCard
-                           key={standard.id}
-                           title={standard.title}
-                           description={standard.description}
-                           startDate={new Date(standard.startDate)}
-                           endDate={new Date(standard.endDate)}
-                           fileUrl={standard.fileUrl}
-                        />
-                     }))}
-               </div>
-            </section> */}
          </div>
       </main>
    )
