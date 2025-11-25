@@ -84,11 +84,11 @@ export default function Header() {
    return (
       <header className="flex items-center justify-between w-full bg-black px-3 sm:px-6 xl:px-40 py-2">
 
-         <Link href="/" className="shrink-0">
-
+         <Link href="/" className="shrink-0 flex items-center gap-3">
             <Image src="/TKlogo.svg" alt="gff-tk logo" width={150} height={70} className="w-[120px] h-auto sm:w-[150px]" />
+            <p className="text-white font-semibold text-md hidden md:flex">ТЕХНИЧЕСКИЙ КОМИТЕТ ПО СТАНДАРТИЗАЦИИ<br/>ТК «КИНЕМАТОГРАФИЯ»</p>
          </Link>
-         <div className="hidden 2xl:flex items-center justify-between gap-6">
+         <div className="hidden 3xl:flex items-center justify-between gap-6">
             <NavigationMenu viewport={false}>
                <NavigationMenuList>
                   {/* <NavigationMenuItem>
@@ -174,7 +174,7 @@ export default function Header() {
                {/* Desktop login link (visible on xl and up) */}
                {/* <Link href="/login" className={`${buttonVariants({variant: "ghost"})} text-white`}>Вход для членов ТК</Link> */}
          </div>
-         <div className="grid grid-cols-1 2xl:hidden items-center justify-between gap-6">
+         <div className="grid grid-cols-1 3xl:hidden items-center justify-between gap-6">
             <Sheet>
                <SheetTrigger asChild>
                   <Button variant="ghost" className="hover:bg-slate-200/50 cursor-pointer">
@@ -186,17 +186,17 @@ export default function Header() {
                   <SheetHeader>
 
                   </SheetHeader>
-                  <div className="grid flex-1 auto-rows-min px-4">
-                     <Link href="/provisions" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground hover:underline  outline-none transition-[color,box-shadow]">
+                  <div className="flex flex-col gap-5 px-2">
+                     <Link href="/provisions" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground hover:underline  outline-none transition-[color,box-shadow]">
                         Положение о ТК
                      </Link>
-                     <Link href="/perspective" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                     <Link href="/perspective" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
                         Перспективная программа
                      </Link>
-                     <Link href="/projects" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                     <Link href="/projects" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
                         Перечни стандартов
                      </Link>
-                     <Link href="/applications" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                     <Link href="/applications" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
                         Поступившие заявки на участие в ТК
                      </Link>
                      {/* <Accordion type="single" collapsible>
@@ -247,7 +247,7 @@ export default function Header() {
                            </AccordionContent>
                         </AccordionItem>
                      </Accordion> */}
-                     <Link href="/contacts" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                     <Link href="/contacts" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
                         Контакты ТК
                      </Link>
                      {/* <Link href="/login" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">

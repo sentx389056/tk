@@ -39,10 +39,15 @@ export default function MarkdownRenderer() {
             {/* Контейнер = ширина A4 при печати ≈ 210 мм ≈ 794px */}
             <article className="w-full max-w-6xl bg-white shadow-lg ring-1 ring-black/5">
                 <div className="px-12 py-16">
-                    <div className="prose prose-lg max-w-none prose-headings:font-bold prose-strong:font-semibold">
+                    <div className="prose prose-lg max-w-none prose-headings:font-bold prose-strong:font-semibold text-justify">
                         <ReactMarkdown
                             remarkPlugins={[remarkGfm, remarkBreaks]}
                             components={{
+                                p: ({ children }) => (
+                                    <p className="indent-12">
+                                        {children}
+                                    </p>
+                                ),
                                 // Таблицы как в официальных документах
                                 table: ({ children }) => (
                                     <div className="overflow-x-auto my-8 -mx-12">

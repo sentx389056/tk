@@ -15,10 +15,10 @@ export default function Contacts() {
             </li>
             <li className="flex items-start gap-4 mt-6">
                <Phone size={24} color="#CC4E3A" />
-               <div>
+               <div className="flex flex-col">
                   <h3 className="font-semibold">Телефон</h3>
-                  <p>+7 (499) 941-06-80 (доб. 4-241)</p>
-                  <p>+7 (499) 941-06-80 (доб. 12-10)</p>
+                  <a href="tel:+74999410680">+7 (499) 941-06-80 (доб. 4-241)</a>
+                  <a href="tel:+74999410680">+7 (499) 941-06-80 (доб. 12-10)</a>
                </div>
             </li>
             <li className="flex items-start gap-4 mt-6">

@@ -914,8 +914,8 @@ export default function ProjectsPage() {
 
                         <tr>
                            <th className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">№ п/п</th>
-                           <th className="px-3 py-3 text-left align-middle border border-gray-300 text-sm">Обозначение</th>
-                           <th className="px-3 py-3 text-left align-middle border border-gray-300 text-sm">Наименование</th>
+                           <th className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">Обозначение</th>
+                           <th className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">Наименование</th>
                            <th className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">Код ICS</th>
                         </tr>
                      </thead>
