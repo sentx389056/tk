@@ -1,6 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import dynamic from "next/dynamic";
+
+const PDFViewer = dynamic(() => import("@/components/PDFViewer"), { ssr: false });
 
 export default function ApplicationsPage() {
 
@@ -163,10 +165,11 @@ export default function ApplicationsPage() {
                                 {requests.map((request, index) => (
                                     <tr key={request.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                                         <td className="px-3 py-3 text-center align-top border border-gray-300 font-medium text-sm">{request.id}</td>
-                                        <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words text-sm">
-                                            <Link href={request.fileUrl} target="_blank">
-                                                {request.orgName}
-                                            </Link>
+                                        <td className="px-3 py-3 text-left align-top border border-gray-300 leading-snug break-words text-sm">
+                                            <PDFViewer 
+                                                fileUrl={request.fileUrl} 
+                                                title={request.orgName}
+                                            />
                                         </td>
                                     </tr>
                                 ))}
