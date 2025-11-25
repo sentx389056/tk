@@ -169,8 +169,8 @@ export default function PerspectivePage() {
 
                         <tr>
                            <th rowSpan={2} className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">№ п/п</th>
-                           <th rowSpan={2} className="px-3 py-3 text-left align-middle border border-gray-300 text-sm">Наименование проекта стандарта</th>
-                           <th rowSpan={2} className="px-3 py-3 text-left align-middle border border-gray-300 text-sm">Вид работ</th>
+                           <th rowSpan={2} className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">Наименование проекта стандарта</th>
+                           <th rowSpan={2} className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">Вид работ</th>
                            <th colSpan={3} className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">Сроки</th>
                            <th rowSpan={2} className="px-3 py-3 text-center align-middle border border-gray-300 whitespace-normal break-words text-sm">Примечание</th>
                         </tr>
