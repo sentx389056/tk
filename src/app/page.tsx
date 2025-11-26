@@ -25,11 +25,40 @@ export default async function Home() {
       <div className="py-10">
         <div className="flex flex-col items-center">
           <h1 className="text-4xl font-bold text-center mb-2">Технический комитет по стандартизации</h1>
-          <p className="text-center text-xl text-red-pink font-semibold mb-2">ТК NNN &quot;Кинематография&quot;</p>
-          <p className="text-center text-base font-light text-gray-700 max-w-180">Разработка национальных стандартов в области кинематографии, архивного хранения кинофильмов и цифровых технологий в кино</p>
+          <p className="text-center text-4xl font-bold mb-10">&quot;Кинематография&quot;</p>
+
+          <nav className="w-full max-w-4xl mx-auto mb-16">
+            <ul className="flex flex-wrap gap-4 text-center justify-center">
+              <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <a href="/provisions" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
+                  Положения о ТК
+                </a>
+              </li>
+              <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <a href="/perspective" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
+                  Перспективная программа
+                </a>
+              </li>
+              <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <a href="/projects" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
+                  Перечни стандартов
+                </a>
+              </li>
+              <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <a href="/applications" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
+                  Поступившие заявки на участие в ТК
+                </a>
+              </li>
+              <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <a href="/contacts" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
+                  Контакты ТК
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
         <section className="mt-15">
-          <ul className="grid xl:grid-cols-4 gap-8 sm:grid-cols-2">
+          {/* <ul className="grid xl:grid-cols-4 gap-8 sm:grid-cols-2">
             <li>
               <Advantage count={standardProjects.length} text="Стандартов" Icon={FileText} />
             </li>
@@ -42,9 +71,9 @@ export default async function Home() {
             <li>
               <Advantage count={15} text="Лет работы" Icon={Award} />
             </li>
-          </ul>
+          </ul> */}
         </section>
-        <div className="grid sm:grid-cols-2 gap-8 mt-16">
+        {/* <div className="grid sm:grid-cols-2 gap-8 mt-16">
           <section className="p-8 bg-white shadow-md rounded-lg">
             <div className="flex gap-3 mb-6">
               <Disc2 size={32} color="#CC4E3A" />
@@ -65,13 +94,13 @@ export default async function Home() {
               <LastEvents />
             </div>
           </section>
-        </div>
-        <div className="flex flex-col sm:flex-row mt-16 gap-6">
+        </div> */}
+        {/* <div className="flex flex-col sm:flex-row mt-16 gap-6">
           <Contacts />
           <section className="w-full">
             <Map />
           </section>
-        </div>
+        </div> */}
       </div>
     </main>
 

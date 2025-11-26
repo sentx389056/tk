@@ -20,7 +20,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Separator } from "@/components/ui/separator";
 import { Menu } from "lucide-react";
 
-
 const info = {
    about: [
       {
@@ -85,10 +84,10 @@ export default function Header() {
       <header className="flex items-center justify-between w-full bg-black px-3 sm:px-6 xl:px-40 py-2">
 
          <Link href="/" className="shrink-0 flex items-center gap-3">
-            <Image src="/TKlogo.svg" alt="gff-tk logo" width={150} height={70} className="w-[120px] h-auto sm:w-[150px]" />
-            <p className="text-white font-semibold text-md hidden md:flex">ТЕХНИЧЕСКИЙ КОМИТЕТ ПО СТАНДАРТИЗАЦИИ<br/>ТК «КИНЕМАТОГРАФИЯ»</p>
+            <Image src="/TKlogo.svg" alt="gff-tk logo" width={150} height={70} className="w-[120px] h-auto sm:w-[150px] sm:hidden xl:flex" />
+            <p className="text-white font-semibold text-sm hidden sm:flex">ТЕХНИЧЕСКИЙ КОМИТЕТ ПО СТАНДАРТИЗАЦИИ<br />ТК «КИНЕМАТОГРАФИЯ»</p>
          </Link>
-         <div className="hidden 3xl:flex items-center justify-between gap-6">
+         <div className="hidden 2xl:flex items-center justify-between gap-6">
             <NavigationMenu viewport={false}>
                <NavigationMenuList>
                   {/* <NavigationMenuItem>
@@ -145,36 +144,36 @@ export default function Header() {
                      </NavigationMenuContent>
                   </NavigationMenuItem> */}
                   <NavigationMenuItem>
-                     <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
+                     <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
                         <Link href="/provisions">Положение о ТК</Link>
                      </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                     <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
+                     <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
                         <Link href="/perspective">Перспективная программа</Link>
                      </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                     <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
+                     <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
                         <Link href="/projects">Перечни стандартов</Link>
                      </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                     <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
+                     <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
                         <Link href="/applications">Поступившие заявки на участие в ТК</Link>
                      </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                     <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
+                     <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
                         <Link href="/contacts">Контакты ТК</Link>
                      </NavigationMenuLink>
                   </NavigationMenuItem>
                </NavigationMenuList>
             </NavigationMenu>
-               {/* Desktop login link (visible on xl and up) */}
-               {/* <Link href="/login" className={`${buttonVariants({variant: "ghost"})} text-white`}>Вход для членов ТК</Link> */}
+            {/* Desktop login link (visible on xl and up) */}
+            {/* <Link href="/login" className={`${buttonVariants({variant: "ghost"})} text-white`}>Вход для членов ТК</Link> */}
          </div>
-         <div className="grid grid-cols-1 3xl:hidden items-center justify-between gap-6">
+         <div className="grid grid-cols-1 2xl:hidden items-center justify-between gap-6">
             <Sheet>
                <SheetTrigger asChild>
                   <Button variant="ghost" className="hover:bg-slate-200/50 cursor-pointer">
