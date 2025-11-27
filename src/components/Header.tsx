@@ -150,7 +150,7 @@ export default function Header() {
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                      <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                        <Link href="/perspective">Перспективная программа</Link>
+                        <Link href="/perspective">Перспективная<br/>программа</Link>
                      </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
@@ -160,7 +160,7 @@ export default function Header() {
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                      <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                        <Link href="/applications">Поступившие заявки на участие в ТК</Link>
+                        <Link href="/applications">Поступившие заявки<br/>на участие в ТК</Link>
                      </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
