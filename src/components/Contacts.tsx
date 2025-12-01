@@ -35,6 +35,13 @@ export default function Contacts() {
                   <Link href="#">https://tk.gosfilmofond.ru/</Link>
                </div>
             </li>
+            <li className="flex items-start gap-4 mt-6">
+               <Globe size={24} color="#CC4E3A" />
+               <div>
+                  <h3 className="font-semibold">Сайт Госфильмофонда России</h3>
+                  <Link href="https://gosfilmofond.ru/" target="_blank">https://gosfilmofond.ru/</Link>
+               </div>
+            </li>
             {/* <li className="flex items-start gap-4 mt-6">
                <Clock size={24} color="#CC4E3A" />
                <div>

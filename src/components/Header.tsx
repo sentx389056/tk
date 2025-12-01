@@ -84,7 +84,7 @@ export default function Header() {
       <header className="flex items-center justify-between w-full bg-black px-3 sm:px-6 xl:px-40 py-2">
 
          <Link href="/" className="shrink-0 flex items-center gap-3">
-            <Image src="/TKlogo.svg" alt="gff-tk logo" width={150} height={70} className="w-[120px] h-auto sm:w-[150px] sm:hidden xl:flex" />
+            <Image src="/TKlogo.svg" alt="gff-tk logo" width={150} height={70} className="w-[120px] h-auto sm:w-[150px]" />
             <p className="text-white font-semibold text-sm hidden sm:flex">ТЕХНИЧЕСКИЙ КОМИТЕТ ПО СТАНДАРТИЗАЦИИ<br />ТК «КИНЕМАТОГРАФИЯ»</p>
          </Link>
          <div className="hidden 2xl:flex items-center justify-between gap-6">

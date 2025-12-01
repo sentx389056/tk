@@ -90,12 +90,12 @@ export default function ApplicationsPage() {
         {
             id: 17,
             orgName: "Федеральное бюджетное учреждение «Государственный региональный центр стандартизации, метрологии и испытаний в Республике Саха (Якутия)» (ФБУ «Якутский ЦСМ»)",
-            fileUrl: "/api/files/requests/ФБУ Якутский ЦСМ_Исправлен.pdf"
+            fileUrl: "/api/files/requests/ФБУЯкутскийЦСМ.pdf"
         },
         {
             id: 18,
             orgName: "Федеральное государственное бюджетное образовательное учреждение высшего образования «Всероссийский государственный университет кинематографии имени С.А. Герасимова»(Всероссийский государственный университет кинематографии имени С.А. Герасимова)",
-            fileUrl: "/api/files/requests/Всероссийский государственный университет кинематографии им. С.А. Герасимова_Исправлен.pdf"
+            fileUrl: "/api/files/requests/Всероссийскийгосударственныйуниверситеткинематографииим.С.А.Герасимова.pdf"
         },
         {
             id: 19,
@@ -157,7 +157,7 @@ export default function ApplicationsPage() {
                             <thead className="bg-[#F2F4F7] text-[9px] md:text-[11px] tracking-wide text-gray-700">
 
                                 <tr>
-                                    <th className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">№ п/п</th>
+                                    <th className="px-2 py-3 text-center align-middle border border-gray-300 text-sm">№ п/п</th>
                                     <th className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">Наименование организации</th>
                                 </tr>
                             </thead>

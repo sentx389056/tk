@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 
-// Настраиваем worker для PDF.js через public folder
 if (typeof window !== 'undefined') {
   GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
 }
@@ -30,7 +29,6 @@ export default function PDFViewer({ fileUrl, title }: PDFViewerProps) {
     setTotalPages(0);
 
     try {
-      console.log('Загрузка PDF:', fileUrl);
       const response = await fetch(fileUrl.replace('/api/files/', '/api/pdf-view/'));
       
       if (!response.ok) {
@@ -38,65 +36,49 @@ export default function PDFViewer({ fileUrl, title }: PDFViewerProps) {
       }
       
       const blob = await response.blob();
-      console.log('PDF загружен, размер:', blob.size, 'bytes');
       
-      // Создаем Blob URL для PDF
       const blobUrl = URL.createObjectURL(blob);
-      console.log('Blob URL создан:', blobUrl);
       
-      // Загружаем PDF через PDF.js для получения числа страниц
       const loadingTask = getDocument(blobUrl);
       const pdf = await loadingTask.promise;
-      console.log('PDF загружен, страниц:', pdf.numPages);
       
       setTotalPages(pdf.numPages);
       setPdfBlobUrl(blobUrl);
     } catch (err) {
-      console.error('Ошибка загрузки PDF:', err);
       setError(`Ошибка: ${err instanceof Error ? err.message : 'Неизвестная ошибка'}`);
     } finally {
       setLoading(false);
     }
   };
 
-  // Рендеринг всех страниц PDF после того как canvas появятся в DOM
   useEffect(() => {
     if (!pdfBlobUrl || totalPages === 0) return;
 
     const renderAllPages = async () => {
       try {
-        console.log('Начало рендеринга всех страниц PDF');
         
-        // Загружаем PDF через PDF.js используя Blob URL
         const loadingTask = getDocument(pdfBlobUrl);
         const pdf = await loadingTask.promise;
-        console.log('PDF загружен, страниц:', pdf.numPages);
         
-        // Инициализируем массив canvas refs если нужно
         if (canvasRefs.current.length < pdf.numPages) {
           canvasRefs.current = Array(pdf.numPages).fill(null);
         }
         
-        // Рендерим каждую страницу
         for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-          console.log(`Рендеринг страницы ${pageNum}`);
           
           const page = await pdf.getPage(pageNum);
           
           const canvas = canvasRefs.current[pageNum - 1];
           if (!canvas) {
-            console.error(`Canvas для страницы ${pageNum} не найден`);
             continue;
           }
 
           const context = canvas.getContext('2d');
           if (!context) {
-            console.error(`2D контекст для страницы ${pageNum} не получен`);
             continue;
           }
 
           const viewport = page.getViewport({ scale: 1.5 });
-          console.log(`Viewport страницы ${pageNum}:`, viewport.width, 'x', viewport.height);
           
           canvas.height = viewport.height;
           canvas.width = viewport.width;
@@ -108,14 +90,11 @@ export default function PDFViewer({ fileUrl, title }: PDFViewerProps) {
           };
 
           await page.render(renderContext).promise;
-          console.log(`Страница ${pageNum} отрендерена`);
           
           setRenderedPages(pageNum);
         }
         
-        console.log('Все страницы отрендерены');
       } catch (err) {
-        console.error('Ошибка рендеринга PDF:', err);
         setError(`Ошибка рендеринга: ${err instanceof Error ? err.message : 'Неизвестная ошибка'}`);
       }
     };
@@ -127,7 +106,6 @@ export default function PDFViewer({ fileUrl, title }: PDFViewerProps) {
     setIsOpen(false);
     setError(null);
     
-    // Очищаем Blob URL чтобы избежать утечек памяти
     if (pdfBlobUrl) {
       URL.revokeObjectURL(pdfBlobUrl);
     }
