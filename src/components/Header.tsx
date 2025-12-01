@@ -18,7 +18,7 @@ import {
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
-import { Menu } from "lucide-react";
+import { ArrowRight, ExternalLink, Menu } from "lucide-react";
 
 const info = {
    about: [
@@ -86,9 +86,7 @@ export default function Header() {
             <div className="px-3 sm:px-6 xl:px-40 py-1">
                <Link href="https://gosfilmofond.ru/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">
                   Основной сайт ГФФ
-                  <svg className="w-3 h-3 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
+                  <ExternalLink size={12} />
                </Link>
             </div>
          </div>
@@ -98,15 +96,15 @@ export default function Header() {
                <Image src="/TKlogo.svg" alt="gff-tk logo" width={150} height={70} className="w-[120px] h-auto sm:w-[150px]" />
                <p className="text-white font-semibold text-sm hidden sm:flex">ТЕХНИЧЕСКИЙ КОМИТЕТ ПО СТАНДАРТИЗАЦИИ<br />ТК «КИНЕМАТОГРАФИЯ»</p>
             </Link>
-         <div className="hidden 2xl:flex items-center justify-between gap-6">
-            <NavigationMenu viewport={false}>
-               <NavigationMenuList>
-                  {/* <NavigationMenuItem>
+            <div className="hidden 2xl:flex items-center justify-between gap-6">
+               <NavigationMenu viewport={false}>
+                  <NavigationMenuList>
+                     {/* <NavigationMenuItem>
                      <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
                         <Link href="/">Главная</Link>
                      </NavigationMenuLink>
                   </NavigationMenuItem> */}
-                  {/* <NavigationMenuItem>
+                     {/* <NavigationMenuItem>
                      <NavigationMenuTrigger className={buttonVariants({variant: "link"})}>О комитете</NavigationMenuTrigger>
                      <NavigationMenuContent>
                         <ul className="grid w-[300px] gap-4">
@@ -122,7 +120,7 @@ export default function Header() {
                         </ul>
                      </NavigationMenuContent>
                   </NavigationMenuItem> */}
-                  {/* <NavigationMenuItem>
+                     {/* <NavigationMenuItem>
                      <NavigationMenuTrigger className={buttonVariants({variant: "link"})}>Деятельность ТК 023</NavigationMenuTrigger>
                      <NavigationMenuContent>
                         <ul className="grid w-[300px] gap-4">
@@ -138,7 +136,7 @@ export default function Header() {
                         </ul>
                      </NavigationMenuContent>
                   </NavigationMenuItem> */}
-                  {/* <NavigationMenuItem>
+                     {/* <NavigationMenuItem>
                      <NavigationMenuTrigger className={buttonVariants({variant: "link"})}>Документы</NavigationMenuTrigger>
                      <NavigationMenuContent>
                         <ul className="grid w-[300px] gap-4">
@@ -154,65 +152,62 @@ export default function Header() {
                         </ul>
                      </NavigationMenuContent>
                   </NavigationMenuItem> */}
-                  <NavigationMenuItem>
-                     <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                        <Link href="/provisions">Положение о ТК</Link>
-                     </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                     <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                        <Link href="/perspective">Перспективная<br/>программа</Link>
-                     </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                     <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                        <Link href="/projects">Перечни стандартов</Link>
-                     </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                     <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                        <Link href="/applications">Поступившие заявки<br/>на участие в ТК</Link>
-                     </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                     <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                        <Link href="/contacts">Контакты ТК</Link>
-                     </NavigationMenuLink>
-                  </NavigationMenuItem>
-               </NavigationMenuList>
-            </NavigationMenu>
-            {/* Desktop login link (visible on xl and up) */}
-            {/* <Link href="/login" className={`${buttonVariants({variant: "ghost"})} text-white`}>Вход для членов ТК</Link> */}
-         </div>
-         <div className="grid grid-cols-1 2xl:hidden items-center justify-between gap-6">
-            <Sheet>
-               <SheetTrigger asChild>
-                  <Button variant="ghost" className="hover:bg-slate-200/50 cursor-pointer">
-                     <span className="sr-only">Открыть меню</span>
-                     <Menu color="white" aria-hidden="true" />
-                  </Button>
-               </SheetTrigger>
-               <SheetContent>
-                  <SheetHeader>
+                     <NavigationMenuItem>
+                        <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
+                           <Link href="/provisions">Положение о ТК</Link>
+                        </NavigationMenuLink>
+                     </NavigationMenuItem>
+                     <NavigationMenuItem>
+                        <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
+                           <Link href="/perspective">Перспективная<br />программа</Link>
+                        </NavigationMenuLink>
+                     </NavigationMenuItem>
+                     <NavigationMenuItem>
+                        <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
+                           <Link href="/projects">Перечни стандартов</Link>
+                        </NavigationMenuLink>
+                     </NavigationMenuItem>
+                     <NavigationMenuItem>
+                        <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
+                           <Link href="/applications">Поступившие заявки<br />на участие в ТК</Link>
+                        </NavigationMenuLink>
+                     </NavigationMenuItem>
+                     <NavigationMenuItem>
+                        <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
+                           <Link href="/contacts">Контакты ТК</Link>
+                        </NavigationMenuLink>
+                     </NavigationMenuItem>
+                  </NavigationMenuList>
+               </NavigationMenu>
+               {/* Desktop login link (visible on xl and up) */}
+               {/* <Link href="/login" className={`${buttonVariants({variant: "ghost"})} text-white`}>Вход для членов ТК</Link> */}
+            </div>
+            <div className="grid grid-cols-1 2xl:hidden items-center justify-between gap-6">
+               <Sheet>
+                  <SheetTrigger asChild>
+                     <Button variant="ghost" className="hover:bg-slate-200/50 cursor-pointer">
+                        <span className="sr-only">Открыть меню</span>
+                        <Menu color="white" aria-hidden="true" />
+                     </Button>
+                  </SheetTrigger>
+                  <SheetContent>
+                     <SheetHeader>
 
-                  </SheetHeader>
-                  <div className="flex flex-col gap-5 px-2">
-                     <Link href="https://gff.ru" target="_blank" rel="noopener noreferrer" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline">
-                        Основной сайт ГФФ
-                     </Link>
-                     <Link href="/provisions" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground hover:underline  outline-none transition-[color,box-shadow]">
-                        Положение о ТК
-                     </Link>
-                     <Link href="/perspective" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
-                        Перспективная программа
-                     </Link>
-                     <Link href="/projects" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
-                        Перечни стандартов
-                     </Link>
-                     <Link href="/applications" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
-                        Поступившие заявки на участие в ТК
-                     </Link>
-                     {/* <Accordion type="single" collapsible>
+                     </SheetHeader>
+                     <div className="flex flex-col gap-5 px-2">
+                        <Link href="/provisions" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground hover:underline  outline-none transition-[color,box-shadow]">
+                           Положение о ТК
+                        </Link>
+                        <Link href="/perspective" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                           Перспективная программа
+                        </Link>
+                        <Link href="/projects" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                           Перечни стандартов
+                        </Link>
+                        <Link href="/applications" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                           Поступившие заявки на участие в ТК
+                        </Link>
+                        {/* <Accordion type="single" collapsible>
                         <AccordionItem value="item-1" >
                            <AccordionTrigger className="text-sm font-medium">О комитете</AccordionTrigger>
                            <AccordionContent>
@@ -260,18 +255,21 @@ export default function Header() {
                            </AccordionContent>
                         </AccordionItem>
                      </Accordion> */}
-                     <Link href="/contacts" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
-                        Контакты ТК
-                     </Link>
-                     {/* <Link href="/login" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                        <Link href="/contacts" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                           Контакты ТК
+                        </Link>
+                        <Link href="https://gosfilmofond.ru/" target="_blank" rel="noopener noreferrer" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline">
+                           Основной сайт ГФФ
+                        </Link>
+                        {/* <Link href="/login" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
                         Вход для членов ТК
                      </Link> */}
-                  </div>
-                  <SheetFooter></SheetFooter>
-               </SheetContent>
-            </Sheet>
-         </div>
-      </header>
+                     </div>
+                     <SheetFooter></SheetFooter>
+                  </SheetContent>
+               </Sheet>
+            </div>
+         </header>
       </>
    )
 }
