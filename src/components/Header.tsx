@@ -81,12 +81,23 @@ const info = {
 
 export default function Header() {
    return (
-      <header className="flex items-center justify-between w-full bg-black px-3 sm:px-6 xl:px-40 py-2">
+      <>
+         <div className="w-full bg-black border-b border-gray-900">
+            <div className="px-3 sm:px-6 xl:px-40 py-1">
+               <Link href="https://gosfilmofond.ru/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">
+                  Основной сайт ГФФ
+                  <svg className="w-3 h-3 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+               </Link>
+            </div>
+         </div>
+         <header className="flex items-center justify-between w-full bg-black px-3 sm:px-6 xl:px-40 py-2">
 
-         <Link href="/" className="shrink-0 flex items-center gap-3">
-            <Image src="/TKlogo.svg" alt="gff-tk logo" width={150} height={70} className="w-[120px] h-auto sm:w-[150px]" />
-            <p className="text-white font-semibold text-sm hidden sm:flex">ТЕХНИЧЕСКИЙ КОМИТЕТ ПО СТАНДАРТИЗАЦИИ<br />ТК «КИНЕМАТОГРАФИЯ»</p>
-         </Link>
+            <Link href="/" className="shrink-0 flex items-center gap-3">
+               <Image src="/TKlogo.svg" alt="gff-tk logo" width={150} height={70} className="w-[120px] h-auto sm:w-[150px]" />
+               <p className="text-white font-semibold text-sm hidden sm:flex">ТЕХНИЧЕСКИЙ КОМИТЕТ ПО СТАНДАРТИЗАЦИИ<br />ТК «КИНЕМАТОГРАФИЯ»</p>
+            </Link>
          <div className="hidden 2xl:flex items-center justify-between gap-6">
             <NavigationMenu viewport={false}>
                <NavigationMenuList>
@@ -186,6 +197,9 @@ export default function Header() {
 
                   </SheetHeader>
                   <div className="flex flex-col gap-5 px-2">
+                     <Link href="https://gff.ru" target="_blank" rel="noopener noreferrer" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline">
+                        Основной сайт ГФФ
+                     </Link>
                      <Link href="/provisions" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground hover:underline  outline-none transition-[color,box-shadow]">
                         Положение о ТК
                      </Link>
@@ -258,6 +272,7 @@ export default function Header() {
             </Sheet>
          </div>
       </header>
+      </>
    )
 }
 
