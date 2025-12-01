@@ -84,8 +84,8 @@ export default function Header() {
       <>
          <div className="w-full bg-black border-b border-gray-900">
             <div className="px-3 sm:px-6 xl:px-40 py-1">
-               <Link href="https://gosfilmofond.ru/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200">
-                  Основной сайт ГФФ
+               <Link href="https://gosfilmofond.ru/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200 font-bold">
+                  ГОСФИЛЬМОФОНД РОССИИ
                   <ExternalLink size={12} />
                </Link>
             </div>
@@ -257,9 +257,6 @@ export default function Header() {
                      </Accordion> */}
                         <Link href="/contacts" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
                            Контакты ТК
-                        </Link>
-                        <Link href="https://gosfilmofond.ru/" target="_blank" rel="noopener noreferrer" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline">
-                           Основной сайт ГФФ
                         </Link>
                         {/* <Link href="/login" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
                         Вход для членов ТК
