@@ -7,7 +7,7 @@ export default function Footer() {
    const currentYear = new Date().getFullYear();
 
    return (
-      <footer className="bg-black py-8">
+      <footer className="bg-black py-8 xl:px-20">
          <div className="mx-auto px-3 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-15 container">
             <div>
                <h2 className="text-white mb-6 font-bold">ТК015 &quot;Кинематография&quot;</h2>
@@ -56,7 +56,7 @@ export default function Footer() {
                         <Link href="/reports" className="text-gray-500 text-sm">Годовые отчеты</Link>
                      </li> */}
                      <li>
-                        <Link href="/provisions" className="text-gray-500 text-sm">Положение о ТК</Link>
+                        <Link href="/provisions" className="text-gray-500 text-sm">Приказ о создании ТК</Link>
                      </li>
                      <li>
                         <Link href="/perspective" className="text-gray-500 text-sm">Перспективная программа</Link>
@@ -69,6 +69,9 @@ export default function Footer() {
                      </li>
                      <li>
                         <Link href="/contacts" className="text-gray-500 text-sm">Контакты ТК</Link>
+                     </li>
+                     <li>
+                        <Link href="https://gosfilmofond.ru/" target="_blank" className="text-gray-500 text-sm">ГОСФИЛЬМОФОНД РОССИИ</Link>
                      </li>
                      {/* <li>
                         <Link href="/login" className="text-gray-500 text-sm">Вход для членов тк</Link>

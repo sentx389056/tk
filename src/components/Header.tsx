@@ -1,4 +1,5 @@
 "use client"
+import { useState } from "react";
 import Image from "next/image";
 import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
@@ -80,23 +81,24 @@ const info = {
 };
 
 export default function Header() {
+   const [isMenuOpen, setIsMenuOpen] = useState(false);
    return (
       <>
          <div className="w-full bg-black border-b border-gray-900">
-            <div className="px-3 sm:px-6 xl:px-40 py-1">
+            <div className="px-3 sm:px-6 xl:px-20 py-1">
                <Link href="https://gosfilmofond.ru/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200 font-bold">
                   ГОСФИЛЬМОФОНД РОССИИ
                   <ExternalLink size={12} />
                </Link>
             </div>
          </div>
-         <header className="flex items-center justify-between w-full bg-black px-3 sm:px-6 xl:px-40 py-2">
+         <header className="flex items-center justify-between w-full bg-black px-3 sm:px-6 xl:px-20 py-2">
 
             <Link href="/" className="shrink-0 flex items-center gap-3">
-               <Image src="/TKlogo.png" alt="gff-tk logo" width={150} height={70} className="w-[120px] h-auto sm:w-[150px]" />
-               <p className="text-white font-semibold text-sm hidden sm:flex">ТЕХНИЧЕСКИЙ КОМИТЕТ ПО СТАНДАРТИЗАЦИИ<br />ТК015 «КИНЕМАТОГРАФИЯ»</p>
+               <Image src="/TKlogo.png" alt="gff-tk logo" width={120} height={150} className="h-auto sm:w-[90px]" />
+               <p className="text-white font-semibold text-xs hidden sm:flex">ТЕХНИЧЕСКИЙ КОМИТЕТ ПО СТАНДАРТИЗАЦИИ<br />ТК015 «КИНЕМАТОГРАФИЯ»</p>
             </Link>
-            <div className="hidden 2xl:flex items-center justify-between gap-6">
+            <div className="hidden xl:flex items-center justify-between gap-6">
                <NavigationMenu viewport={false}>
                   <NavigationMenuList>
                      {/* <NavigationMenuItem>
@@ -154,27 +156,27 @@ export default function Header() {
                   </NavigationMenuItem> */}
                      <NavigationMenuItem>
                         <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/provisions">Положение о ТК</Link>
+                           <Link href="/provisions" className="text-[12px] font-bold">Приказ<br />о создании ТК</Link>
                         </NavigationMenuLink>
                      </NavigationMenuItem>
                      <NavigationMenuItem>
                         <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/perspective">Перспективная<br />программа</Link>
+                           <Link href="/perspective" className="text-[12px] font-bold">Перспективная<br />программа</Link>
                         </NavigationMenuLink>
                      </NavigationMenuItem>
                      <NavigationMenuItem>
                         <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/projects">Перечни стандартов</Link>
+                           <Link href="/projects" className="text-[12px] font-bold">Перечни стандартов</Link>
                         </NavigationMenuLink>
                      </NavigationMenuItem>
                      <NavigationMenuItem>
                         <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/applications">Поступившие заявки<br />на участие в ТК</Link>
+                           <Link href="/applications" className="text-[12px] font-bold">Поступившие заявки<br />на участие в ТК</Link>
                         </NavigationMenuLink>
                      </NavigationMenuItem>
                      <NavigationMenuItem>
                         <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/contacts">Контакты ТК</Link>
+                           <Link href="/contacts" className="text-[12px] font-bold">Контакты ТК</Link>
                         </NavigationMenuLink>
                      </NavigationMenuItem>
                   </NavigationMenuList>
@@ -182,8 +184,8 @@ export default function Header() {
                {/* Desktop login link (visible on xl and up) */}
                {/* <Link href="/login" className={`${buttonVariants({variant: "ghost"})} text-white`}>Вход для членов ТК</Link> */}
             </div>
-            <div className="grid grid-cols-1 2xl:hidden items-center justify-between gap-6">
-               <Sheet>
+            <div className="grid grid-cols-1 xl:hidden items-center justify-between gap-6">
+               <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                   <SheetTrigger asChild>
                      <Button variant="ghost" className="hover:bg-slate-200/50 cursor-pointer">
                         <span className="sr-only">Открыть меню</span>
@@ -195,16 +197,32 @@ export default function Header() {
 
                      </SheetHeader>
                      <div className="flex flex-col gap-5 px-2">
-                        <Link href="/provisions" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground hover:underline  outline-none transition-[color,box-shadow]">
+                        <Link 
+                           href="/provisions" 
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
+                           onClick={() => setIsMenuOpen(false)}
+                        >
                            Положение о ТК
                         </Link>
-                        <Link href="/perspective" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                        <Link 
+                           href="/perspective" 
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
+                           onClick={() => setIsMenuOpen(false)}
+                        >
                            Перспективная программа
                         </Link>
-                        <Link href="/projects" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                        <Link 
+                           href="/projects" 
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
+                           onClick={() => setIsMenuOpen(false)}
+                        >
                            Перечни стандартов
                         </Link>
-                        <Link href="/applications" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                        <Link 
+                           href="/applications" 
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
+                           onClick={() => setIsMenuOpen(false)}
+                        >
                            Поступившие заявки на участие в ТК
                         </Link>
                         {/* <Accordion type="single" collapsible>
@@ -255,8 +273,19 @@ export default function Header() {
                            </AccordionContent>
                         </AccordionItem>
                      </Accordion> */}
-                        <Link href="/contacts" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
+                        <Link 
+                           href="/contacts" 
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
+                           onClick={() => setIsMenuOpen(false)}
+                        >
                            Контакты ТК
+                        </Link>
+                        <Link 
+                           href="https://gosfilmofond.ru/" 
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
+                           onClick={() => setIsMenuOpen(false)}
+                        >
+                           ГОСФИЛЬМОФОНД РОССИИ
                         </Link>
                         {/* <Link href="/login" className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-sm font-medium  hover:text-accent-foreground  outline-none transition-[color,box-shadow] hover:underline">
                         Вход для членов ТК
@@ -285,7 +314,7 @@ function ListItem({
          <NavigationMenuLink asChild>
             <Link href={href}>
                <div className="text-sm leading-none font-medium">{title}</div>
-               <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
+               <p className="text-muted-foreground line-clamp-2 text-2xl leading-snug">
                   {children}
                </p>
             </Link>
