@@ -12,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ТК 'Кинематография'",
+  title: "ТК015 'Кинематография'",
 };
 
 export default function RootLayout({
