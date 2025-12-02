@@ -10,7 +10,7 @@ export default function Footer() {
       <footer className="bg-black py-8">
          <div className="mx-auto px-3 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-15 container">
             <div>
-               <h2 className="text-white mb-6 font-bold">ТК &quot;Кинематография&quot;</h2>
+               <h2 className="text-white mb-6 font-bold">ТК 015 &quot;Кинематография&quot;</h2>
                {/* <span className="text-gray-500 text-sm">ТК NNN</span> */}
                <ul className="flex gap-3 flex-col mt-2 text-sm mb-3">
                   <li className="flex items-center gap-2">
@@ -78,7 +78,7 @@ export default function Footer() {
             </div>
          </div>
          <Separator className="my-4 bg-gray-500" />
-         <p className="text-gray-500 text-center text-sm">&copy; ТК “Кинематография”, {currentYear}г.</p>
+         <p className="text-gray-500 text-center text-sm">&copy; ТК 015 “Кинематография”, {currentYear}г.</p>
       </footer>
    )
 }
