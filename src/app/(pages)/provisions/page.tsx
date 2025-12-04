@@ -112,7 +112,7 @@ export default function ProvisionsPage() {
          <div className="py-10 relative">
             <span className="absolute top-0 right-0 text-left">Проект</span>
             <div className="flex flex-col items-center">
-               <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">ПРИКАЗ <br />О СОЗДАНИИ ТЕХНИЧЕСКОМ КОМИТЕТЕ<br />ПО СТАНДАРТИЗАЦИИ</h1>
+               <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">ПРИКАЗ <br />О СОЗДАНИИ ТЕХНИЧЕСКОГО КОМИТЕТА<br />ПО СТАНДАРТИЗАЦИИ</h1>
                <p className="text-center mt-5 mb-5 text-3xl font-medium">&quot;Кинематография&quot;</p>
             </div>
             {orders.map(order => (

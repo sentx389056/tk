@@ -31,7 +31,7 @@ export default async function Home() {
             <ul className="flex flex-wrap gap-4 text-center justify-center">
               <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                 <a href="/provisions" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
-                  Положения о ТК
+                  Приказ о создании ТК
                 </a>
               </li>
               <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
