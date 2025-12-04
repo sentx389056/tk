@@ -26,7 +26,7 @@ export default function Footer() {
                   </li>
                   <li className="flex items-center gap-2">
                      <Mail color="#6a7282" size={18} />
-                     <a href="mailto:chekalin.d@gff-rf.ru" className="text-gray-500">chekalin.d@gff-rf.ru</a>
+                     <a href="mailto:tk015@gff-rf.ru" className="text-gray-500">tk015@gff-rf.ru</a>
                   </li>
                </ul>
             </div>

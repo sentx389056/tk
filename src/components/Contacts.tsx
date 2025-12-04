@@ -25,7 +25,7 @@ export default function Contacts() {
                <Mail size={24} color="#CC4E3A" />
                <div>
                   <h3 className="font-semibold">Электронная почта</h3>
-                  <a href="mailto:chekalin.d@gff-rf.ru">tk015@gff-rf.ru</a>
+                  <a href="mailto:tk015@gff-rf.ru">tk015@gff-rf.ru</a>
                </div>
             </li>
             <li className="flex items-start gap-4 mt-6">
