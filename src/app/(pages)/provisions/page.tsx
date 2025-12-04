@@ -117,12 +117,14 @@ export default function ProvisionsPage() {
             </div>
             {orders.map(order => (
                <PDFViewerProvision
+                  key={order.id}
                   fileUrl={order.fileUrl}
                />
             ))}
             <div className="mt-10 flex gap-3">
                {applications.map(application => (
                   <PDFViewerApplications
+                     key={application.id}
                      fileUrl={application.fileUrl}
                      title={application.title}
                   />

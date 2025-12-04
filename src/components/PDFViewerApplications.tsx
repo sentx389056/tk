@@ -1,18 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 
-if (typeof window !== 'undefined') {
-  GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
-}
-
-interface PDFViewerProps {
-  fileUrl: string;
-  title: string;
-}
-
-export default function PDFViewerApplications({ fileUrl, title }: PDFViewerProps) {
+const PDFViewerApplications = ({ fileUrl, title }: { fileUrl: string; title: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,8 +10,37 @@ export default function PDFViewerApplications({ fileUrl, title }: PDFViewerProps
   const [renderedPages, setRenderedPages] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
+  const [pdfjs, setPdfjs] = useState<unknown>(null);
+
+  const isPdfJsLib = (obj: unknown): obj is { 
+    getDocument: (src: string | Uint8Array) => { 
+      promise: Promise<{ 
+        numPages: number; 
+        getPage: (pageNum: number) => Promise<{ 
+          getViewport: (params: { scale: number }) => { width: number; height: number }; 
+          render: (params: { canvasContext: CanvasRenderingContext2D; viewport: { width: number; height: number } }) => { promise: Promise<void> }; 
+        }>; 
+      }>; 
+    }; 
+    GlobalWorkerOptions: { workerSrc: string }; 
+  } => {
+    return obj !== null && typeof obj === 'object' && 'getDocument' in obj && 'GlobalWorkerOptions' in obj;
+  };
+
+  useEffect(() => {
+    const loadPdfjs = async () => {
+      if (typeof window !== 'undefined') {
+        const pdfjsLib = await import('pdfjs-dist');
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+        setPdfjs(pdfjsLib);
+      }
+    };
+    loadPdfjs();
+  }, []);
 
   const handleOpen = async () => {
+    if (!isPdfJsLib(pdfjs)) return;
+    
     setIsOpen(true);
     setLoading(true);
     setError(null);
@@ -39,7 +58,7 @@ export default function PDFViewerApplications({ fileUrl, title }: PDFViewerProps
       
       const blobUrl = URL.createObjectURL(blob);
       
-      const loadingTask = getDocument(blobUrl);
+      const loadingTask = pdfjs.getDocument(blobUrl);
       const pdf = await loadingTask.promise;
       
       setTotalPages(pdf.numPages);
@@ -52,12 +71,12 @@ export default function PDFViewerApplications({ fileUrl, title }: PDFViewerProps
   };
 
   useEffect(() => {
-    if (!pdfBlobUrl || totalPages === 0) return;
+    if (!pdfBlobUrl || totalPages === 0 || !isPdfJsLib(pdfjs)) return;
 
     const renderAllPages = async () => {
       try {
         
-        const loadingTask = getDocument(pdfBlobUrl);
+        const loadingTask = pdfjs.getDocument(pdfBlobUrl);
         const pdf = await loadingTask.promise;
         
         if (canvasRefs.current.length < pdf.numPages) {
@@ -98,9 +117,8 @@ export default function PDFViewerApplications({ fileUrl, title }: PDFViewerProps
         setError(`Ошибка рендеринга: ${err instanceof Error ? err.message : 'Неизвестная ошибка'}`);
       }
     };
-
     renderAllPages();
-  }, [pdfBlobUrl, totalPages]);
+  }, [pdfBlobUrl, totalPages, pdfjs]);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -191,4 +209,6 @@ export default function PDFViewerApplications({ fileUrl, title }: PDFViewerProps
       )}
     </>
   );
-}
+};
+
+export default PDFViewerApplications;

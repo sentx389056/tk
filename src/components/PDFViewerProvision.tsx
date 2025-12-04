@@ -1,26 +1,47 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
+import dynamic from 'next/dynamic';
 
-if (typeof window !== 'undefined') {
-  GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
-}
-
-interface PDFViewerProps {
-  fileUrl: string;
-}
-
-export default function PDFViewerProvision({ fileUrl }: PDFViewerProps) {
+const PDFViewerProvision = ({ fileUrl }: { fileUrl: string }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [pdfBlobUrl, setPdfBlobUrl] = useState<string | null>(null);
   const [renderedPages, setRenderedPages] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
+  const [pdfjs, setPdfjs] = useState<unknown>(null);
+
+  const isPdfJsLib = (obj: unknown): obj is { 
+    getDocument: (src: string | Uint8Array) => { 
+      promise: Promise<{ 
+        numPages: number; 
+        getPage: (pageNum: number) => Promise<{ 
+          getViewport: (params: { scale: number }) => { width: number; height: number }; 
+          render: (params: { canvasContext: CanvasRenderingContext2D; viewport: { width: number; height: number } }) => { promise: Promise<void> }; 
+        }>; 
+      }>; 
+    }; 
+    GlobalWorkerOptions: { workerSrc: string }; 
+  } => {
+    return obj !== null && typeof obj === 'object' && 'getDocument' in obj && 'GlobalWorkerOptions' in obj;
+  };
+
+  useEffect(() => {
+    const loadPdfjs = async () => {
+      if (typeof window !== 'undefined') {
+        const pdfjsLib = await import('pdfjs-dist');
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+        setPdfjs(pdfjsLib);
+      }
+    };
+    loadPdfjs();
+  }, []);
 
   useEffect(() => {
     const loadPdf = async () => {
+      if (!isPdfJsLib(pdfjs)) return;
+      
       setLoading(true);
       setError(null);
       setRenderedPages(0);
@@ -37,7 +58,7 @@ export default function PDFViewerProvision({ fileUrl }: PDFViewerProps) {
         
         const blobUrl = URL.createObjectURL(blob);
         
-        const loadingTask = getDocument(blobUrl);
+        const loadingTask = pdfjs.getDocument(blobUrl);
         const pdf = await loadingTask.promise;
         
         setTotalPages(pdf.numPages);
@@ -50,15 +71,15 @@ export default function PDFViewerProvision({ fileUrl }: PDFViewerProps) {
     };
 
     loadPdf();
-  }, [fileUrl]);
+  }, [fileUrl, pdfjs]);
 
   useEffect(() => {
-    if (!pdfBlobUrl || totalPages === 0) return;
+    if (!pdfBlobUrl || totalPages === 0 || !isPdfJsLib(pdfjs)) return;
 
     const renderAllPages = async () => {
       try {
         
-        const loadingTask = getDocument(pdfBlobUrl);
+        const loadingTask = pdfjs.getDocument(pdfBlobUrl);
         const pdf = await loadingTask.promise;
         
         if (canvasRefs.current && canvasRefs.current.length < pdf.numPages) {
@@ -107,7 +128,7 @@ export default function PDFViewerProvision({ fileUrl }: PDFViewerProps) {
         URL.revokeObjectURL(pdfBlobUrl);
       }
     };
-  }, [pdfBlobUrl, totalPages]);
+  }, [pdfBlobUrl, totalPages, pdfjs]);
 
   const preventContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -154,4 +175,6 @@ export default function PDFViewerProvision({ fileUrl }: PDFViewerProps) {
       </div>
     </div>
   );
-}
+};
+
+export default PDFViewerProvision;
