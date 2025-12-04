@@ -148,7 +148,7 @@ const PDFViewerApplications = ({ fileUrl, title }: { fileUrl: string; title: str
     <>
       <button
         onClick={handleOpen}
-        className="w-full text-start bg-gray-800 text-white cursor-pointer p-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 font-medium text-lg"
+        className="w-full text-start bg-gray-800 text-white cursor-pointer p-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-102 transition-all duration-200 font-medium text-lg"
       >
         {title}
       </button>

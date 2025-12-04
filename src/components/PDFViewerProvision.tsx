@@ -136,7 +136,7 @@ const PDFViewerProvision = ({ fileUrl }: { fileUrl: string }) => {
 
   return (
     <div className="w-full">
-      <div className="border border-gray-300 rounded-lg bg-gray-50 p-4 overflow-auto max-h-[80vh]">
+      <div className="border border-gray-300 rounded-lg bg-gray-50 p-4 overflow-auto max-h-[200vh]">
         {loading ? (
           <div className="flex items-center justify-center h-64">
             <div className="text-gray-600">Загрузка документа...</div>
