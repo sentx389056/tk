@@ -9,6 +9,9 @@ import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import Markdown from "react-markdown";
 import MarkdownRenderer from "@/components/markdownRenderer";
+import PDFViewer from "@/components/PDFViewer";
+import PDFViewerProvision from "@/components/PDFViewerProvision";
+import PDFViewerApplications from "@/components/PDFViewerApplications";
 
 type Provision = {
    id: number;
@@ -78,15 +81,53 @@ export default function ProvisionsPage() {
       return () => clearTimeout(t);
    }, [page, search]);
 
+   const orders = [
+      {
+         id: 1,
+         fileUrl: "/api/files/orders/Приложение 1.pdf",
+      },
+   ]
+
+   const applications = [
+      {
+         id: 1,
+         fileUrl: "/api/files/orders/Приложение 2. Приложение 1.pdf",
+         title: "Приложение 1"
+      },
+      {
+         id: 2,
+         fileUrl: "/api/files/orders/Приложение 3. Приложение 2.pdf",
+         title: "Приложение 2"
+      },
+      {
+         id: 3,
+         fileUrl: "/api/files/orders/Приложение 4. Приложение 3.pdf",
+         title: "Приложение 3"
+      },
+
+   ]
+
    return (
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">
          <div className="py-10 relative">
             <span className="absolute top-0 right-0 text-left">Проект</span>
             <div className="flex flex-col items-center">
-               <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">ПОЛОЖЕНИЕ <br />О ТЕХНИЧЕСКОМ КОМИТЕТЕ<br />ПО СТАНДАРТИЗАЦИИ</h1>
-               <p className="text-center mt-5 text-3xl font-medium">&quot;Кинематография&quot;</p>
+               <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">ПРИКАЗ <br />О СОЗДАНИИ ТЕХНИЧЕСКОМ КОМИТЕТЕ<br />ПО СТАНДАРТИЗАЦИИ</h1>
+               <p className="text-center mt-5 mb-5 text-3xl font-medium">&quot;Кинематография&quot;</p>
             </div>
-            <MarkdownRenderer />
+            {orders.map(order => (
+               <PDFViewerProvision
+                  fileUrl={order.fileUrl}
+               />
+            ))}
+            <div className="mt-10 flex gap-3">
+               {applications.map(application => (
+                  <PDFViewerApplications
+                     fileUrl={application.fileUrl}
+                     title={application.title}
+                  />
+               ))}
+            </div>
             {/* <section className="mt-8 flex flex-col gap-10">
                {isLoading ? (
                   <div className="flex flex-col gap-10">

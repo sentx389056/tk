@@ -156,27 +156,27 @@ export default function Header() {
                   </NavigationMenuItem> */}
                      <NavigationMenuItem>
                         <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/provisions" className="text-[12px] font-bold">Приказ<br />о создании ТК</Link>
+                           <Link href="/provisions" className="text-md">Приказ<br />о создании ТК</Link>
                         </NavigationMenuLink>
                      </NavigationMenuItem>
                      <NavigationMenuItem>
                         <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/perspective" className="text-[12px] font-bold">Перспективная<br />программа</Link>
+                           <Link href="/perspective" className="text-md">Перспективная<br />программа</Link>
                         </NavigationMenuLink>
                      </NavigationMenuItem>
                      <NavigationMenuItem>
                         <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/projects" className="text-[12px] font-bold">Перечни стандартов</Link>
+                           <Link href="/projects" className="text-md">Перечни стандартов</Link>
                         </NavigationMenuLink>
                      </NavigationMenuItem>
                      <NavigationMenuItem>
                         <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/applications" className="text-[12px] font-bold">Поступившие заявки<br />на участие в ТК</Link>
+                           <Link href="/applications" className="text-md">Поступившие заявки<br />на участие в ТК</Link>
                         </NavigationMenuLink>
                      </NavigationMenuItem>
                      <NavigationMenuItem>
                         <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/contacts" className="text-[12px] font-bold">Контакты ТК</Link>
+                           <Link href="/contacts" className="text-md">Контакты ТК</Link>
                         </NavigationMenuLink>
                      </NavigationMenuItem>
                   </NavigationMenuList>
