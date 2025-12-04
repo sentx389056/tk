@@ -121,7 +121,7 @@ export default function ProvisionsPage() {
                   fileUrl={order.fileUrl}
                />
             ))}
-            <div className="mt-10 flex gap-3">
+            <div className="mt-10 flex flex-wrap gap-3">
                {applications.map(application => (
                   <PDFViewerApplications
                      key={application.id}

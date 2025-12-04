@@ -187,39 +187,39 @@ export default function Header() {
             <div className="grid grid-cols-1 xl:hidden items-center justify-between gap-6">
                <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                   <SheetTrigger asChild>
-                     <Button variant="ghost" className="hover:bg-slate-200/50 cursor-pointer">
+                     <div>
                         <span className="sr-only">Открыть меню</span>
-                        <Menu color="white" aria-hidden="true" />
-                     </Button>
+                        <Menu color="white" aria-hidden="true" size={35}/>
+                     </div>
                   </SheetTrigger>
                   <SheetContent>
                      <SheetHeader>
 
                      </SheetHeader>
                      <div className="flex flex-col gap-5 px-2">
-                        <Link 
-                           href="/provisions" 
+                        <Link
+                           href="/provisions"
                            className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Положение о ТК
                         </Link>
-                        <Link 
-                           href="/perspective" 
+                        <Link
+                           href="/perspective"
                            className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Перспективная программа
                         </Link>
-                        <Link 
-                           href="/projects" 
+                        <Link
+                           href="/projects"
                            className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Перечни стандартов
                         </Link>
-                        <Link 
-                           href="/applications" 
+                        <Link
+                           href="/applications"
                            className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
                            onClick={() => setIsMenuOpen(false)}
                         >
@@ -273,15 +273,15 @@ export default function Header() {
                            </AccordionContent>
                         </AccordionItem>
                      </Accordion> */}
-                        <Link 
-                           href="/contacts" 
+                        <Link
+                           href="/contacts"
                            className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Контакты ТК
                         </Link>
-                        <Link 
-                           href="https://gosfilmofond.ru/" 
+                        <Link
+                           href="https://gosfilmofond.ru/"
                            className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
                            onClick={() => setIsMenuOpen(false)}
                         >
