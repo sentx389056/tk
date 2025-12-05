@@ -82,6 +82,7 @@ const info = {
 
 export default function Header() {
    const [isMenuOpen, setIsMenuOpen] = useState(false);
+   const [isDesktopMenuOpen, setIsDesktopMenuOpen] = useState(false);
    return (
       <>
          <div className="w-full bg-black border-b border-gray-900">
@@ -98,62 +99,9 @@ export default function Header() {
                <Image src="/TKlogo.png" alt="gff-tk logo" width={120} height={150} className="h-auto sm:w-[90px]" />
                <p className="text-white font-semibold text-xs hidden sm:flex">ТЕХНИЧЕСКИЙ КОМИТЕТ ПО СТАНДАРТИЗАЦИИ<br />ТК015 «КИНЕМАТОГРАФИЯ»</p>
             </Link>
-            <div className="hidden xl:flex items-center justify-between gap-6">
+            <div className="hidden lg:flex items-center justify-between gap-6 flex-1 ml-18">
                <NavigationMenu viewport={false}>
                   <NavigationMenuList>
-                     {/* <NavigationMenuItem>
-                     <NavigationMenuLink asChild className={buttonVariants({variant: "link"})}>
-                        <Link href="/">Главная</Link>
-                     </NavigationMenuLink>
-                  </NavigationMenuItem> */}
-                     {/* <NavigationMenuItem>
-                     <NavigationMenuTrigger className={buttonVariants({variant: "link"})}>О комитете</NavigationMenuTrigger>
-                     <NavigationMenuContent>
-                        <ul className="grid w-[300px] gap-4">
-                           {info.about.map((component) => (
-                              <ListItem
-                                 key={component.title}
-                                 title={component.title}
-                                 href={component.href}
-                              >
-                                 {component.description}
-                              </ListItem>
-                           ))}
-                        </ul>
-                     </NavigationMenuContent>
-                  </NavigationMenuItem> */}
-                     {/* <NavigationMenuItem>
-                     <NavigationMenuTrigger className={buttonVariants({variant: "link"})}>Деятельность ТК 023</NavigationMenuTrigger>
-                     <NavigationMenuContent>
-                        <ul className="grid w-[300px] gap-4">
-                           {info.activity.map((component) => (
-                              <ListItem
-                                 key={component.title}
-                                 title={component.title}
-                                 href={component.href}
-                              >
-                                 {component.description}
-                              </ListItem>
-                           ))}
-                        </ul>
-                     </NavigationMenuContent>
-                  </NavigationMenuItem> */}
-                     {/* <NavigationMenuItem>
-                     <NavigationMenuTrigger className={buttonVariants({variant: "link"})}>Документы</NavigationMenuTrigger>
-                     <NavigationMenuContent>
-                        <ul className="grid w-[300px] gap-4">
-                           {info.documents.map((component) => (
-                              <ListItem
-                                 key={component.title}
-                                 title={component.title}
-                                 href={component.href}
-                              >
-                                 {component.description}
-                              </ListItem>
-                           ))}
-                        </ul>
-                     </NavigationMenuContent>
-                  </NavigationMenuItem> */}
                      <NavigationMenuItem>
                         <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
                            <Link href="/provisions" className="text-md">Приказ<br />о создании ТК</Link>
@@ -169,40 +117,70 @@ export default function Header() {
                            <Link href="/projects" className="text-md">Перечни стандартов</Link>
                         </NavigationMenuLink>
                      </NavigationMenuItem>
-                     <NavigationMenuItem>
-                        <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/applications" className="text-md">Поступившие заявки<br />на участие в ТК</Link>
-                        </NavigationMenuLink>
-                     </NavigationMenuItem>
-                     <NavigationMenuItem>
-                        <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/contacts" className="text-md">Контакты ТК</Link>
-                        </NavigationMenuLink>
-                     </NavigationMenuItem>
                   </NavigationMenuList>
                </NavigationMenu>
+               <div className="flex-1 flex justify-end">
+                  <Sheet open={isDesktopMenuOpen} onOpenChange={setIsDesktopMenuOpen}>
+                     <SheetTrigger asChild>
+                        <Menu size={40} color="white" className="cursor-pointer hover:bg-gray-500 p-2 rounded-lg" />
+                     </SheetTrigger>
+                     <SheetContent>
+                        <div className="flex flex-col gap-5 px-2 mt-12">
+                           <Link
+                              href="/applications"
+                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
+                              onClick={() => setIsDesktopMenuOpen(false)}
+                           >
+                              Поступившие заявки на участие в ТК
+                           </Link>
+                           <Link
+                              href="/contacts"
+                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
+                              onClick={() => setIsDesktopMenuOpen(false)}
+                           >
+                              Контакты ТК
+                           </Link>
+                           <Link
+                              href="/news"
+                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
+                              onClick={() => setIsDesktopMenuOpen(false)}
+                           >
+                              Новости
+                           </Link>
+                           <Link
+                              href="https://gosfilmofond.ru/"
+                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
+                              onClick={() => setIsDesktopMenuOpen(false)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                           >
+                              ГОСФИЛЬМОФОНД РОССИИ
+                           </Link>
+                        </div>
+                        <SheetFooter></SheetFooter>
+                     </SheetContent>
+                  </Sheet>
+               </div>
+
                {/* Desktop login link (visible on xl and up) */}
                {/* <Link href="/login" className={`${buttonVariants({variant: "ghost"})} text-white`}>Вход для членов ТК</Link> */}
             </div>
-            <div className="grid grid-cols-1 xl:hidden items-center justify-between gap-6">
+            <div className="grid grid-cols-1 lg:hidden items-center justify-between gap-6">
                <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
                   <SheetTrigger asChild>
                      <div>
                         <span className="sr-only">Открыть меню</span>
-                        <Menu color="white" aria-hidden="true" size={35}/>
+                        <Menu color="white" aria-hidden="true" size={35} />
                      </div>
                   </SheetTrigger>
                   <SheetContent>
-                     <SheetHeader>
-
-                     </SheetHeader>
-                     <div className="flex flex-col gap-5 px-2">
+                     <div className="flex flex-col gap-5 px-2 mt-12">
                         <Link
                            href="/provisions"
                            className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
                            onClick={() => setIsMenuOpen(false)}
                         >
-                           Положение о ТК
+                           Приказ о создании ТК
                         </Link>
                         <Link
                            href="/perspective"
@@ -279,6 +257,13 @@ export default function Header() {
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Контакты ТК
+                        </Link>
+                        <Link
+                           href="/news"
+                           className="group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
+                           onClick={() => setIsDesktopMenuOpen(false)}
+                        >
+                           Новости
                         </Link>
                         <Link
                            href="https://gosfilmofond.ru/"
