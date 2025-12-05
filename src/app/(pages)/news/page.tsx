@@ -28,7 +28,7 @@ const mockNewsData: NewsItem[] = [
       title: "Цифровые технологии для кинематографии – в новом техническом комитете",
       description: "МОСКВА, 1 декабря 2025 г. – В целях развития национальной системы стандартизации в сфере профессиональной кинематографии приказом Росстандарта создан новый технический комитет по стандартизации № 015 «Кинематография» (ТК 015).",
       url: "https://www.rst.gov.ru/portal/gost/home/presscenter/news?portal:isSecure=true&navigationalstate=JBPNS_rO0ABXc0AAZhY3Rpb24AAAABAA5zaW5nbGVOZXdzVmlldwACaWQAAAABAAUxMDA3MAAHX19FT0ZfXw**&portal:componentId=88beae40-0e16-414c-b176-d0ab5de82e16",
-      date: "01.12.2025",
+      date: "12.01.2025",
       category: 'external'
    },
    {
