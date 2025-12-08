@@ -2,15 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-type Standard = {
-   id: number;
-   title: string;
-   description: string;
-   startDate: Date;
-   endDate: Date;
-   fileUrl?: string;
-};
-
 export default function PerspectivePage() {
 
    const standardsTable = [
@@ -105,42 +96,6 @@ export default function PerspectivePage() {
          note: "—",
       },
    ]
-
-   const [standards, setStandards] = useState<Standard[]>([]);
-   const [isLoading, setLoading] = useState<boolean>(true);
-
-   useEffect(() => {
-      const fetchStandards = async () => {
-         setLoading(true);
-         try {
-            const res = await fetch('/api/standards-project');
-            if (!res.ok) {
-               const errBody = await res.json().catch(() => null);
-               console.error('API error fetching standards:', errBody || res.statusText);
-               throw new Error(errBody?.error || 'Failed to fetch standards');
-            }
-            const data = await res.json();
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            if (data && Array.isArray((data as any).standards)) {
-               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-               setStandards((data as any).standards);
-            } else if (Array.isArray(data)) {
-               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-               setStandards(data as any);
-            } else {
-               setStandards([]);
-            }
-         } catch (error) {
-            console.error('Failed to fetch standards:', error);
-            setStandards([]);
-         } finally {
-            setLoading(false);
-         }
-      };
-
-      fetchStandards();
-   }, []);
 
    return (
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">

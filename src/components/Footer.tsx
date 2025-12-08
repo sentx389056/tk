@@ -65,7 +65,10 @@ export default function Footer() {
                         <Link href="/projects" className="text-gray-500 text-sm">Перечни стандартов</Link>
                      </li>
                      <li>
-                        <Link href="/projects" className="text-gray-500 text-sm">Поступившие заявки на участие в ТК</Link>
+                        <Link href="/applications" className="text-gray-500 text-sm">Поступившие заявки на участие в ТК</Link>
+                     </li>
+                     <li>
+                        <Link href="/news" className="text-gray-500 text-sm">Новости</Link>
                      </li>
                      <li>
                         <Link href="/contacts" className="text-gray-500 text-sm">Контакты ТК</Link>

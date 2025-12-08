@@ -14,6 +14,7 @@ import {
    SheetContent,
    SheetFooter,
    SheetHeader,
+   SheetTitle,
    SheetTrigger
 } from "@/components/ui/sheet";
 
@@ -125,7 +126,10 @@ export default function Header() {
                         <Menu size={40} color="white" className="cursor-pointer hover:bg-gray-500 p-2 rounded-lg" />
                      </SheetTrigger>
                      <SheetContent>
-                        <div className="flex flex-col gap-5 px-2 mt-12">
+                        <SheetHeader>
+                           <SheetTitle>Меню навигации</SheetTitle>
+                        </SheetHeader>
+                        <div className="flex flex-col gap-5 px-2">
                            <Link
                               href="/applications"
                               className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
@@ -134,18 +138,18 @@ export default function Header() {
                               Поступившие заявки на участие в ТК
                            </Link>
                            <Link
-                              href="/contacts"
-                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
-                              onClick={() => setIsDesktopMenuOpen(false)}
-                           >
-                              Контакты ТК
-                           </Link>
-                           <Link
                               href="/news"
                               className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
                               onClick={() => setIsDesktopMenuOpen(false)}
                            >
                               Новости
+                           </Link>
+                           <Link
+                              href="/contacts"
+                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
+                              onClick={() => setIsDesktopMenuOpen(false)}
+                           >
+                              Контакты ТК
                            </Link>
                            <Link
                               href="https://gosfilmofond.ru/"
@@ -174,7 +178,10 @@ export default function Header() {
                      </div>
                   </SheetTrigger>
                   <SheetContent>
-                     <div className="flex flex-col gap-5 px-2 mt-12">
+                     <SheetHeader>
+                        <SheetTitle>Меню навигации</SheetTitle>
+                     </SheetHeader>
+                     <div className="flex flex-col gap-5 px-2">
                         <Link
                            href="/provisions"
                            className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
@@ -252,18 +259,18 @@ export default function Header() {
                         </AccordionItem>
                      </Accordion> */}
                         <Link
+                           href="/news"
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
+                           onClick={() => setIsDesktopMenuOpen(false)}
+                        >
+                           Новости
+                        </Link>
+                        <Link
                            href="/contacts"
                            className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Контакты ТК
-                        </Link>
-                        <Link
-                           href="/news"
-                           className="group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
-                           onClick={() => setIsDesktopMenuOpen(false)}
-                        >
-                           Новости
                         </Link>
                         <Link
                            href="https://gosfilmofond.ru/"

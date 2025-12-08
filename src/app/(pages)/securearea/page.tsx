@@ -65,7 +65,7 @@ export default function SecureAreaPage() {
             <div className="w-full bg-red-600 text-white py-2 xl:px-40">
                 <div className="flex justify-between items-center text-sm">
                     <div>
-                        <h2>ЗАКРЫТЫЙ РАЗДЕЛ ТК 191 - КОНФИДЕНЦИАЛЬНАЯ ИНФОРМАЦИЯ</h2>
+                        <h2>ЗАКРЫТЫЙ РАЗДЕЛ ТК 015 - КОНФИДЕНЦИАЛЬНАЯ ИНФОРМАЦИЯ</h2>
                     </div>
                     <UserHeader />
                 </div>

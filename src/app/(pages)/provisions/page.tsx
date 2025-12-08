@@ -13,74 +13,7 @@ import PDFViewer from "@/components/PDFViewer";
 import PDFViewerProvision from "@/components/PDFViewerProvision";
 import PDFViewerApplications from "@/components/PDFViewerApplications";
 
-type Provision = {
-   id: number;
-   title: string;
-   description: string;
-   approvedAt: Date;
-   organization: string;
-   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-   fileUrl: any;
-};
-
-type PaginatedResponse = {
-   provisions: Provision[];
-   total: number;
-   page: number;
-   pageSize: number;
-   totalPages: number;
-};
-
 export default function ProvisionsPage() {
-   const [provisions, setProvisions] = useState<Provision[]>([]);
-   const [isLoading, setLoading] = useState<boolean>(true);
-   const [search, setSearch] = useState<string>('');
-   const [page, setPage] = useState(1);
-   const [pageSize] = useState(10);
-   const [totalPages, setTotalPages] = useState(1);
-   const [total, setTotal] = useState(0);
-
-   const fetchProvisions = async () => {
-      setLoading(true);
-      try {
-         const params = new URLSearchParams({
-            page: page.toString(),
-            pageSize: pageSize.toString()
-         });
-
-         if (search) {
-            params.append('search', search);
-         }
-
-         const res = await fetch(`/api/provisions?${params}`);
-         if (!res.ok) {
-            throw new Error('Failed to fetch provisions');
-         }
-         const data: PaginatedResponse = await res.json();
-         setProvisions(data.provisions);
-         setTotal(data.total);
-         setTotalPages(data.totalPages);
-      } catch (error) {
-         console.error('Error:', error);
-         setProvisions([]);
-      } finally {
-         setLoading(false);
-      }
-   };
-
-   // Reset to first page when search changes
-   useEffect(() => {
-      setPage(1);
-   }, [search]);
-
-   // Fetch when page or search changes
-   useEffect(() => {
-      const t = setTimeout(() => {
-         fetchProvisions();
-      }, 350);
-      return () => clearTimeout(t);
-   }, [page, search]);
-
    const orders = [
       {
          id: 1,

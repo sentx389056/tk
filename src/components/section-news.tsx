@@ -120,7 +120,7 @@ export function SectionNews() {
                                 <Input id="sheet-description" value={description} onChange={(e) => setDescription(e.target.value)} />
                             </div>
                             <div className="grid gap-3">
-                                <Label htmlFor="sheet-url">URL</Label>
+                                <Label htmlFor="sheet-url">URL (ссылка на ресурс)</Label>
                                 <Input id="sheet-url" value={url} onChange={(e) => setUrl(e.target.value)} />
                             </div>
                             <div className="grid gap-3">
@@ -148,7 +148,7 @@ export function SectionNews() {
                             <TableHead className="text-gray-500">ID</TableHead>
                             <TableHead className="text-gray-500">Заголовок</TableHead>
                             <TableHead className="text-gray-500">Описание</TableHead>
-                            <TableHead className="text-gray-500">URL</TableHead>
+                            <TableHead className="text-gray-500">URL (ссылка на ресурс)</TableHead>
                             <TableHead className="text-gray-500">Категория</TableHead>
                             <TableHead className="text-gray-500">Дата публикации</TableHead>
                         </TableRow>
@@ -186,7 +186,7 @@ export function SectionNews() {
                             <TableHead className="w-[100px]">ID</TableHead>
                             <TableHead>Заголовок</TableHead>
                             <TableHead>Описание</TableHead>
-                            <TableHead>URL</TableHead>
+                            <TableHead>URL (ссылка на ресурс)</TableHead>
                             <TableHead>Категория</TableHead>
                             <TableHead>Дата публикации</TableHead>
                             <TableHead className="text-right">Действия</TableHead>

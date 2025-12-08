@@ -50,6 +50,11 @@ export default async function Home() {
                 </a>
               </li>
               <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <a href="/news" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
+                  Новости
+                </a>
+              </li>
+              <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                 <a href="/contacts" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
                   Контакты ТК
                 </a>
