@@ -1,5 +1,5 @@
 'use client';
-import { Card, CardHeader} from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -38,24 +38,9 @@ import { SectionManagements } from "@/components/section-management";
 import { SectionLogs } from "@/components/section-logs";
 import { SectionDiscussions } from "@/components/section-discussions";
 import Link from "next/link";
+import { SectionNews } from "@/components/section-news";
 
 const frameworks = [
-    {
-        value: "Информация о членах",
-        label: "Информация о членах",
-    },
-    {
-        value: "Перечни стандартов",
-        label: "Перечни стандартов",
-    },
-    {
-        value: "Обсуждения",
-        label: "Обсуждения",
-    },
-    {
-        value: "Документы по стандартизации",
-        label: "Документы по стандартизации",
-    },
     {
         value: "Журнал логов",
         label: "Журнал логов",
@@ -64,172 +49,16 @@ const frameworks = [
 
 const items = [
     {
-        title: "Главная",
-        value: "Главная",
-    },
-    {
-        title: "Состав ТК",
-        value: "Состав ТК",
-    },
-    {
-        title: "Руководство",
-        value: "Руководство",
-    },
-    {
-        title: "Фонд стандартов",
-        value: "Фонд стандартов",
-    },
-    {
-        title: "Заседания",
-        value: "Заседания",
-    },
-    {
-        title: "Протоколы",
-        value: "Протоколы",
-    },
-    {
-        title: "Годовые отчеты",
-        value: "Годовые отчеты",
-    },
-    {
-        title: "Положения о ТК",
-        value: "Положения о ТК",
-    },
-    {
-        title: "Перечни стандартов",
-        value: "Перечни стандартов",
-    },
-    {
-        title: "Заявки на участие",
-        value: "Заявки на участие",
+        title: "Новости",
+        value: "Новости",
     },
 ]
 
-type Member = {
-    id: number;
-    name: string;
-    position: string;
-    organization: string;
-    email: string;
-    phone: string;
-    address: string;
-}
-
-type StandardProject = {
-    id: number;
-    title: string;
-    description: string;
-    startDate: Date;
-    endDate: Date;
-    fileUrl?: string;
-}
-
 export default function SecureAreaPage() {
-    const [members, setMembers] = React.useState<Member[]>([]);
-    const [standards, setStandards] = React.useState<StandardProject[]>([]);
     const [open, setOpen] = React.useState(false);
-    const [value, setValue] = React.useState("Информация о членах");
+    const [value, setValue] = React.useState("Журнал логов");
     const [isLoading, setLoading] = useState<boolean>(true);
     const [tab, setTab] = useState<string>("Главная");
-    const [page, setPage] = useState(1);
-    const [pageSize] = useState(10);
-    const [totalPages, setTotalPages] = useState(1);
-    const [total, setTotal] = useState(0);
-    // members pagination
-    const [membersPage, setMembersPage] = useState(1);
-    const [membersPageSize] = useState(10);
-    const [membersTotalPages, setMembersTotalPages] = useState(1);
-    const [membersTotal, setMembersTotal] = useState(0);
-
-
-    useEffect(() => {
-        const fetchMembers = async () => {
-            setLoading(true);
-            try {
-                const params = new URLSearchParams({
-                    page: membersPage.toString(),
-                    pageSize: membersPageSize.toString(),
-                });
-
-                const res = await fetch(`/api/members?${params}`);
-                if (!res.ok) {
-                    throw new Error('Failed to fetch members');
-                }
-                const data = await res.json();
-                // support paginated response { members, total, totalPages }
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                if (Array.isArray((data as any).members)) {
-                    setMembers(data.members);
-                    setMembersTotal(data.total || 0);
-                    setMembersTotalPages(data.totalPages || 1);
-                } else if (Array.isArray(data)) {
-                    // fallback if API returns array
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    setMembers(data as any);
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    setMembersTotal((data as any).length || 0);
-                    setMembersTotalPages(1);
-                } else {
-                    setMembers([]);
-                    setMembersTotal(0);
-                    setMembersTotalPages(1);
-                }
-            } catch (err) {
-                console.error('Failed to fetch members:', err);
-                setMembers([]);
-                setMembersTotal(0);
-                setMembersTotalPages(1);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchMembers();
-    }, [membersPage, membersPageSize]);
-
-    useEffect(() => {
-        const fetchStandards = async () => {
-            setLoading(true);
-            try {
-                const params = new URLSearchParams({
-                    page: page.toString(),
-                    pageSize: pageSize.toString(),
-                    all: 'true' // добавляем флаг для админ-панели
-                });
-
-                const res = await fetch(`/api/projects?${params}`);
-                if (!res.ok) {
-                    throw new Error('Failed to fetch standards');
-                }
-                const data = await res.json();
-                // API may return either { projects, total, totalPages } or an array when all=true
-                if (Array.isArray(data)) {
-                    setStandards(data);
-                    setTotal(data.length || 0);
-                    setTotalPages(1);
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                } else if (data && Array.isArray((data as any).projects)) {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    setStandards((data as any).projects);
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    setTotal((data as any).total || 0);
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    setTotalPages((data as any).totalPages || 1);
-                } else {
-                    setStandards([]);
-                    setTotal(0);
-                    setTotalPages(1);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                setStandards([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchStandards();
-    }, [page, pageSize]);
-
-
 
     return (
         <main>
@@ -360,40 +189,8 @@ export default function SecureAreaPage() {
                                                                 <div className="@container/main flex flex-1 flex-col gap-2">
                                                                     <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
 
-                                                                        {tab === "Главная" && (
-                                                                            <SectionMain />
-                                                                        )}
-
-                                                                        {tab === "Состав ТК" && (
-                                                                            <SectionMembers />
-                                                                        )}
-
-                                                                        {tab === "Руководство" && (
-                                                                            <SectionManagements />
-                                                                        )}
-
-                                                                        {tab === "Фонд стандартов" && (
-                                                                            <SectionFundStandards />
-                                                                        )}
-
-                                                                        {tab === "Заседания" && (
-                                                                            <SectionMeetings />
-                                                                        )}
-
-                                                                        {tab === "Протоколы" && (
-                                                                            <SectionProtocol />
-                                                                        )}
-
-                                                                        {tab === "Годовые отчеты" && (
-                                                                            <SectionAnnualReports />
-                                                                        )}
-
-                                                                        {tab === "Положения о ТК" && (
-                                                                            <SectionProvisions />
-                                                                        )}
-
-                                                                        {tab === "Перечни стандартов" && (
-                                                                            <SectionProjects />
+                                                                        {tab === "Новости" && (
+                                                                            <SectionNews />
                                                                         )}
 
                                                                     </div>
@@ -412,212 +209,16 @@ export default function SecureAreaPage() {
                 </div>
             </div>
 
-            {value === "Журнал логов" ? (
+            {value === 'Журнал логов' ? (
                 <div className="px-5 xl:px-40">
                     <SectionLogs />
                 </div>
-            ) : value === "Информация о членах" ? (
+            ) :
                 <div className="px-5 xl:px-40">
-                    <Card className="w-full rounded-none mb-5 py-0">
-                        <CardHeader className="p-4">
-                            <div className="flex gap-3 justify-start text-left flex-col">
-                                <h2 className="font-semibold">Информация о членах ТК и их представителях</h2>
-                                {isLoading ? (
-                                    <div className="flex flex-col gap-10">
-                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
-                                            <Skeleton className="h-5 rounded-xl max-sm: w-[200]" />
-                                            <div className="space-y-2">
-                                                <Skeleton className="h-4 w-[250px]" />
-                                                <Skeleton className="h-4 w-[200px]" />
-                                                <Skeleton className="h-4 w-[250px]" />
-                                                <Skeleton className="h-4 w-[200px]" />
-                                                <Skeleton className="h-4 w-[250px]" />
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
-                                            <Skeleton className="h-5 rounded-xl max-sm: w-[200]" />
-                                            <div className="space-y-2">
-                                                <Skeleton className="h-4 w-[250px]" />
-                                                <Skeleton className="h-4 w-[200px]" />
-                                                <Skeleton className="h-4 w-[250px]" />
-                                                <Skeleton className="h-4 w-[200px]" />
-                                                <Skeleton className="h-4 w-[250px]" />
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
-                                            <Skeleton className="h-5 rounded-xl max-sm: w-[200]" />
-                                            <div className="space-y-2">
-                                                <Skeleton className="h-4 w-[250px]" />
-                                                <Skeleton className="h-4 w-[200px]" />
-                                                <Skeleton className="h-4 w-[250px]" />
-                                                <Skeleton className="h-4 w-[200px]" />
-                                                <Skeleton className="h-4 w-[250px]" />
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
-                                            <Skeleton className="h-5 rounded-xl max-sm: w-[200]" />
-                                            <div className="space-y-2">
-                                                <Skeleton className="h-4 w-[250px]" />
-                                                <Skeleton className="h-4 w-[200px]" />
-                                                <Skeleton className="h-4 w-[250px]" />
-                                                <Skeleton className="h-4 w-[200px]" />
-                                                <Skeleton className="h-4 w-[250px]" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <>
-                                        {members.length === 0 ? (
-                                            <div className="text-center py-8 text-gray-500">Члены не найдены</div>
-                                        ) : (
-                                            <>
-                                                {members.map((member) => (
-                                                    <MemberCard
-                                                        key={member.id}
-                                                        name={member.name}
-                                                        position={member.position}
-                                                        organization={member.organization}
-                                                        email={member.email}
-                                                        phone={member.phone}
-                                                        address={member.address}
-                                                    />
-                                                ))}
+                    <p>Выберите раздел</p>
+                </div>
+            }
 
-                                                <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                                                    <div className="text-sm text-gray-500">Страница {membersPage} из {membersTotalPages}</div>
-                                                    <div className="flex gap-2">
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={() => setMembersPage(p => Math.max(1, p - 1))}
-                                                            disabled={membersPage <= 1 || isLoading}
-                                                        >
-                                                            Предыдущая
-                                                        </Button>
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={() => setMembersPage(p => Math.min(membersTotalPages, p + 1))}
-                                                            disabled={membersPage >= membersTotalPages || isLoading}
-                                                        >
-                                                            Следующая
-                                                        </Button>
-                                                    </div>
-                                                </div>
-                                            </>
-                                        )}
-                                    </>
-                                )}
-                            </div>
-                        </CardHeader>
-                    </Card>
-                </div>
-            ) : value === "Перечни стандартов" ? (
-                <div className="px-5 xl:px-40">
-                    <Card className="w-full rounded-none mb-5 py-0">
-                        <CardHeader className="p-4">
-                            <div className="flex gap-3 justify-start text-left flex-col">
-                                <h2 className="font-semibold">Перечни стандартов</h2>
-                                {isLoading ? (
-                                    <div className="flex flex-col gap-10">
-                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
-                                            <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
-                                            <div className="space-y-2">
-                                                <Skeleton className="h-4 w-[250px]" />
-                                                <Skeleton className="h-4 w-[200px]" />
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
-                                            <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
-                                            <div className="space-y-2">
-                                                <Skeleton className="h-4 w-[250px]" />
-                                                <Skeleton className="h-4 w-[200px]" />
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
-                                            <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
-                                            <div className="space-y-2">
-                                                <Skeleton className="h-4 w-[250px]" />
-                                                <Skeleton className="h-4 w-[200px]" />
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col space-y-3 border-1 rounded-xl p-5">
-                                            <Skeleton className="h-5 w-xl rounded-xl max-sm:w-xs" />
-                                            <div className="space-y-2">
-                                                <Skeleton className="h-4 w-[250px]" />
-                                                <Skeleton className="h-4 w-[200px]" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <>
-                                        {standards.length === 0 ? (
-                                            <div className="text-center py-8 text-gray-500">
-                                                Проекты не найдены
-                                            </div>
-                                        ) : (
-                                            <>
-                                                {standards.map((standard) => (
-                                                    <StandardProjectCard
-                                                        key={standard.id}
-                                                        title={standard.title}
-                                                        description={standard.description}
-                                                        startDate={new Date(standard.startDate)}
-                                                        endDate={new Date(standard.endDate)}
-                                                        fileUrl={standard.fileUrl}
-                                                    />
-                                                ))}
-                                                <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                                                    <div className="text-sm text-gray-500">Страница {page} из {totalPages}</div>
-                                                    <div className="flex gap-2">
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={() => setPage(p => Math.max(1, p - 1))}
-                                                            disabled={page <= 1 || isLoading}
-                                                        >
-                                                            Предыдущая
-                                                        </Button>
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                                                            disabled={page >= totalPages || isLoading}
-                                                        >
-                                                            Следующая
-                                                        </Button>
-                                                    </div>
-                                                </div>
-                                            </>
-                                        )}
-                                    </>)}
-                            </div>
-                        </CardHeader>
-                    </Card>
-                </div>
-            ) : value === "Документы по стандартизации" ? (
-                <div className="px-5 xl:px-40">
-                    <Card className="w-full rounded-none mb-5 py-0">
-                        <CardHeader className="p-4 overflow-auto">
-                            <div className="flex gap-3 justify-start text-left flex-col">
-                                <h2 className="font-semibold">Документы по стандартизации</h2>
-                                <SectionStandards />
-                            </div>
-                        </CardHeader>
-                    </Card>
-                </div>
-            ) : value === "Обсуждения" ? (
-                <div className="px-5 xl:px-40">
-                    <Card className="w-full rounded-none mb-5 py-0">
-                        <CardHeader className="p-4">
-                            <div className="flex gap-3 justify-start text-left flex-col">
-                                <h2 className="font-semibold">Обсуждения</h2>
-                                <SectionDiscussions />
-                            </div>
-                        </CardHeader>
-                    </Card>
-                </div>
-            ) : null}
-        </main>
+        </main >
     );
 }

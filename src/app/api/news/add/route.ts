@@ -21,16 +21,20 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json();
+        
+        console.log('Received news data:', body);
 
-        const member = await prisma.technicalCommitteeMember.create({
+        if (!body.title || !body.description) {
+            return NextResponse.json({ error: "Title and description are required" }, { status: 400 });
+        }
+
+        const news = await prisma.news.create({
             data: {
-                name: body.name,
-                position: body.position,
-                organization: body.organization,
-                experience: body.experience,
-                email: body.email,
-                phone: body.phone,
-                address: body.address,
+                title: body.title,
+                description: body.description,
+                url: body.url,
+                category: body.category,
+                date: body.date ? new Date(body.date) : new Date(),
             },
         });
 
@@ -39,11 +43,11 @@ export async function POST(request: Request) {
             await prisma.log.create({
                 data: {
                     type: 'ADD',
-                    action: 'Добавление сотрудника в Состав ТК',
+                    action: 'Добавление новости',
                     userId,
                     metadata: JSON.stringify({
-                        memberId: member.id,
-                        memberName: member.name,
+                        memberId: news.id,
+                        memberName: news.title,
                         timestamp: new Date().toISOString()
                     })
                 }
@@ -51,9 +55,14 @@ export async function POST(request: Request) {
         }
 
 
-        return NextResponse.json(member, { status: 201 });
+        return NextResponse.json(news, { status: 201 });
     } catch (error) {
-        console.error("Error adding member:", error);
-        return NextResponse.json({ error: "Failed to add member" }, { status: 500 });
+        console.error("Error adding news:", error);
+        console.error("Error details:", error instanceof Error ? error.message : 'Unknown error');
+        console.error("Stack trace:", error instanceof Error ? error.stack : 'No stack trace');
+        return NextResponse.json({ 
+            error: "Failed to add news", 
+            details: error instanceof Error ? error.message : 'Unknown error'
+        }, { status: 500 });
     }
 }

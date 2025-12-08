@@ -31,6 +31,17 @@ model Log {
   updatedAt  DateTime @updatedAt
 }
 
+model News {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  url         String
+  date        DateTime @default(now())
+  category    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 model User {
   id                 Int                       @id @default(autoincrement())
   login              String                    @unique

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 // В будущем эти данные будут приходить из API админки
 interface NewsItem {
@@ -10,7 +11,7 @@ interface NewsItem {
    description: string;
    url: string;
    date: string;
-   category: 'internal' | 'external';
+   category: string;
 }
 
 type PaginatedResponse = {
@@ -20,26 +21,6 @@ type PaginatedResponse = {
    pageSize: number;
    totalPages: number;
 };
-
-// Mock data для демонстрации
-const mockNewsData: NewsItem[] = [
-   {
-      id: 1,
-      title: "Цифровые технологии для кинематографии – в новом техническом комитете",
-      description: "МОСКВА, 1 декабря 2025 г. – В целях развития национальной системы стандартизации в сфере профессиональной кинематографии приказом Росстандарта создан новый технический комитет по стандартизации № 015 «Кинематография» (ТК 015).",
-      url: "https://www.rst.gov.ru/portal/gost/home/presscenter/news?portal:isSecure=true&navigationalstate=JBPNS_rO0ABXc0AAZhY3Rpb24AAAABAA5zaW5nbGVOZXdzVmlldwACaWQAAAABAAUxMDA3MAAHX19FT0ZfXw**&portal:componentId=88beae40-0e16-414c-b176-d0ab5de82e16",
-      date: "12.01.2025",
-      category: 'external'
-   },
-   {
-      id: 2,
-      title: "В РФ разработают современные стандарты в области кинематографии",
-      description: "МОСКВА, 1 декабря. /ТАСС/. Новый технический комитет по стандартизации, который займется актуализацией межгосударственных и национальных стандартов РФ в области кинематографии, создан в России. Об этом ТАСС сообщили в Росстандарте.",
-      url: "https://tass.ru/kultura/25776365",
-      date: "12.01.2025",
-      category: 'external'
-   }
-];
 
 export default function NewsPage() {
    const [news, setNews] = useState<NewsItem[]>([]);
@@ -52,26 +33,41 @@ export default function NewsPage() {
    const fetchNews = async () => {
       setLoading(true);
       try {
-         // В будущем замените на реальный API вызов
-         // const params = new URLSearchParams({
-         //    page: page.toString(),
-         //    pageSize: pageSize.toString()
-         // });
-         // const res = await fetch(`/api/news?${params}`);
-         // const data: PaginatedResponse = await res.json();
-         
-         // Mock реализация для демонстрации
-         await new Promise(resolve => setTimeout(resolve, 500));
-         
-         const startIndex = (page - 1) * pageSize;
-         const endIndex = startIndex + pageSize;
-         const paginatedNews = mockNewsData.slice(startIndex, endIndex);
-         
-         setNews(paginatedNews);
-         setTotal(mockNewsData.length);
-         setTotalPages(Math.ceil(mockNewsData.length / pageSize));
+         const params = new URLSearchParams({
+            page: page.toString(),
+            pageSize: pageSize.toString()
+         });
+         const res = await fetch(`/api/news?${params}`);
+
+         if (!res.ok) {
+            throw new Error('Failed to fetch news');
+         }
+
+         const data: PaginatedResponse = await res.json();
+
+         // Format date from API to match expected format
+         const formattedNews = data.news.map(item => ({
+            ...item,
+            date: new Date(item.date).toLocaleDateString('ru-RU', {
+               day: '2-digit',
+               month: '2-digit',
+               year: 'numeric'
+            }).replace(/\//g, '.')
+         }));
+
+         setNews(formattedNews);
+         setTotal(data.total);
+         setTotalPages(data.totalPages);
       } catch (error) {
          console.error('Error fetching news:', error);
+         // Fallback to mock data if API fails
+         await new Promise(resolve => setTimeout(resolve, 500));
+         const startIndex = (page - 1) * pageSize;
+         const endIndex = startIndex + pageSize;
+         const paginatedNews = news.slice(startIndex, endIndex);
+         setNews(paginatedNews);
+         setTotal(news.length);
+         setTotalPages(Math.ceil(news.length / pageSize));
       } finally {
          setLoading(false);
       }
@@ -82,21 +78,22 @@ export default function NewsPage() {
    }, [page]);
 
    const formatDate = (dateString: string) => {
-      return new Date(dateString).toLocaleDateString('ru-RU', {
+      // Handle DD.MM.YYYY format
+      const [day, month, year] = dateString.split('.');
+      const date = new Date(`${year}-${month}-${day}`);
+
+      return date.toLocaleDateString('ru-RU', {
          day: 'numeric',
          month: 'long',
          year: 'numeric'
       });
    };
 
-   const internalNews = news.filter(n => n.category === 'internal');
-   const externalNews = news.filter(n => n.category === 'external');
-
    return (
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">
          <div className="py-10">
             <h1 className="text-4xl font-bold text-center mb-8">Новости</h1>
-            
+
             <div className="max-w-4xl mx-auto space-y-6">
                {isLoading ? (
                   <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -134,12 +131,8 @@ export default function NewsPage() {
                                     <article key={newsItem.id} className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300">
                                        <div className="p-6 flex flex-col h-full">
                                           <div className="flex items-center justify-between mb-3">
-                                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                                newsItem.category === 'internal' 
-                                                   ? 'bg-red-100 text-red-800' 
-                                                   : 'bg-blue-100 text-blue-800'
-                                             }`}>
-                                                {newsItem.category === 'internal' ? 'ТК 015' : 'Пресс-релиз'}
+                                             <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800'>
+                                                {newsItem.category}
                                              </span>
                                              <time className="text-xs text-gray-500">
                                                 {formatDate(newsItem.date)}
@@ -152,9 +145,9 @@ export default function NewsPage() {
                                              {newsItem.description}
                                           </p>
                                           <div className="mt-auto">
-                                             <a 
+                                             <a
                                                 href={newsItem.url}
-                                                target={newsItem.category === 'external' ? '_blank' : '_self'}
+                                                target="_blank"
                                                 rel={newsItem.category === 'external' ? 'noopener noreferrer' : ''}
                                                 className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm group"
                                              >
@@ -188,7 +181,7 @@ export default function NewsPage() {
                                           </svg>
                                           Предыдущая
                                        </Button>
-                                       
+
                                        <div className="flex items-center gap-1">
                                           {[...Array(totalPages)].map((_, i) => (
                                              <Button
@@ -203,7 +196,7 @@ export default function NewsPage() {
                                              </Button>
                                           ))}
                                        </div>
-                                       
+
                                        <Button
                                           variant="outline"
                                           size="sm"
@@ -226,6 +219,6 @@ export default function NewsPage() {
                )}
             </div>
          </div>
-      </main>
+      </main >
    );
 }

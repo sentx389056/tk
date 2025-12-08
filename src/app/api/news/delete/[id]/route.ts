@@ -1,3 +1,4 @@
+
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -7,7 +8,7 @@ export async function DELETE(request: Request, { params }: any) {
         // Get user ID from the cookie
         const cookies = request.headers.get('cookie');
         let userId = null;
-        
+
         if (cookies) {
             const tkUserCookie = cookies.split(';').find(c => c.trim().startsWith('tk_user='));
             if (tkUserCookie) {
@@ -20,27 +21,25 @@ export async function DELETE(request: Request, { params }: any) {
             }
         }
 
-        // Get the executive before deleting
-        const meeting = await prisma.meeting.findUnique({
+        const news = await prisma.news.findUnique({
             where: { id: Number(params.id) },
             select: { id: true, title: true }
         });
 
-        // Delete the executive
-        await prisma.meeting.delete({
+        await prisma.news.delete({
             where: { id: Number(params.id) }
         });
 
         // Log the action if we have both user ID and executive data
-        if (userId && meeting) {
+        if (userId && news) {
             await prisma.log.create({
                 data: {
                     type: 'DELETE',
-                    action: 'Удаление заседания',
+                    action: 'Удаление новости',
                     userId,
                     metadata: JSON.stringify({
-                        meetingId: meeting.id,
-                        meetingName: meeting.title,
+                        newsId: news.id,
+                        newsTitle: news.title,
                         timestamp: new Date().toISOString()
                     })
                 }
@@ -49,7 +48,7 @@ export async function DELETE(request: Request, { params }: any) {
 
         return NextResponse.json({ ok: true });
     } catch (error) {
-        console.error('Error deleting meeting:', error);
-        return NextResponse.json({ error: 'Failed to delete meeting' }, { status: 500 });
+        console.error('Error deleting news:', error);
+        return NextResponse.json({ error: 'Failed to delete news' }, { status: 500 });
     }
 }
