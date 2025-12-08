@@ -171,7 +171,7 @@ export default function LoginPage() {
                                 <div>
                                     <CardTitle className="mb-2">Вход для членов ТК</CardTitle>
                                     <CardDescription className="text-gray-500 flex gap-1 items-center">
-                                        Доступ к закрытому разделу ТК 191<br />&quot;Кинематография&quot;
+                                        Доступ к закрытому разделу ТК 015<br />&quot;Кинематография&quot;
                                     </CardDescription>
                                 </div>
                             </div>
