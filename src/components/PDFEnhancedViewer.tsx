@@ -304,6 +304,7 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
       <button
         onClick={handleOpen}
         className="text-start border-2 border-green-500 p-2 rounded hover:bg-green-50"
+        style={{ backgroundColor: '#1f2937', color: 'white', border: '2px solid #22c55e' }}
       >
         {title} (Enhanced)
       </button>
@@ -323,6 +324,7 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
               <button
                 onClick={handleClose}
                 className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+                style={{ color: '#6b7280', backgroundColor: 'transparent', border: '1px solid #d1d5db', padding: '4px 8px', borderRadius: '4px' }}
               >
                 ×
               </button>

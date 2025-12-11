@@ -201,6 +201,7 @@ const PDFViewerApplications = ({ fileUrl, title }: { fileUrl: string; title: str
       <button
         onClick={handleOpen}
         className="w-full text-start bg-gray-800 text-white cursor-pointer p-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-102 transition-all duration-200 font-medium text-lg"
+        style={{ backgroundColor: '#1f2937', color: 'white', border: '1px solid #374151' }}
       >
         {title}
       </button>
@@ -217,6 +218,7 @@ const PDFViewerApplications = ({ fileUrl, title }: { fileUrl: string; title: str
               <button
                 onClick={handleClose}
                 className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+                style={{ color: '#6b7280', backgroundColor: 'transparent', border: '1px solid #d1d5db', padding: '4px 8px', borderRadius: '4px' }}
               >
                 ×
               </button>

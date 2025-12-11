@@ -201,6 +201,7 @@ export default function PDFDebugViewer({ fileUrl, title }: PDFDebugViewerProps) 
       <button
         onClick={handleOpen}
         className="text-start border-2 border-red-500 p-2 rounded"
+        style={{ backgroundColor: '#1f2937', color: 'white', border: '2px solid #ef4444' }}
       >
         {title} (DEBUG)
       </button>
@@ -220,6 +221,7 @@ export default function PDFDebugViewer({ fileUrl, title }: PDFDebugViewerProps) 
               <button
                 onClick={handleClose}
                 className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+                style={{ color: '#6b7280', backgroundColor: 'transparent', border: '1px solid #d1d5db', padding: '4px 8px', borderRadius: '4px' }}
               >
                 ×
               </button>

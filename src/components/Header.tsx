@@ -88,7 +88,7 @@ export default function Header() {
       <>
          <div className="w-full bg-black border-b border-gray-900">
             <div className="px-3 sm:px-6 xl:px-20 py-1">
-               <Link href="https://gosfilmofond.ru/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200 font-bold">
+               <Link href="https://gosfilmofond.ru/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-gray-500 hover:text-gray-300 text-xs transition-colors duration-200 font-bold" style={{ color: '#d1d5db' }}>
                   ГОСФИЛЬМОФОНД РОССИИ
                   <ExternalLink size={12} />
                </Link>
@@ -98,24 +98,24 @@ export default function Header() {
 
             <Link href="/" className="shrink-0 flex items-center gap-3">
                <Image src="/TKlogo.png" alt="gff-tk logo" width={120} height={150} className="h-auto sm:w-[90px]" />
-               <p className="text-white font-semibold text-xs hidden sm:flex">ТЕХНИЧЕСКИЙ КОМИТЕТ ПО СТАНДАРТИЗАЦИИ<br />ТК015 «КИНЕМАТОГРАФИЯ»</p>
+               <p className="text-white font-semibold text-xs hidden sm:flex" style={{ color: 'white' }}>ТЕХНИЧЕСКИЙ КОМИТЕТ ПО СТАНДАРТИЗАЦИИ<br />ТК015 «КИНЕМАТОГРАФИЯ»</p>
             </Link>
             <div className="hidden lg:flex items-center justify-between gap-6 flex-1 ml-18">
                <NavigationMenu viewport={false}>
                   <NavigationMenuList>
                      <NavigationMenuItem>
                         <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/provisions" className="text-md">Приказ<br />о создании ТК</Link>
+                           <Link href="/provisions" className="text-md" style={{ color: 'white' }}>Приказ<br />о создании ТК</Link>
                         </NavigationMenuLink>
                      </NavigationMenuItem>
                      <NavigationMenuItem>
                         <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/perspective" className="text-md">Перспективная<br />программа</Link>
+                           <Link href="/perspective" className="text-md" style={{ color: 'white' }}>Перспективная<br />программа</Link>
                         </NavigationMenuLink>
                      </NavigationMenuItem>
                      <NavigationMenuItem>
                         <NavigationMenuLink asChild className={buttonVariants({ variant: "link" })}>
-                           <Link href="/projects" className="text-md">Перечни стандартов</Link>
+                           <Link href="/projects" className="text-md" style={{ color: 'white' }}>Перечни стандартов</Link>
                         </NavigationMenuLink>
                      </NavigationMenuItem>
                   </NavigationMenuList>
@@ -133,6 +133,7 @@ export default function Header() {
                            <Link
                               href="/applications"
                               className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 hover:underline outline-none transition-[color,box-shadow]"
+                              style={{ color: 'white' }}
                               onClick={() => setIsDesktopMenuOpen(false)}
                            >
                               Поступившие заявки на участие в ТК
@@ -140,6 +141,7 @@ export default function Header() {
                            <Link
                               href="/news"
                               className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 hover:underline outline-none transition-[color,box-shadow]"
+                              style={{ color: 'white' }}
                               onClick={() => setIsDesktopMenuOpen(false)}
                            >
                               Новости
@@ -147,6 +149,7 @@ export default function Header() {
                            <Link
                               href="/contacts"
                               className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 hover:underline outline-none transition-[color,box-shadow]"
+                              style={{ color: 'white' }}
                               onClick={() => setIsDesktopMenuOpen(false)}
                            >
                               Контакты ТК
@@ -154,6 +157,7 @@ export default function Header() {
                            <Link
                               href="https://gosfilmofond.ru/"
                               className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 hover:underline outline-none transition-[color,box-shadow]"
+                              style={{ color: 'white' }}
                               onClick={() => setIsDesktopMenuOpen(false)}
                               target="_blank"
                               rel="noopener noreferrer"
@@ -185,6 +189,7 @@ export default function Header() {
                         <Link
                            href="/provisions"
                            className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 hover:underline outline-none transition-[color,box-shadow]"
+                           style={{ color: 'white' }}
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Приказ о создании ТК
@@ -192,6 +197,7 @@ export default function Header() {
                         <Link
                            href="/perspective"
                            className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 outline-none transition-[color,box-shadow] hover:underline"
+                           style={{ color: 'white' }}
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Перспективная программа
@@ -199,6 +205,7 @@ export default function Header() {
                         <Link
                            href="/projects"
                            className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 outline-none transition-[color,box-shadow] hover:underline"
+                           style={{ color: 'white' }}
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Перечни стандартов
@@ -206,6 +213,7 @@ export default function Header() {
                         <Link
                            href="/applications"
                            className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 outline-none transition-[color,box-shadow] hover:underline"
+                           style={{ color: 'white' }}
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Поступившие заявки на участие в ТК

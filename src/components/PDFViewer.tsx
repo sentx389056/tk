@@ -321,6 +321,7 @@ export default function PDFViewer({ fileUrl, title }: PDFViewerProps) {
       <button
         onClick={handleOpen}
         className="text-start"
+        style={{ backgroundColor: 'transparent', color: '#1f2937', padding: '8px 12px'}}
       >
         {title}
       </button>
@@ -337,6 +338,7 @@ export default function PDFViewer({ fileUrl, title }: PDFViewerProps) {
               <button
                 onClick={handleClose}
                 className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+                style={{ color: '#6b7280', backgroundColor: 'transparent', padding: '4px 8px' }}
               >
                 ×
               </button>
