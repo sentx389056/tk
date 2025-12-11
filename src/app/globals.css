@@ -129,3 +129,52 @@
     font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
   }
 }
+
+/* Legacy browser compatibility styles */
+@layer compatibility {
+  /* Ensure proper backgrounds for sheet components in older browsers */
+  [data-radix-sheet-content] {
+    background-color: #000000 !important;
+    background-image: none !important;
+  }
+
+  /* Force text colors for better contrast */
+  [data-radix-sheet-content] * {
+    color: #ffffff !important;
+  }
+
+  /* Override hover states */
+  [data-radix-sheet-content] a:hover {
+    color: #d1d5db !important;
+  }
+
+  /* Fallback for browsers that don't support CSS variables */
+  .sheet-content {
+    background-color: #000000;
+    color: #ffffff;
+    border-color: #374151;
+  }
+
+  .sheet-title {
+    color: #ffffff;
+  }
+
+  .sheet-link {
+    color: #ffffff;
+  }
+
+  .sheet-link:hover {
+    color: #d1d5db;
+  }
+
+  /* Ensure menu buttons are visible */
+  .menu-trigger {
+    background-color: transparent;
+    color: #ffffff;
+  }
+
+  /* Fallback for backdrop blur effects */
+  .backdrop-blur {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}

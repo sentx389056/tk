@@ -22,6 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
+      <head>
+        <script src="/polyfills.js"></script>
+      </head>
       <body className={`${inter.variable} antialiased min-h-full flex flex-col`}>
         <Header />
         <main className="flex-1">

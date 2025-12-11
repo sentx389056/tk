@@ -31,7 +31,13 @@ const PDFViewerApplications = ({ fileUrl, title }: { fileUrl: string; title: str
     const loadPdfjs = async () => {
       if (typeof window !== 'undefined') {
         const pdfjsLib = await import('pdfjs-dist');
-        pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+        
+        // Determine worker source based on browser compatibility
+        const workerSrc = typeof Promise.withResolvers === 'undefined' 
+          ? '/pdf.worker.legacy.min.js' 
+          : '/pdf.worker.min.js';
+          
+        pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
         setPdfjs(pdfjsLib);
       }
     };
@@ -75,50 +81,95 @@ const PDFViewerApplications = ({ fileUrl, title }: { fileUrl: string; title: str
 
     const renderAllPages = async () => {
       try {
-        
         const loadingTask = pdfjs.getDocument(pdfBlobUrl);
         const pdf = await loadingTask.promise;
         
+        // Ensure canvas refs array is properly sized
         if (canvasRefs.current.length < pdf.numPages) {
           canvasRefs.current = Array(pdf.numPages).fill(null);
         }
         
+        // Render pages with better error handling and retry logic
+        const renderPromises = [];
+        
         for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-          
-          const page = await pdf.getPage(pageNum);
-          
-          const canvas = canvasRefs.current[pageNum - 1];
-          if (!canvas) {
-            continue;
-          }
-
-          const context = canvas.getContext('2d');
-          if (!context) {
-            continue;
-          }
-
-          const viewport = page.getViewport({ scale: 1.5 });
-          
-          canvas.height = viewport.height;
-          canvas.width = viewport.width;
-
-          const renderContext = {
-            canvasContext: context,
-            viewport: viewport,
-            canvas: canvas
-          };
-
-          await page.render(renderContext).promise;
-          
-          setRenderedPages(pageNum);
+          const renderPromise = renderPageWithRetry(pdf, pageNum, 3);
+          renderPromises.push(renderPromise);
+        }
+        
+        // Wait for all pages to render (or fail)
+        const results = await Promise.allSettled(renderPromises);
+        
+        // Count successfully rendered pages
+        const successfulPages = results.filter(result => 
+          result.status === 'fulfilled'
+        ).length;
+        
+        setRenderedPages(successfulPages);
+        
+        if (successfulPages < pdf.numPages) {
+          console.warn(`Only ${successfulPages} of ${pdf.numPages} pages rendered successfully`);
         }
         
       } catch (err) {
+        console.error('PDF rendering error:', err);
         setError(`Ошибка рендеринга: ${err instanceof Error ? err.message : 'Неизвестная ошибка'}`);
       }
     };
+
     renderAllPages();
   }, [pdfBlobUrl, totalPages, pdfjs]);
+
+  // Helper function to render a single page with retry logic
+  const renderPageWithRetry = async (pdf: any, pageNum: number, maxRetries: number): Promise<void> => {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const page = await pdf.getPage(pageNum);
+        
+        // Wait a bit for canvas ref to be available
+        let canvas = canvasRefs.current[pageNum - 1];
+        let attempts = 0;
+        while (!canvas && attempts < 10) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          canvas = canvasRefs.current[pageNum - 1];
+          attempts++;
+        }
+        
+        if (!canvas) {
+          throw new Error(`Canvas not available for page ${pageNum}`);
+        }
+
+        const context = canvas.getContext('2d');
+        if (!context) {
+          throw new Error(`Could not get canvas context for page ${pageNum}`);
+        }
+
+        const viewport = page.getViewport({ scale: 1.5 });
+        
+        // Set canvas dimensions
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+          canvasContext: context,
+          viewport: viewport
+        };
+
+        await page.render(renderContext).promise;
+        return; // Success
+        
+      } catch (error) {
+        console.warn(`Attempt ${attempt} failed for page ${pageNum}:`, error);
+        
+        if (attempt === maxRetries) {
+          throw error; // Re-throw after final attempt
+        }
+        
+        // Wait before retry
+        await new Promise(resolve => setTimeout(resolve, 500 * attempt));
+      }
+    }
+  };
 
   const handleClose = () => {
     setIsOpen(false);

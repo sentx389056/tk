@@ -125,35 +125,35 @@ export default function Header() {
                      <SheetTrigger asChild>
                         <Menu size={40} color="white" className="cursor-pointer hover:bg-gray-500 p-2 rounded-lg" />
                      </SheetTrigger>
-                     <SheetContent>
-                        <SheetHeader>
-                           <SheetTitle>Меню навигации</SheetTitle>
+                     <SheetContent className="bg-black text-white border-gray-700">
+                        <SheetHeader className="text-white">
+                           <SheetTitle className="text-white">Меню навигации</SheetTitle>
                         </SheetHeader>
                         <div className="flex flex-col gap-5 px-2">
                            <Link
                               href="/applications"
-                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
+                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 hover:underline outline-none transition-[color,box-shadow]"
                               onClick={() => setIsDesktopMenuOpen(false)}
                            >
                               Поступившие заявки на участие в ТК
                            </Link>
                            <Link
                               href="/news"
-                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
+                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 hover:underline outline-none transition-[color,box-shadow]"
                               onClick={() => setIsDesktopMenuOpen(false)}
                            >
                               Новости
                            </Link>
                            <Link
                               href="/contacts"
-                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
+                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 hover:underline outline-none transition-[color,box-shadow]"
                               onClick={() => setIsDesktopMenuOpen(false)}
                            >
                               Контакты ТК
                            </Link>
                            <Link
                               href="https://gosfilmofond.ru/"
-                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
+                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 hover:underline outline-none transition-[color,box-shadow]"
                               onClick={() => setIsDesktopMenuOpen(false)}
                               target="_blank"
                               rel="noopener noreferrer"
@@ -177,35 +177,35 @@ export default function Header() {
                         <Menu color="white" aria-hidden="true" size={35} />
                      </div>
                   </SheetTrigger>
-                  <SheetContent>
-                     <SheetHeader>
-                        <SheetTitle>Меню навигации</SheetTitle>
+                  <SheetContent className="bg-black text-white border-gray-700">
+                     <SheetHeader className="text-white">
+                        <SheetTitle className="text-white">Меню навигации</SheetTitle>
                      </SheetHeader>
                      <div className="flex flex-col gap-5 px-2">
                         <Link
                            href="/provisions"
-                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground hover:underline outline-none transition-[color,box-shadow]"
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 hover:underline outline-none transition-[color,box-shadow]"
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Приказ о создании ТК
                         </Link>
                         <Link
                            href="/perspective"
-                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 outline-none transition-[color,box-shadow] hover:underline"
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Перспективная программа
                         </Link>
                         <Link
                            href="/projects"
-                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 outline-none transition-[color,box-shadow] hover:underline"
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Перечни стандартов
                         </Link>
                         <Link
                            href="/applications"
-                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 outline-none transition-[color,box-shadow] hover:underline"
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Поступившие заявки на участие в ТК
@@ -260,21 +260,21 @@ export default function Header() {
                      </Accordion> */}
                         <Link
                            href="/news"
-                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
-                           onClick={() => setIsDesktopMenuOpen(false)}
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium text-white hover:text-gray-300 outline-none transition-[color,box-shadow] hover:underline"
+                           onClick={() => setIsMenuOpen(false)}
                         >
                            Новости
                         </Link>
                         <Link
                            href="/contacts"
-                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium text-white hover:text-gray-300 outline-none transition-[color,box-shadow] hover:underline"
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Контакты ТК
                         </Link>
                         <Link
                            href="https://gosfilmofond.ru/"
-                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium hover:text-accent-foreground outline-none transition-[color,box-shadow] hover:underline"
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium text-white hover:text-gray-300 outline-none transition-[color,box-shadow] hover:underline"
                            onClick={() => setIsMenuOpen(false)}
                         >
                            ГОСФИЛЬМОФОНД РОССИИ
