@@ -51,29 +51,29 @@ export default function PDFDebugViewer({ fileUrl, title }: PDFDebugViewerProps) 
 
     try {
       const response = await fetch(fileUrl.replace('/api/files/', '/api/pdf-view/'));
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       const blob = await response.blob();
       addDebugInfo(`Blob created, size: ${blob.size} bytes, type: ${blob.type}`);
-      
+
       const blobUrl = URL.createObjectURL(blob);
       addDebugInfo(`Blob URL created: ${blobUrl.substring(0, 50)}...`);
-      
+
       const loadingTask = getDocument(blobUrl);
       addDebugInfo(`PDF loading task created`);
-      
+
       // Add progress listener
       loadingTask.onProgress = (progress: { loaded: number; total: number }) => {
         const percentage = progress.total > 0 ? Math.round(progress.loaded / progress.total * 100) : 0;
         addDebugInfo(`Loading progress: ${progress.loaded}/${progress.total} (${percentage}%)`);
       };
-      
+
       const pdf = await loadingTask.promise;
       addDebugInfo(`PDF loaded successfully, pages: ${pdf.numPages}`);
-      
+
       setTotalPages(pdf.numPages);
       setPdfBlobUrl(blobUrl);
     } catch (err) {
@@ -90,23 +90,23 @@ export default function PDFDebugViewer({ fileUrl, title }: PDFDebugViewerProps) 
 
     const renderAllPages = async () => {
       addDebugInfo(`Starting render of ${totalPages} pages`);
-      
+
       try {
         const loadingTask = getDocument(pdfBlobUrl);
         const pdf = await loadingTask.promise;
-        
+
         // Ensure canvas refs array is properly sized
         if (canvasRefs.current.length < pdf.numPages) {
           canvasRefs.current = Array(pdf.numPages).fill(null);
           addDebugInfo(`Canvas refs array resized to ${pdf.numPages}`);
         }
-        
+
         // Render pages sequentially for debugging
         let successfulPages = 0;
-        
+
         for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
           addDebugInfo(`Attempting to render page ${pageNum}`);
-          
+
           try {
             await renderPageWithDebug(pdf, pageNum);
             successfulPages++;
@@ -115,14 +115,14 @@ export default function PDFDebugViewer({ fileUrl, title }: PDFDebugViewerProps) 
             addDebugInfo(`ERROR rendering page ${pageNum}: ${pageError}`);
             console.error(`Page ${pageNum} error:`, pageError);
           }
-          
+
           // Small delay between pages to avoid overwhelming the browser
           await new Promise(resolve => setTimeout(resolve, 100));
         }
-        
+
         setRenderedPages(successfulPages);
         addDebugInfo(`Rendering complete: ${successfulPages}/${pdf.numPages} pages successful`);
-        
+
       } catch (err) {
         const errorMsg = `Ошибка рендеринга: ${err instanceof Error ? err.message : 'Неизвестная ошибка'}`;
         addDebugInfo(`RENDER ERROR: ${errorMsg}`);
@@ -134,10 +134,11 @@ export default function PDFDebugViewer({ fileUrl, title }: PDFDebugViewerProps) 
     renderAllPages();
   }, [pdfBlobUrl, totalPages]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderPageWithDebug = async (pdf: any, pageNum: number): Promise<void> => {
     addDebugInfo(`Getting page ${pageNum}`);
     const page = await pdf.getPage(pageNum);
-    
+
     // Wait for canvas ref to be available
     let canvas = canvasRefs.current[pageNum - 1];
     let attempts = 0;
@@ -146,7 +147,7 @@ export default function PDFDebugViewer({ fileUrl, title }: PDFDebugViewerProps) 
       canvas = canvasRefs.current[pageNum - 1];
       attempts++;
     }
-    
+
     if (!canvas) {
       throw new Error(`Canvas not available for page ${pageNum} after ${attempts} attempts`);
     }
@@ -160,10 +161,10 @@ export default function PDFDebugViewer({ fileUrl, title }: PDFDebugViewerProps) 
 
     const viewport = page.getViewport({ scale: 1.5 });
     addDebugInfo(`Viewport calculated: ${viewport.width}x${viewport.height}`);
-    
+
     // Clear canvas before rendering
     context.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     // Set canvas dimensions
     canvas.height = viewport.height;
     canvas.width = viewport.width;
@@ -182,12 +183,12 @@ export default function PDFDebugViewer({ fileUrl, title }: PDFDebugViewerProps) 
   const handleClose = () => {
     setIsOpen(false);
     setError(null);
-    
+
     if (pdfBlobUrl) {
       URL.revokeObjectURL(pdfBlobUrl);
       addDebugInfo(`Blob URL revoked`);
     }
-    
+
     setPdfBlobUrl(null);
     setRenderedPages(0);
     setTotalPages(0);
@@ -205,7 +206,7 @@ export default function PDFDebugViewer({ fileUrl, title }: PDFDebugViewerProps) 
       </button>
 
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center"
           onClick={(e) => {
             if (e.target === e.currentTarget) {
@@ -223,7 +224,7 @@ export default function PDFDebugViewer({ fileUrl, title }: PDFDebugViewerProps) 
                 ×
               </button>
             </div>
-            
+
             <div className="flex-1 p-4 overflow-auto bg-gray-100 rounded-b-lg">
               {loading ? (
                 <div className="flex items-center justify-center h-full">
@@ -245,13 +246,13 @@ export default function PDFDebugViewer({ fileUrl, title }: PDFDebugViewerProps) 
                     <div className="text-center text-sm text-gray-600 mb-4">
                       Отображено страниц: {renderedPages} из {totalPages}
                     </div>
-                    
+
                     <div className="space-y-4">
                       {Array.from({ length: totalPages }, (_, index) => (
                         <div key={index} className="relative flex justify-center">
                           <canvas
-                            ref={(el) => { 
-                              canvasRefs.current[index] = el; 
+                            ref={(el) => {
+                              canvasRefs.current[index] = el;
                             }}
                             className="border border-gray-300 shadow-lg"
                             style={{ maxWidth: '100%', height: 'auto' }}
@@ -263,7 +264,7 @@ export default function PDFDebugViewer({ fileUrl, title }: PDFDebugViewerProps) 
                       ))}
                     </div>
                   </div>
-                  
+
                   <div className="w-80">
                     <div className="bg-black text-green-400 p-4 rounded font-mono text-xs overflow-auto max-h-96">
                       <div className="font-bold mb-2 sticky top-0 bg-black">Debug Log:</div>

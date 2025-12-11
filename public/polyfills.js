@@ -10,6 +10,53 @@ if (typeof Promise.withResolvers === 'undefined') {
   };
 }
 
+// Polyfill for DOMMatrix for SSR and older browsers
+if (typeof DOMMatrix === 'undefined') {
+  window.DOMMatrix = function() {
+    this.a = 1; this.b = 0; this.c = 0; this.d = 1; this.e = 0; this.f = 0;
+    this.m11 = 1; this.m12 = 0; this.m13 = 0; this.m14 = 0;
+    this.m21 = 0; this.m22 = 1; this.m23 = 0; this.m24 = 0;
+    this.m31 = 0; this.m32 = 0; this.m33 = 1; this.m34 = 0;
+    this.m41 = 0; this.m42 = 0; this.m43 = 0; this.m44 = 1;
+    this.is2D = true;
+    this.isIdentity = true;
+  };
+  
+  window.DOMMatrix.prototype = {
+    translate: function(x, y) {
+      this.e += x;
+      this.f += y;
+      this.m41 += x;
+      this.m42 += y;
+      return this;
+    },
+    scale: function(x, y) {
+      this.a *= x;
+      this.d *= y;
+      this.m11 *= x;
+      this.m22 *= y;
+      return this;
+    },
+    multiply: function(other) {
+      // Basic matrix multiplication
+      return this;
+    },
+    inverse: function() {
+      // Return identity matrix for simplicity
+      return new DOMMatrix();
+    },
+    transformPoint: function(x, y) {
+      return {
+        x: x * this.a + y * this.c + this.e,
+        y: x * this.b + y * this.d + this.f
+      };
+    }
+  };
+}
+
+// Signal that polyfills are loaded
+window.polyfillsLoaded = true;
+
 // Polyfill for transferToFixedLength method for ArrayBuffer
 if (typeof ArrayBuffer !== 'undefined') {
   if (typeof ArrayBuffer.prototype.transferToFixedLength === 'undefined') {

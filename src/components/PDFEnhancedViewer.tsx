@@ -43,7 +43,7 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
       const newStatuses = [...prev];
       const existingIndex = newStatuses.findIndex(s => s.pageNum === pageNum);
       const info: PageRenderInfo = { pageNum, status, error, renderTime };
-      
+
       if (existingIndex >= 0) {
         newStatuses[existingIndex] = info;
       } else {
@@ -63,27 +63,27 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
 
     try {
       const response = await fetch(fileUrl.replace('/api/files/', '/api/pdf-view/'));
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       const blob = await response.blob();
       const blobUrl = URL.createObjectURL(blob);
-      
+
       const loadingTask = getDocument(blobUrl);
       const pdf = await loadingTask.promise;
-      
+
       setTotalPages(pdf.numPages);
       setPdfBlobUrl(blobUrl);
-      
+
       // Initialize page statuses
       const initialStatuses: PageRenderInfo[] = [];
       for (let i = 1; i <= pdf.numPages; i++) {
         initialStatuses.push({ pageNum: i, status: 'pending' });
       }
       setPageStatuses(initialStatuses);
-      
+
     } catch (err) {
       setError(`Ошибка: ${err instanceof Error ? err.message : 'Неизвестная ошибка'}`);
     } finally {
@@ -91,6 +91,7 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderPageWithMultipleMethods = async (pdf: any, pageNum: number): Promise<void> => {
     updatePageStatus(pageNum, 'loading');
     const startTime = Date.now();
@@ -102,7 +103,7 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
       return;
     } catch (error1) {
       console.warn(`Standard render failed for page ${pageNum}:`, error1);
-      
+
       try {
         // Method 2: Lower quality render
         await tryLowQualityRender(pdf, pageNum);
@@ -110,7 +111,7 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
         return;
       } catch (error2) {
         console.warn(`Low quality render failed for page ${pageNum}:`, error2);
-        
+
         try {
           // Method 3: Text-only render
           await tryTextRender(pdf, pageNum);
@@ -118,7 +119,7 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
           return;
         } catch (error3) {
           console.warn(`Text render failed for page ${pageNum}:`, error3);
-          
+
           // Method 4: Placeholder with page number
           await tryPlaceholderRender(pageNum);
           updatePageStatus(pageNum, 'empty', 'All render methods failed', Date.now() - startTime);
@@ -127,30 +128,32 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tryStandardRender = async (pdf: any, pageNum: number): Promise<void> => {
     const page = await pdf.getPage(pageNum);
     const canvas = await getCanvas(pageNum);
     const context = canvas.getContext('2d')!;
-    
+
     const viewport = page.getViewport({ scale: 1.5 });
     canvas.height = viewport.height;
     canvas.width = viewport.width;
-    
+
     await page.render({
       canvasContext: context,
       viewport: viewport
     }).promise;
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tryLowQualityRender = async (pdf: any, pageNum: number): Promise<void> => {
     const page = await pdf.getPage(pageNum);
     const canvas = await getCanvas(pageNum);
     const context = canvas.getContext('2d')!;
-    
+
     const viewport = page.getViewport({ scale: 0.8 });
     canvas.height = viewport.height;
     canvas.width = viewport.width;
-    
+
     await page.render({
       canvasContext: context,
       viewport: viewport,
@@ -158,26 +161,28 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
     }).promise;
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tryTextRender = async (pdf: any, pageNum: number): Promise<void> => {
     const page = await pdf.getPage(pageNum);
     const canvas = await getCanvas(pageNum);
     const context = canvas.getContext('2d')!;
-    
+
     const viewport = page.getViewport({ scale: 1.2 });
     canvas.height = viewport.height;
     canvas.width = viewport.width;
-    
+
     // Clear canvas
     context.fillStyle = 'white';
     context.fillRect(0, 0, canvas.width, canvas.height);
-    
+
     // Try to get text content and render it
     try {
       const textContent = await page.getTextContent();
       context.fillStyle = 'black';
       context.font = '12px Arial';
-      
+
       let y = 20;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       textContent.items.forEach((item: any) => {
         if (item.str) {
           context.fillText(item.str, 20, y);
@@ -192,22 +197,22 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
   const tryPlaceholderRender = async (pageNum: number): Promise<void> => {
     const canvas = await getCanvas(pageNum);
     const context = canvas.getContext('2d')!;
-    
+
     canvas.width = 400;
     canvas.height = 600;
-    
+
     // Create placeholder
     context.fillStyle = '#f5f5f5';
     context.fillRect(0, 0, canvas.width, canvas.height);
-    
+
     context.strokeStyle = '#ddd';
     context.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
-    
+
     context.fillStyle = '#666';
     context.font = '24px Arial';
     context.textAlign = 'center';
     context.fillText(`Страница ${pageNum}`, canvas.width / 2, canvas.height / 2);
-    
+
     context.font = '14px Arial';
     context.fillText('Не удалось отобразить содержимое', canvas.width / 2, canvas.height / 2 + 30);
   };
@@ -215,17 +220,17 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
   const getCanvas = async (pageNum: number): Promise<HTMLCanvasElement> => {
     let canvas = canvasRefs.current[pageNum - 1];
     let attempts = 0;
-    
+
     while (!canvas && attempts < 20) {
       await new Promise(resolve => setTimeout(resolve, 100));
       canvas = canvasRefs.current[pageNum - 1];
       attempts++;
     }
-    
+
     if (!canvas) {
       throw new Error(`Canvas not available for page ${pageNum}`);
     }
-    
+
     return canvas;
   };
 
@@ -236,19 +241,19 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
       try {
         const loadingTask = getDocument(pdfBlobUrl);
         const pdf = await loadingTask.promise;
-        
+
         // Ensure canvas refs array
         if (canvasRefs.current.length < pdf.numPages) {
           canvasRefs.current = Array(pdf.numPages).fill(null);
         }
-        
+
         // Render pages with small delays to prevent overwhelming
         for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
           await renderPageWithMultipleMethods(pdf, pageNum);
           // Small delay between pages
           await new Promise(resolve => setTimeout(resolve, 200));
         }
-        
+
       } catch (err) {
         console.error('PDF rendering error:', err);
         setError(`Ошибка рендеринга: ${err instanceof Error ? err.message : 'Неизвестная ошибка'}`);
@@ -261,11 +266,11 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
   const handleClose = () => {
     setIsOpen(false);
     setError(null);
-    
+
     if (pdfBlobUrl) {
       URL.revokeObjectURL(pdfBlobUrl);
     }
-    
+
     setPdfBlobUrl(null);
     setTotalPages(0);
     setPageStatuses([]);
@@ -304,7 +309,7 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
       </button>
 
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center"
           onClick={(e) => {
             if (e.target === e.currentTarget) {
@@ -322,7 +327,7 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
                 ×
               </button>
             </div>
-            
+
             <div className="flex-1 p-4 overflow-auto bg-gray-100 rounded-b-lg">
               {loading ? (
                 <div className="flex items-center justify-center h-full">
@@ -340,7 +345,7 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
                       <h4 className="font-semibold mb-2">Статус страниц:</h4>
                       <div className="grid grid-cols-4 gap-2">
                         {pageStatuses.map((status) => (
-                          <div 
+                          <div
                             key={status.pageNum}
                             className={`text-xs p-2 rounded text-center ${getStatusColor(status.status)}`}
                           >
@@ -353,13 +358,13 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
                         ))}
                       </div>
                     </div>
-                    
+
                     <div className="space-y-4">
                       {Array.from({ length: totalPages }, (_, index) => (
                         <div key={index} className="relative flex justify-center">
                           <canvas
-                            ref={(el) => { 
-                              canvasRefs.current[index] = el; 
+                            ref={(el) => {
+                              canvasRefs.current[index] = el;
                             }}
                             className="border border-gray-300 shadow-lg bg-white"
                             style={{ maxWidth: '100%', height: 'auto' }}
