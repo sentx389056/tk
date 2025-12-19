@@ -26,7 +26,7 @@ export function SectionTeamMembers() {
     useEffect(() => {
         const fetchTeamMember = async () => {
             try {
-                const res = await fetch('/api/team');
+                const res = await fetch('/api/team?pageSize=1000');
                 if (!res.ok) {
                     throw new Error('Failed to fetch team');
                 }

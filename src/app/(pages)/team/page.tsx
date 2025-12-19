@@ -18,14 +18,14 @@ export default function TeamPage() {
         pageSize: number;
         totalPages: number;
     };
-
+    
     const [teamMember, setTeamMember] = useState<teamMembers[]>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
 
     const fetchTeamMember = async () => {
         setLoading(true);
         try {
-            const res = await fetch('/api/team');
+            const res = await fetch('/api/team?pageSize=1000');
 
             if (!res.ok) {
                 throw new Error('Failed to fetch team');
