@@ -21,39 +21,31 @@ export default function TeamPage() {
 
     const [teamMember, setTeamMember] = useState<teamMembers[]>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
-    const [page, setPage] = useState(1);
-    const [pageSize] = useState(10);
-    const [totalPages, setTotalPages] = useState(1);
-    const [total, setTotal] = useState(0);
 
     const fetchTeamMember = async () => {
         setLoading(true);
         try {
-            const params = new URLSearchParams({
-                page: page.toString(),
-                pageSize: pageSize.toString()
-            });
-            const res = await fetch(`/api/team?${params}`);
+            const res = await fetch('/api/team');
 
             if (!res.ok) {
                 throw new Error('Failed to fetch team');
             }
 
-            const data: PaginatedResponse = await res.json();
+            const data = await res.json();
 
-            setTeamMember(data.teamMembers);
-            setTotal(data.total);
-            setTotalPages(data.totalPages);
+            // Handle both paginated response and direct array response
+            if (Array.isArray(data.teamMembers)) {
+                setTeamMember(data.teamMembers);
+            } else if (Array.isArray(data.teamMember)) {
+                setTeamMember(data.teamMember);
+            } else if (Array.isArray(data)) {
+                setTeamMember(data);
+            } else {
+                setTeamMember([]);
+            }
         } catch (error) {
             console.error('Error fetching team:', error);
-            // Fallback to mock data if API fails
-            await new Promise(resolve => setTimeout(resolve, 500));
-            const startIndex = (page - 1) * pageSize;
-            const endIndex = startIndex + pageSize;
-            const paginatedNews = teamMember.slice(startIndex, endIndex);
-            setTeamMember(paginatedNews);
-            setTotal(teamMember.length);
-            setTotalPages(Math.ceil(teamMember.length / pageSize));
+            setTeamMember([]);
         } finally {
             setLoading(false);
         }
@@ -61,7 +53,7 @@ export default function TeamPage() {
 
     useEffect(() => {
         fetchTeamMember();
-    }, [page]);
+    }, []);
 
     return (
         <main className="flex flex-col w-full px-5 xl:px-40 py-10">
@@ -91,7 +83,7 @@ export default function TeamPage() {
                             <tbody>
                                 {isLoading ? (
                                     // Skeleton loading states
-                                    Array.from({ length: pageSize }).map((_, index) => (
+                                    Array.from({ length: 10 }).map((_, index) => (
                                         <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                                             <td className="px-3 py-3 text-center align-top border border-gray-300 text-sm">
                                                 <Skeleton className="h-4 w-4 mx-auto" />
