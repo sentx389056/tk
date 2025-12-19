@@ -11,7 +11,7 @@ export async function GET(request: Request) {
         
         const [teamMembers, total] = await Promise.all([
             prisma.teamMembers.findMany({
-                orderBy: { id: 'desc' },
+                orderBy: { id: 'asc' },
                 skip,
                 take: pageSize,
             }),
