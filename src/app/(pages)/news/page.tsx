@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 
-// В будущем эти данные будут приходить из API админки
 interface NewsItem {
    id: number;
    title: string;

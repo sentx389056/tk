@@ -131,12 +131,12 @@ export default function Header() {
                         </SheetHeader>
                         <div className="flex flex-col gap-5 px-2">
                            <Link
-                              href="/applications"
+                              href="/team"
                               className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 hover:underline outline-none transition-[color,box-shadow]"
                               style={{ color: 'white' }}
                               onClick={() => setIsDesktopMenuOpen(false)}
                            >
-                              Поступившие заявки на участие в ТК
+                              Состав ТК 015
                            </Link>
                            <Link
                               href="/news"
@@ -211,12 +211,12 @@ export default function Header() {
                            Перечни стандартов
                         </Link>
                         <Link
-                           href="/applications"
+                           href="/team"
                            className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 outline-none transition-[color,box-shadow] hover:underline"
                            style={{ color: 'white' }}
                            onClick={() => setIsMenuOpen(false)}
                         >
-                           Поступившие заявки на участие в ТК
+                           Состав ТК 015
                         </Link>
                         {/* <Accordion type="single" collapsible>
                         <AccordionItem value="item-1" >

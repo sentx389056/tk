@@ -5,6 +5,7 @@ import LastEvents from "@/components/LastEvents";
 import Contacts from "@/components/Contacts";
 import Map from "@/components/Map";
 import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 
 export default async function Home() {
 
@@ -30,34 +31,34 @@ export default async function Home() {
           <nav className="w-full max-w-4xl mx-auto mb-16">
             <ul className="flex flex-wrap gap-4 text-center justify-center">
               <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <a href="/provisions" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
+                <Link href="/provisions" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
                   Приказ о создании ТК
-                </a>
+                </Link>
               </li>
               <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <a href="/perspective" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
+                <Link href="/perspective" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
                   Перспективная программа
-                </a>
+                </Link>
               </li>
               <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <a href="/projects" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
+                <Link href="/projects" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
                   Перечни стандартов
-                </a>
+                </Link>
               </li>
               <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <a href="/applications" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
-                  Поступившие заявки на участие в ТК
-                </a>
+                <Link href="/team" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
+                  Состав ТК 015
+                </Link>
               </li>
               <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <a href="/news" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
+                <Link href="/news" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
                   Новости
-                </a>
+                </Link>
               </li>
               <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <a href="/contacts" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
+                <Link href="/contacts" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
                   Контакты ТК
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>

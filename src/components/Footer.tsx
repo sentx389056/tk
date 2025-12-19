@@ -65,7 +65,7 @@ export default function Footer() {
                         <Link href="/projects" className="text-gray-500 text-sm" style={{ color: '#d1d5db' }}>Перечни стандартов</Link>
                      </li>
                      <li>
-                        <Link href="/applications" className="text-gray-500 text-sm" style={{ color: '#d1d5db' }}>Поступившие заявки на участие в ТК</Link>
+                        <Link href="/team" className="text-gray-500 text-sm" style={{ color: '#d1d5db' }}>Состав ТК 015</Link>
                      </li>
                      <li>
                         <Link href="/news" className="text-gray-500 text-sm" style={{ color: '#d1d5db' }}>Новости</Link>

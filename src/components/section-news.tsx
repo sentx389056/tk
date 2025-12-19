@@ -247,8 +247,8 @@ export function SectionNews() {
                     </TableBody>
                     <TableFooter className="w-full">
                         <TableRow>
-                            <TableCell colSpan={1}>Всего:</TableCell>
-                            <TableCell className="text-right">{news.length}</TableCell>
+                            <TableCell>Всего:</TableCell>
+                            <TableCell className="text-left" colSpan={7}>{news.length}</TableCell>
                         </TableRow>
                     </TableFooter>
                 </Table>

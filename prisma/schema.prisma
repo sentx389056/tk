@@ -215,3 +215,11 @@ model ApplicationRequest {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
+
+model teamMembers {
+  id  Int @id @default(autoincrement())
+  orgName String
+  contactsInfo String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

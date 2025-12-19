@@ -39,6 +39,7 @@ import { SectionLogs } from "@/components/section-logs";
 import { SectionDiscussions } from "@/components/section-discussions";
 import Link from "next/link";
 import { SectionNews } from "@/components/section-news";
+import { SectionTeamMembers } from "@/components/section-team";
 
 const frameworks = [
     {
@@ -51,6 +52,10 @@ const items = [
     {
         title: "Новости",
         value: "Новости",
+    },
+    {
+        title: "Состав ТК",
+        value: "Состав ТК",
     },
 ]
 
@@ -191,6 +196,10 @@ export default function SecureAreaPage() {
 
                                                                         {tab === "Новости" && (
                                                                             <SectionNews />
+                                                                        )}
+
+                                                                        {tab === "Состав ТК" && (
+                                                                            <SectionTeamMembers />
                                                                         )}
 
                                                                     </div>
