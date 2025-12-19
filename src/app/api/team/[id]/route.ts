@@ -1,12 +1,16 @@
-
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+interface RouteContext {
+    params: Promise<{ id: string }>;
+}
+
 export async function DELETE(
     request: Request,
-    { params }: { params: { id: string } }
+    context: RouteContext
 ) {
     try {
+        const params = await context.params;
         const id = params.id;
         
         if (!id || isNaN(Number(id))) {

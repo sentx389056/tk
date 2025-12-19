@@ -54,7 +54,7 @@ export function SectionTeamMembers() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleDelete(id: any) {
         try {
-            const res = await fetch(`/api/team/delete/${id}`, { method: 'DELETE' });
+            const res = await fetch(`/api/team/${id}`, { method: 'DELETE' });
             
             if (!res.ok) {
                 const errorData = await res.json();
