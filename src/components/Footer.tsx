@@ -10,7 +10,7 @@ export default function Footer() {
       <footer className="bg-black py-8 xl:px-20 text-white" style={{ color: 'white' }}>
          <div className="mx-auto px-3 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-15 container">
             <div>
-               <h2 className="text-white mb-6 font-bold" style={{ color: 'white' }}>ТК015 &quot;Кинематография&quot;</h2>
+               <h2 className="text-white mb-6 font-bold" style={{ color: 'white' }}>ТК № 015 &quot;Кинематография&quot;</h2>
                {/* <span className="text-gray-500 text-sm">ТК NNN</span> */}
                <ul className="flex gap-3 flex-col mt-2 text-sm mb-3">
                   <li className="flex items-center gap-2">
@@ -65,7 +65,7 @@ export default function Footer() {
                         <Link href="/projects" className="text-gray-500 text-sm" style={{ color: '#d1d5db' }}>Перечни стандартов</Link>
                      </li>
                      <li>
-                        <Link href="/team" className="text-gray-500 text-sm" style={{ color: '#d1d5db' }}>Состав ТК 015</Link>
+                        <Link href="/team" className="text-gray-500 text-sm" style={{ color: '#d1d5db' }}>Состав ТК</Link>
                      </li>
                      <li>
                         <Link href="/news" className="text-gray-500 text-sm" style={{ color: '#d1d5db' }}>Новости</Link>
@@ -84,7 +84,8 @@ export default function Footer() {
             </div>
          </div>
          <Separator className="my-4 bg-gray-500" />
-         <p className="text-gray-500 text-center text-sm" style={{ color: '#d1d5db' }}>&copy; ТК015 &quot;Кинематография&quot;, {currentYear}г.</p>
+         <p className="text-gray-500 text-center text-sm" style={{ color: '#d1d5db' }}>&copy; ТК № 015 &quot;Кинематография&quot;, {currentYear}г.</p>
       </footer>
    )
+
 }
