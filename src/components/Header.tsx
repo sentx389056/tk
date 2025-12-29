@@ -98,7 +98,7 @@ export default function Header() {
 
             <Link href="/" className="shrink-0 flex items-center gap-3">
                <Image src="/TKlogo.png" alt="gff-tk logo" width={120} height={150} className="h-auto sm:w-[90px]" />
-               <p className="text-white font-semibold text-xs hidden sm:flex" style={{ color: 'white' }}>ТЕХНИЧЕСКИЙ КОМИТЕТ ПО СТАНДАРТИЗАЦИИ<br />ТК015 «КИНЕМАТОГРАФИЯ»</p>
+               <p className="text-white font-semibold text-xs hidden sm:flex" style={{ color: 'white' }}>ТЕХНИЧЕСКИЙ КОМИТЕТ ПО СТАНДАРТИЗАЦИИ<br />ТК № 015 «КИНЕМАТОГРАФИЯ»</p>
             </Link>
             <div className="hidden lg:flex items-center justify-between gap-6 flex-1 ml-18">
                <NavigationMenu viewport={false}>
@@ -136,7 +136,7 @@ export default function Header() {
                               style={{ color: 'white' }}
                               onClick={() => setIsDesktopMenuOpen(false)}
                            >
-                              Состав ТК 015
+                              Состав ТК
                            </Link>
                            <Link
                               href="/news"
@@ -216,7 +216,7 @@ export default function Header() {
                            style={{ color: 'white' }}
                            onClick={() => setIsMenuOpen(false)}
                         >
-                           Состав ТК 015
+                           Состав ТК
                         </Link>
                         {/* <Accordion type="single" collapsible>
                         <AccordionItem value="item-1" >
