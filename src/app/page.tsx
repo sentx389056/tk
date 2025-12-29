@@ -47,7 +47,7 @@ export default async function Home() {
               </li>
               <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                 <Link href="/team" className="block text-lg font-medium text-gray-800 hover:text-[#CC4E3A] transition-colors">
-                  Состав ТК 015
+                  Состав ТК
                 </Link>
               </li>
               <li className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
