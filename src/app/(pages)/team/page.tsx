@@ -60,7 +60,7 @@ export default function TeamPage() {
             <div className="py-10">
                 <div className="flex flex-col items-center">
                     <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">
-                        СОСТАВ<br />технического комитета по стандартизации<br />&quot;Кинематография&quot;
+                        СОСТАВ<br />технического комитета по стандартизации № 015<br />&quot;Кинематография&quot;
                     </h1>
                 </div>
                 <section className="w-full mt-6 text-[9px] sm:text-[10px] md:text-xs">
