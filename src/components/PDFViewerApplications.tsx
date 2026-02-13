@@ -34,8 +34,8 @@ const PDFViewerApplications = ({ fileUrl, title }: { fileUrl: string; title: str
 
         // Determine worker source based on browser compatibility
         const workerSrc = typeof Promise.withResolvers === 'undefined'
-          ? '/pdf.worker.legacy.min.js'
-          : '/pdf.worker.min.js';
+          ? '/pdf.worker.js'
+          : '/pdf.worker.min.mjs';
 
         pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
         setPdfjs(pdfjsLib);

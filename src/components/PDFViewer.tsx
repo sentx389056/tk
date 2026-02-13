@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
+import * as pdfjsLib from 'pdfjs-dist';
 import { waitForPolyfills } from '@/lib/polyfill-utils';
 
 // Determine worker source based on browser compatibility
@@ -9,14 +9,14 @@ const determineWorkerSrc = () => {
   if (typeof window !== 'undefined') {
     // Check if Promise.withResolvers is supported
     if (typeof Promise.withResolvers === 'undefined') {
-      return '/pdf.worker.legacy.min.js';
+      return '/pdf.worker.js';
     }
   }
-  return '/pdf.worker.min.js';
+  return '/pdf.worker.min.mjs';
 };
 
 if (typeof window !== 'undefined') {
-  GlobalWorkerOptions.workerSrc = determineWorkerSrc();
+  pdfjsLib.GlobalWorkerOptions.workerSrc = determineWorkerSrc();
 }
 
 interface PDFViewerProps {
@@ -53,7 +53,7 @@ export default function PDFViewer({ fileUrl, title }: PDFViewerProps) {
 
       const blobUrl = URL.createObjectURL(blob);
 
-      const loadingTask = getDocument(blobUrl);
+      const loadingTask = pdfjsLib.getDocument(blobUrl);
       const pdf = await loadingTask.promise;
 
       setTotalPages(pdf.numPages);
@@ -70,7 +70,7 @@ export default function PDFViewer({ fileUrl, title }: PDFViewerProps) {
 
     const renderAllPages = async () => {
       try {
-        const loadingTask = getDocument(pdfBlobUrl);
+        const loadingTask = pdfjsLib.getDocument(pdfBlobUrl);
         const pdf = await loadingTask.promise;
 
         // Ensure canvas refs array is properly sized

@@ -1,20 +1,20 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
+import * as pdfjsLib from 'pdfjs-dist';
 
 // Determine worker source based on browser compatibility
 const determineWorkerSrc = () => {
   if (typeof window !== 'undefined') {
     if (typeof Promise.withResolvers === 'undefined') {
-      return '/pdf.worker.legacy.min.js';
+      return '/pdf.worker.js';
     }
   }
-  return '/pdf.worker.min.js';
+  return '/pdf.worker.min.mjs';
 };
 
 if (typeof window !== 'undefined') {
-  GlobalWorkerOptions.workerSrc = determineWorkerSrc();
+  pdfjsLib.GlobalWorkerOptions.workerSrc = determineWorkerSrc();
 }
 
 interface PDFEnhancedViewerProps {
@@ -71,7 +71,7 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
       const blob = await response.blob();
       const blobUrl = URL.createObjectURL(blob);
 
-      const loadingTask = getDocument(blobUrl);
+      const loadingTask = pdfjsLib.getDocument(blobUrl);
       const pdf = await loadingTask.promise;
 
       setTotalPages(pdf.numPages);
@@ -239,7 +239,7 @@ export default function PDFEnhancedViewer({ fileUrl, title }: PDFEnhancedViewerP
 
     const renderAllPages = async () => {
       try {
-        const loadingTask = getDocument(pdfBlobUrl);
+        const loadingTask = pdfjsLib.getDocument(pdfBlobUrl);
         const pdf = await loadingTask.promise;
 
         // Ensure canvas refs array
