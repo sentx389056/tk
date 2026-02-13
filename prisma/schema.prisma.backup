@@ -17,22 +17,12 @@ enum LogType {
   DOWNLOAD
   UPLOAD
   AUTH
-  LOGIN
-  LOGOUT
-  CREATE
-  VIEW
-  ERROR
-  OTHER
 }
 
 model Log {
   id         Int      @id @default(autoincrement())
   type       LogType
-  entity     String?  // добавьте
-  entityId   String?  // добавьте
-  details    String?  // добавьте
-  ip         String?  // добавьте
-  userAgent  String?  // добавьте
+  action     String
   userId     Int
   user       User     @relation(fields: [userId], references: [id])
   documentId Int?

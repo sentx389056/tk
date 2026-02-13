@@ -50,7 +50,7 @@ export function SectionStandards() {
                 const meJson = await me.json();
                 const userId = meJson?.user?.id;
                 if (userId) {
-                    await createLog({ type: 'AUTH', action: 'Просмотр документов по стандартизации', userId });
+                    await createLog({ type: 'AUTH', entity: 'Просмотр документов по стандартизации', userId });
                 }
             } catch (e) {
                 console.error('Failed to log', e);

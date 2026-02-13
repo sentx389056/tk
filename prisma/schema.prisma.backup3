@@ -28,6 +28,7 @@ enum LogType {
 model Log {
   id         Int      @id @default(autoincrement())
   type       LogType
+  action     String   // переименуем в entity или оставим как action?
   entity     String?  // добавьте
   entityId   String?  // добавьте
   details    String?  // добавьте

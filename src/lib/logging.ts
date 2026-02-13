@@ -4,7 +4,7 @@ export type LogType = 'DELETE' | 'ADD' | 'DOWNLOAD' | 'AUTH';
 
 export interface LogData {
     type: LogType;
-    action: string;
+    entity: string;
     userId: number;
     documentId?: number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,7 +39,7 @@ export type PaginatedLogsResponse = {
     logs: {
         id: number;
         type: LogType;
-        action: string;
+        entity: string;
         user: {
             login: string;
             member?: {

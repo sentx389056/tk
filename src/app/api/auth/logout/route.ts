@@ -25,7 +25,7 @@ export async function POST(request: Request) {
         await prisma.log.create({
           data: {
             type: 'AUTH',
-            action: 'ВЫХОД',
+            entity: "ВЫХОД",
             userId: userId,
             metadata: JSON.stringify({
               success: true,

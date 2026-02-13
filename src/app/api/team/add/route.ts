@@ -38,7 +38,7 @@ export async function POST(request: Request) {
             await prisma.log.create({
                 data: {
                     type: 'ADD',
-                    action: 'Добавление записи в Состав ТК',
+                    entity: 'Добавление записи в Состав ТК',
                     userId,
                     metadata: JSON.stringify({
                         memberId: team.id,

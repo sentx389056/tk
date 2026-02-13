@@ -9,7 +9,7 @@ export function useFileOperations(userId: number) {
             // Log the download
             await createLog({
                 type: 'DOWNLOAD',
-                action: `Скачан файл: ${fileName}`,
+                entity: `Скачан файл: ${fileName}`,
                 userId,
                 documentId,
             });
@@ -25,7 +25,7 @@ export function useFileOperations(userId: number) {
             // Log the upload
             await createLog({
                 type: 'ADD',
-                action: `Загружен файл: ${fileName}`,
+                entity: `Загружен файл: ${fileName}`,
                 userId,
                 documentId,
             });
@@ -41,7 +41,7 @@ export function useFileOperations(userId: number) {
             // Log the deletion
             await createLog({
                 type: 'DELETE',
-                action: `Удален файл: ${fileName}`,
+                entity: `Удален файл: ${fileName}`,
                 userId,
                 documentId,
             });

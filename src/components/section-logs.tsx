@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 type Log = {
     id: number;
     type: LogType;
-    action: string;
+    entity: string;
     user: {
         login: string;
         member?: {
@@ -174,7 +174,7 @@ export function SectionLogs() {
                                     </span>
                                     <span className="font-medium text-sm">{log.user.member?.name || log.user.login}</span>
                                 </div>
-                                <p className="text-sm text-gray-600">{log.action}</p>
+                                <p className="text-sm text-gray-600">{log.entity}</p>
                                 {log.metadata && (
                                     <p className="text-xs text-gray-500 mt-1">
                                         {JSON.parse(log.metadata).message}

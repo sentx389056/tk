@@ -3,94 +3,52 @@ import { LogType } from '@prisma/client';
 
 export interface LogOperationOptions {
     type: LogType;
-    action: string;
-    userId: number;
-    documentId?: number;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    metadata?: Record<string, any>;
+    entity: string;
+    entityId?: string;
+    details?: string;
+    ip?: string;
+    userAgent?: string;
 }
 
-export async function logOperation(options: LogOperationOptions) {
+export async function logOperation(userId: number, options: LogOperationOptions) {
     try {
-        const { type, action, userId, documentId, metadata } = options;
-
-        return await prisma.log.create({
+        await prisma.log.create({
             data: {
-                type,
-                action,
                 userId,
-                documentId,
-                metadata: metadata ? JSON.stringify({
-                    ...metadata,
-                    timestamp: new Date().toISOString()
-                }) : null
-            }
+                type: options.type,
+                entity: options.entity,
+                entityId: options.entityId,
+                details: options.details,
+                ip: options.ip,
+                userAgent: options.userAgent,
+                createdAt: new Date(),
+            },
         });
     } catch (error) {
-        console.error('Failed to create log entry:', error);
-        // Don't throw - we don't want logging failures to break the main operation
-        return null;
+        console.error('Failed to log operation:', error);
+        // Не прерываем выполнение из-за ошибки логирования
     }
 }
 
-// Helper to extract user ID from request cookies
-export function getUserIdFromCookie(request: Request): number | null {
+export async function getLogs(userId?: number, limit: number = 100) {
     try {
-        const cookies = request.headers.get('cookie');
-        if (!cookies) return null;
-
-        const tkUserCookie = cookies.split(';').find(c => c.trim().startsWith('tk_user='));
-        if (!tkUserCookie) return null;
-
-        const userData = JSON.parse(decodeURIComponent(tkUserCookie.split('=')[1]));
-        return userData.id || null;
-    } catch (e) {
-        console.error('Error extracting user ID from cookie:', e);
-        return null;
+        const where = userId ? { userId } : {};
+        
+        return await prisma.log.findMany({
+            where,
+            orderBy: { createdAt: 'desc' },
+            take: limit,
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        login: true,
+                    },
+                },
+            },
+        });
+    } catch (error) {
+        console.error('Failed to fetch logs:', error);
+        return [];
     }
 }
-
-// Log constants for consistency
-export const LOG_ACTIONS = {
-    // Standards
-    STANDARD_ADD: 'STANDARD_ADD',
-    STANDARD_DELETE: 'STANDARD_DELETE',
-    STANDARD_UPDATE: 'STANDARD_UPDATE',
-    
-    // Provisions
-    PROVISION_ADD: 'PROVISION_ADD',
-    PROVISION_DELETE: 'PROVISION_DELETE',
-    PROVISION_UPDATE: 'PROVISION_UPDATE',
-    
-    // Meetings
-    MEETING_ADD: 'MEETING_ADD',
-    MEETING_DELETE: 'MEETING_DELETE',
-    MEETING_UPDATE: 'MEETING_UPDATE',
-    
-    // Reports
-    REPORT_ADD: 'REPORT_ADD',
-    REPORT_DELETE: 'REPORT_DELETE',
-    REPORT_UPDATE: 'REPORT_UPDATE',
-    
-    // Projects
-    PROJECT_ADD: 'PROJECT_ADD',
-    PROJECT_DELETE: 'PROJECT_DELETE',
-    PROJECT_UPDATE: 'PROJECT_UPDATE',
-    
-    // Protocols
-    PROTOCOL_ADD: 'PROTOCOL_ADD',
-    PROTOCOL_DELETE: 'PROTOCOL_DELETE',
-    PROTOCOL_UPDATE: 'PROTOCOL_UPDATE',
-    
-    // Executive members
-    EXECUTIVE_ADD: 'EXECUTIVE_ADD',
-    EXECUTIVE_DELETE: 'EXECUTIVE_DELETE',
-    EXECUTIVE_UPDATE: 'EXECUTIVE_UPDATE',
-    
-    // File operations
-    FILE_UPLOAD: 'FILE_UPLOAD',
-    FILE_DOWNLOAD: 'FILE_DOWNLOAD',
-    FILE_DELETE: 'FILE_DELETE'
-} as const;
-
-export type LogAction = typeof LOG_ACTIONS[keyof typeof LOG_ACTIONS];

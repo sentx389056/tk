@@ -1,7 +1,6 @@
 import Advantage from "@/components/Advantage";
 import { Award, Calendar, Disc2, FileText } from "lucide-react";
 import MainTask from "@/components/MainTask";
-import LastEvents from "@/components/LastEvents";
 import Contacts from "@/components/Contacts";
 import Map from "@/components/Map";
 import { prisma } from "@/lib/prisma";

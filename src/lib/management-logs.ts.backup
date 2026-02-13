@@ -44,7 +44,8 @@ export async function getUserLogs(userId: number, limit: number = 50) {
                 user: {
                     select: {
                         id: true,
-                        login: true,
+                        email: true,
+                        name: true,
                     },
                 },
             },
@@ -64,7 +65,8 @@ export async function getAllLogs(limit: number = 100) {
                 user: {
                     select: {
                         id: true,
-                        login: true,
+                        email: true,
+                        name: true,
                     },
                 },
             },

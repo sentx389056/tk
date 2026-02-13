@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+/* import { prisma } from '@/lib/prisma';
 import { TrendingUp } from 'lucide-react';
 
 interface DbEvent {
@@ -175,3 +175,4 @@ export default async function LastEvents() {
         return null;
     }
 }
+*/

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import dynamic from 'next/dynamic';
+import type * as pdfjsLib from 'pdfjs-dist';
 
 const PDFViewerProvision = ({ fileUrl }: { fileUrl: string }) => {
   const [loading, setLoading] = useState(true);
@@ -10,7 +11,7 @@ const PDFViewerProvision = ({ fileUrl }: { fileUrl: string }) => {
   const [renderedPages, setRenderedPages] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
-  const [pdfjs, setPdfjs] = useState<unknown>(null);
+  const [pdfjs, setPdfjs] = useState<typeof pdfjsLib | null>(null);
 
   const isPdfJsLib = (obj: unknown): obj is {
     getDocument: (src: string | Uint8Array) => {
@@ -28,20 +29,12 @@ const PDFViewerProvision = ({ fileUrl }: { fileUrl: string }) => {
   };
 
   useEffect(() => {
-    const loadPdfjs = async () => {
-      if (typeof window !== 'undefined') {
-        const pdfjsLib = await import('pdfjs-dist');
+    if (typeof window === 'undefined') return;
 
-        // Determine worker source based on browser compatibility
-        const workerSrc = typeof Promise.withResolvers === 'undefined'
-          ? '/pdf.worker.legacy.min.js'
-          : '/pdf.worker.min.js';
-
-        pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
-        setPdfjs(pdfjsLib);
-      }
-    };
-    loadPdfjs();
+    // Ленивая загрузка — но workerSrc уже задан в lib/pdfjs.ts
+    import('@/lib/pdfjs').then((module) => {
+      setPdfjs(module.default);
+    });
   }, []);
 
   useEffect(() => {

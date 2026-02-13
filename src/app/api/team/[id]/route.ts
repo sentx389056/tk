@@ -51,7 +51,7 @@ export async function DELETE(
             await prisma.log.create({
                 data: {
                     type: 'DELETE',
-                    action: 'Удаление записи в Состав ТК',
+                    entity: 'Удаление записи в Состав ТК',
                     userId,
                     metadata: JSON.stringify({
                         memberId: team.id,
