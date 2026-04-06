@@ -7,7 +7,7 @@ export default function ActivityPage() {
     const activity = [
         {
             id: 1,
-            fileUrl: "/api/files/activity/26.02.2026.Повестка_Заседания__ТК_015.pdf",
+            fileUrl: "/api/files/activity/Протокол заседания ТК 015 №1 26.02.26.pdf",
         },
     ]
 
