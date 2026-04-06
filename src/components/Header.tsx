@@ -22,65 +22,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Separator } from "@/components/ui/separator";
 import { ArrowRight, ExternalLink, Menu } from "lucide-react";
 
-const info = {
-   about: [
-      {
-         title: "Состав ТК",
-         href: "/team",
-         description: "Участники ТК по стандартизации в области кинематографии и архивного дела",
-      },
-      {
-         title: "Руководство",
-         href: "/management",
-         description: 'Команда профессионалов, возглавляющая ТК "Кинематография"',
-      },
-      {
-         title: "Фонд стандартов закрепленных за ТК",
-         href: "/standards",
-         description: "Национальные стандарты, закрепленные за Техническим комитетом по стандартизации",
-      },
-      {
-         title: "Поступившие заявки",
-         href: "/applications",
-         description: "Заявки организаций на участие в работе Технического комитета",
-      }
-   ],
-   activity: [
-      {
-         title: "Заседания",
-         href: "/meetings",
-         description: "Информация о проведенных и планируемых заседаниях Технического комитета",
-      },
-      {
-         title: "Протоколы",
-         href: "/protocols",
-         description: "Официальные протоколы заседаний Технического комитета по стандартизации",
-      },
-      {
-         title: "Годовые отчеты",
-         href: "/reports",
-         description: "Ежегодные отчеты о деятельности Технического комитета по стандартизации",
-      }
-   ],
-   documents: [
-      {
-         title: "Положения о ТК",
-         href: "/provisions",
-         description: "Нормативные документы, регламентирующие деятельность Технического комитета",
-      },
-      {
-         title: "Перспективная программа работы ТК",
-         href: "/perspective",
-         description: "Планы и проекты Технического комитета по стандартизации в области кинематографии",
-      },
-      {
-         title: "Перечни стандартов",
-         href: "/projects",
-         description: "Проекты национальных стандартов, разрабатываемые Техническим комитетом",
-      },
-   ]
-};
-
 export default function Header() {
    const [isMenuOpen, setIsMenuOpen] = useState(false);
    const [isDesktopMenuOpen, setIsDesktopMenuOpen] = useState(false);
@@ -145,6 +86,14 @@ export default function Header() {
                               onClick={() => setIsDesktopMenuOpen(false)}
                            >
                               Новости
+                           </Link>
+                           <Link
+                              href="/activity"
+                              className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-5 text-xl font-medium text-white hover:text-gray-300 hover:underline outline-none transition-[color,box-shadow]"
+                              style={{ color: 'white' }}
+                              onClick={() => setIsDesktopMenuOpen(false)}
+                           >
+                              Деятельность
                            </Link>
                            <Link
                               href="/contacts"
@@ -272,6 +221,13 @@ export default function Header() {
                            onClick={() => setIsMenuOpen(false)}
                         >
                            Новости
+                        </Link>
+                        <Link
+                           href="/activity"
+                           className="border-b-1 group inline-flex h-9 w-full items-center justify-start py-2 text-xl font-medium text-white hover:text-gray-300 outline-none transition-[color,box-shadow] hover:underline"
+                           onClick={() => setIsMenuOpen(false)}
+                        >
+                           Деятельность
                         </Link>
                         <Link
                            href="/contacts"
