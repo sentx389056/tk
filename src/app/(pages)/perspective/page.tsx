@@ -15,8 +15,7 @@ export default function PerspectivePage() {
    return (
       <main className="flex flex-col w-full px-5 xl:px-40 py-10">
          <div className="py-10 relative">
-            <span className="absolute top-0 right-0 text-left">Проект</span>
-            <div className="flex flex-col items-center">
+<div className="flex flex-col items-center">
                <h1 className="text-4xl font-bold text-center mb-2 max-sm:text-2xl">ПЕРСПЕКТИВНАЯ ПРОГРАММА<br />работы ТК «Кинематография» на 2026‒2029 гг.
                </h1>
                {/* <p className="text-center text-base font-light text-gray-700 max-w-180">Планы и проекты Технического комитета по стандартизации в области кинематографии</p> */}
