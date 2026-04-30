@@ -2,30 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import PDFViewerProvision from "@/components/PDFViewerProvision";
 
 export default function TeamPage() {
-
-    const team = [
-      {
-         id: 1,
-         fileUrl: "/api/files/team/Состав ТК 015.pdf",
-      },
-   ]
 
     interface teamMembers {
         id: number;
         orgName: string;
         contactsInfo: string;
     }
-
-    type PaginatedResponse = {
-        teamMembers: teamMembers[];
-        total: number;
-        page: number;
-        pageSize: number;
-        totalPages: number;
-    };
 
     const [teamMember, setTeamMember] = useState<teamMembers[]>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
@@ -41,7 +25,6 @@ export default function TeamPage() {
 
             const data = await res.json();
 
-            // Handle both paginated response and direct array response
             if (Array.isArray(data.teamMembers)) {
                 setTeamMember(data.teamMembers);
             } else if (Array.isArray(data.teamMember)) {
@@ -72,12 +55,47 @@ export default function TeamPage() {
                     </h1>
                 </div>
                 <section className="w-full mt-6 text-[9px] sm:text-[10px] md:text-xs">
-                    {team.map(t => (
-                        <PDFViewerProvision
-                            key={t.id}
-                            fileUrl={t.fileUrl}
-                        />
-                    ))}
+                    <div className="overflow-x-auto border border-gray-200 rounded-md">
+                        <table className="w-full min-w-[720px] table-fixed border border-gray-300 border-collapse text-gray-900">
+                            <colgroup>
+                                <col className="w-12" />
+                                <col className="w-[45%]" />
+                                <col className="w-[45%]" />
+                            </colgroup>
+                            <thead className="bg-[#F2F4F7] text-[8px] sm:text-[8px] md:text-[10px] tracking-wide text-gray-700">
+                                <tr>
+                                    <th className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">№ п/п</th>
+                                    <th className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">Наименование организации</th>
+                                    <th className="px-3 py-3 text-center align-middle border border-gray-300 text-sm">Контактные данные организации</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {isLoading ? (
+                                    Array.from({ length: 10 }).map((_, index) => (
+                                        <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                                            <td className="px-3 py-3 text-center align-top border border-gray-300 text-sm">
+                                                <Skeleton className="h-4 w-4 mx-auto" />
+                                            </td>
+                                            <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words text-sm">
+                                                <Skeleton className="h-4 w-full" />
+                                            </td>
+                                            <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words text-sm">
+                                                <Skeleton className="h-4 w-full" />
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    teamMember.map((member, index) => (
+                                        <tr key={member.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                                            <td className="px-3 py-3 text-center align-top border border-gray-300 text-sm">{index + 1}</td>
+                                            <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words text-sm">{member.orgName}</td>
+                                            <td className="px-3 py-3 align-top border border-gray-300 leading-snug break-words text-sm">{member.contactsInfo}</td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </section>
             </div>
         </main>
