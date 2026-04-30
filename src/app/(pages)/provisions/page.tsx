@@ -6,7 +6,7 @@ import PDFViewerProvision from "@/components/PDFViewerProvision";
 import { FileText } from "lucide-react";
 
 export default function ProvisionsPage() {
-    const [activeTab, setActiveTab] = useState("structure");
+    const [activeTab, setActiveTab] = useState("");
 
     const tabDocuments = [
         {
@@ -52,7 +52,11 @@ export default function ProvisionsPage() {
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                     <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-3 mb-8">
                         {tabDocuments.map((doc) => (
-                            <TabsTrigger key={doc.id} value={doc.id}>
+                            <TabsTrigger
+                                key={doc.id}
+                                value={doc.id}
+                                className="cursor-pointer hover:bg-gray-200 hover:text-gray-900 hover:shadow-sm transition-all duration-150"
+                            >
                                 {doc.label}
                             </TabsTrigger>
                         ))}
@@ -60,7 +64,7 @@ export default function ProvisionsPage() {
 
                     {tabDocuments.map((doc) => (
                         <TabsContent key={doc.id} value={doc.id} className="mt-6">
-                            <PDFViewerProvision fileUrl={doc.fileUrl} />
+                            {activeTab === doc.id && <PDFViewerProvision fileUrl={doc.fileUrl} />}
                         </TabsContent>
                     ))}
                 </Tabs>
